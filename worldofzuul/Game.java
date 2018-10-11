@@ -15,7 +15,7 @@ public class Game
 
     private void createRooms()
     {
-        Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
+        Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
         
         foyer = new Room("Foyer");
         livingRoom = new Room("Living room");
@@ -25,40 +25,69 @@ public class Game
         secondFloor = new Room("2nd floor");
         attic = new Room("Attic");
         basement = new Room("Basement");
+        masterBedroom = new Room("Master bedroom - Mom and dad's bedroom");
         porch = new Room("Porch - Southern outside area");
         nwGarden = new Room("North west gardens - North western outside area");
         nGarden = new Room("North gardens - Northern outside area");
-        neGarden = new Room("North east gardens - North eastern outside area");
+        neGarden = new Room("North east gardens - North eastern outside area.");
         wGarden = new Room("West gardens - Western outside area");
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse");
         
+        foyer.setExit("living room", livingRoom);
+        foyer.setExit("outside", porch);
+        foyer.setExit("upstairs", staircase);
+        foyer.setExit("dining room", diningRoom);
         
-        foyer.setExit("livingRoom", livingRoom);
+        livingRoom.setExit("foyer", foyer);
         
-        /*
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        diningRoom.setExit("foyer", foyer);
+        diningRoom.setExit("kitchen", kitchen);
         
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-
-        theatre.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;
-                */
+        kitchen.setExit("basement", basement);
+        kitchen.setExit("dining room", diningRoom);
+        kitchen.setExit("outside", neGarden);
+        
+        staircase.setExit("up", secondFloor);
+        staircase.setExit("down", foyer);
+        
+        secondFloor.setExit("master bedroom", masterBedroom);
+        secondFloor.setExit("attic", attic);
+        // secondFloor.setExit("room", room); 
+        // Adding more rooms later depending on the items required and immersive experience.
+        
+        attic.setExit("hallway", secondFloor);
+        
+        basement.setExit("kitchen", kitchen);
+        basement.setExit("outside", neGarden);
+        
+        masterBedroom.setExit("hallway", secondFloor);
+        
+        porch.setExit("inside", foyer);
+        porch.setExit("west", swGarden);
+        porch.setExit("east", seGarden);
+        
+        nwGarden.setExit("east", nGarden);
+        nwGarden.setExit("south", wGarden);
+        //nwGarden.setExit("window", livingRoom); 
+        // Marv-only movement "idea"
+        
+        nGarden.setExit("treehouse", treehouse);
+        nGarden.setExit("west", nwGarden);
+        nGarden.setExit("east", neGarden);
+        
+        neGarden.setExit("west", nGarden);
+        neGarden.setExit("basement", basement);
+        neGarden.setExit("kitchen", kitchen);
+        
+        wGarden.setExit("north", nwGarden);
+        wGarden.setExit("south", swGarden);
+        
+        swGarden.setExit("north", wGarden);
+        swGarden.setExit("east", porch);
+        
+        seGarden.setExit("west", porch);
     }
 
     public void play() 
