@@ -15,8 +15,29 @@ public class Game
 
     private void createRooms()
     {
-        Room outside, theatre, pub, lab, office;
-      
+        Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
+        
+        foyer = new Room("Foyer");
+        livingRoom = new Room("Living room");
+        diningRoom = new Room("Dining room");
+        kitchen = new Room("Kitchen");
+        staircase = new Room("Staircase");
+        secondFloor = new Room("2nd floor");
+        attic = new Room("Attic");
+        basement = new Room("Basement");
+        porch = new Room("Porch - Southern outside area");
+        nwGarden = new Room("North west gardens - North western outside area");
+        nGarden = new Room("North gardens - Northern outside area");
+        neGarden = new Room("North east gardens - North eastern outside area");
+        wGarden = new Room("West gardens - Western outside area");
+        swGarden = new Room("South west gardens - South western outside area");
+        seGarden = new Room("South east gardens - South eastern outside area");
+        treehouse = new Room("Treehouse");
+        
+        
+        foyer.setExit("livingRoom", livingRoom);
+        
+        /*
         outside = new Room("outside the main entrance of the university");
         theatre = new Room("in a lecture theatre");
         pub = new Room("in the campus pub");
@@ -37,6 +58,7 @@ public class Game
         office.setExit("west", lab);
 
         currentRoom = outside;
+                */
     }
 
     public void play() 
