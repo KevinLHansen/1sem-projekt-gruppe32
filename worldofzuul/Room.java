@@ -28,15 +28,15 @@ public class Room
 
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are at/in the " + description + ".\n" + getExitString();
     }
 
     private String getExitString()
     {
-        String returnString = "Exits:";
+        String returnString = "Exits: ";
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
-            returnString += " " + exit;
+            returnString += exit + ", ";
         }
         return returnString;
     }

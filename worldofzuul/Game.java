@@ -17,6 +17,7 @@ public class Game
     {
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
         
+        
         foyer = new Room("Foyer");
         livingRoom = new Room("Living room");
         diningRoom = new Room("Dining room");
@@ -33,12 +34,12 @@ public class Game
         wGarden = new Room("West gardens - Western outside area");
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
-        treehouse = new Room("Treehouse");
+        treehouse = new Room("Treehouse - Northern outside area");
         
-        foyer.setExit("living room", livingRoom);
+        foyer.setExit("livingroom", livingRoom);
         foyer.setExit("outside", porch);
         foyer.setExit("upstairs", staircase);
-        foyer.setExit("dining room", diningRoom);
+        foyer.setExit("diningroom", diningRoom);
         
         livingRoom.setExit("foyer", foyer);
         
@@ -46,13 +47,13 @@ public class Game
         diningRoom.setExit("kitchen", kitchen);
         
         kitchen.setExit("basement", basement);
-        kitchen.setExit("dining room", diningRoom);
+        kitchen.setExit("diningroom", diningRoom);
         kitchen.setExit("outside", neGarden);
         
         staircase.setExit("up", secondFloor);
         staircase.setExit("down", foyer);
         
-        secondFloor.setExit("master bedroom", masterBedroom);
+        secondFloor.setExit("masterbedroom", masterBedroom);
         secondFloor.setExit("attic", attic);
         // secondFloor.setExit("room", room); 
         // Adding more rooms later depending on the items required and immersive experience.
@@ -101,8 +102,12 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            boolean objective1Complete = false;
+            if (objective1Complete == true){
+                finished = true;
+            }
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing. Good bye.");
     }
 
     private void printWelcome()
@@ -135,9 +140,29 @@ public class Game
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
+        else if (commandWord == CommandWord.EXAMINE) {
+            printInfo(currentRoom.getInfo());
+        }
+        else if (commandWord == CommandWord.COLLECT) {
+            
+        }
+        else if (commandWord == CommandWord.PLACE) {
+            
+        }
         return wantToQuit;
     }
-
+        
+    private void printInfo(String info)
+    {
+        if(info == "") {
+            System.out.println("There is nothing of interest in this location.");
+        }
+        else {
+            System.out.println(info);
+        }
+    }
+    
+    
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
