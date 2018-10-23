@@ -9,10 +9,14 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
+    private boolean trapSet;
+    private String info;
 
     public Room(String description) 
     {
         this.description = description;
+        this.info ="";
+        this.trapSet = false;
         exits = new HashMap<String, Room>();
     }
 
@@ -45,5 +49,13 @@ public class Room
     {
         return exits.get(direction);
     }
+    
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getInfo() {
+        return info;
+    }   
 }
 
