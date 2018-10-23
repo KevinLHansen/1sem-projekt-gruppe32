@@ -76,7 +76,7 @@ public class Game
         nGarden.setExit("treehouse", treehouse);
         nGarden.setExit("west", nwGarden);
         nGarden.setExit("east", neGarden);
-        
+                
         neGarden.setExit("west", nGarden);
         neGarden.setExit("basement", basement);
         neGarden.setExit("kitchen", kitchen);
@@ -88,6 +88,8 @@ public class Game
         swGarden.setExit("east", porch);
         
         seGarden.setExit("west", porch);
+        
+        currentRoom = foyer;
     }
 
     public void play() 
