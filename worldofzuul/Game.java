@@ -15,28 +15,82 @@ public class Game
 
     private void createRooms()
     {
-        Room outside, theatre, pub, lab, office;
-      
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
         
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-
-        theatre.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;
+        
+        foyer = new Room("Foyer");
+        livingRoom = new Room("Living room");
+        diningRoom = new Room("Dining room");
+        kitchen = new Room("Kitchen");
+        staircase = new Room("Staircase");
+        secondFloor = new Room("2nd floor");
+        attic = new Room("Attic");
+        basement = new Room("Basement");
+        masterBedroom = new Room("Master bedroom - Mom and dad's bedroom");
+        porch = new Room("Porch - Southern outside area");
+        nwGarden = new Room("North west gardens - North western outside area");
+        nGarden = new Room("North gardens - Northern outside area");
+        neGarden = new Room("North east gardens - North eastern outside area.");
+        wGarden = new Room("West gardens - Western outside area");
+        swGarden = new Room("South west gardens - South western outside area");
+        seGarden = new Room("South east gardens - South eastern outside area");
+        treehouse = new Room("Treehouse - Northern outside area");
+        
+        foyer.setExit("livingroom", livingRoom);
+        foyer.setExit("outside", porch);
+        foyer.setExit("upstairs", staircase);
+        foyer.setExit("diningroom", diningRoom);
+        
+        livingRoom.setExit("foyer", foyer);
+        
+        diningRoom.setExit("foyer", foyer);
+        diningRoom.setExit("kitchen", kitchen);
+        
+        kitchen.setExit("basement", basement);
+        kitchen.setExit("diningroom", diningRoom);
+        kitchen.setExit("outside", neGarden);
+        
+        staircase.setExit("up", secondFloor);
+        staircase.setExit("down", foyer);
+        
+        secondFloor.setExit("masterbedroom", masterBedroom);
+        secondFloor.setExit("attic", attic);
+        // secondFloor.setExit("room", room); 
+        // Adding more rooms later depending on the items required and immersive experience.
+        
+        attic.setExit("hallway", secondFloor);
+        
+        basement.setExit("kitchen", kitchen);
+        basement.setExit("outside", neGarden);
+        
+        masterBedroom.setExit("hallway", secondFloor);
+        
+        porch.setExit("inside", foyer);
+        porch.setExit("west", swGarden);
+        porch.setExit("east", seGarden);
+        
+        nwGarden.setExit("east", nGarden);
+        nwGarden.setExit("south", wGarden);
+        //nwGarden.setExit("window", livingRoom); 
+        // Marv-only movement "idea"
+        
+        nGarden.setExit("treehouse", treehouse);
+        nGarden.setExit("west", nwGarden);
+        nGarden.setExit("east", neGarden);
+                
+        neGarden.setExit("west", nGarden);
+        neGarden.setExit("basement", basement);
+        neGarden.setExit("kitchen", kitchen);
+        
+        wGarden.setExit("north", nwGarden);
+        wGarden.setExit("south", swGarden);
+        
+        swGarden.setExit("north", wGarden);
+        swGarden.setExit("east", porch);
+        
+        seGarden.setExit("west", porch);
+        
+        currentRoom = foyer;
     }
 
     public void play() 
@@ -48,8 +102,12 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            boolean objective1Complete = false;
+            if (objective1Complete == true){
+                finished = true;
+            }
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing. Good bye.");
     }
 
     private void printWelcome()
@@ -82,9 +140,29 @@ public class Game
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
+        else if (commandWord == CommandWord.EXAMINE) {
+            printInfo(currentRoom.getInfo());
+        }
+        else if (commandWord == CommandWord.COLLECT) {
+            
+        }
+        else if (commandWord == CommandWord.PLACE) {
+            
+        }
         return wantToQuit;
     }
-
+        
+    private void printInfo(String info)
+    {
+        if(info == "") {
+            System.out.println("There is nothing of interest in this location.");
+        }
+        else {
+            System.out.println(info);
+        }
+    }
+    
+    
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
