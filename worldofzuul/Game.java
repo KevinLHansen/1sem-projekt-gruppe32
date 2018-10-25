@@ -140,9 +140,12 @@ public class Game {
         System.out.println();
         System.out.println("Kevin rushes through the front door, switching the lights on and locks the door behind him.");
         System.out.println();
-        System.out.println(" \"This is my house. I have to defend it!\"");
+        System.out.println("  Kevin:");
+        System.out.println("  \"This is my house. I have to defend it!\"");
         System.out.println();
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
+        System.out.println("You'll be taking the role as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
+        System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
+        System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
