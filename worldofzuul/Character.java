@@ -9,20 +9,20 @@ package worldofzuul;
  *
  * @author Mathias
  */
-public class Person {
+public class Character {
 
     private String name;
     private boolean npc; // Candidate for subclass?
     private Item[] inventory; // Only PC(Kevin)
 
     // No argument constructor, in case of extending the class
-    public Person() {
+    public Character() {
         // Call to the default constructor, to initiate the variables
         this("", false);
     }
 
     // Default constructor to use, when creating a Person object
-    public Person(String name, boolean npc) {
+    public Character(String name, boolean npc) {
         this.name = name;
         this.npc = npc;
         this.inventory = new Item[3];
