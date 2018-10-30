@@ -211,7 +211,7 @@ public class Game {
 
     //Method used for calling the "help"-command that prints out instructions and commands.
     private void printHelp() {
-        System.out.println("You're home alone.");
+        System.out.println("You're home alone. ");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
