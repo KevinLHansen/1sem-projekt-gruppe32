@@ -4,6 +4,7 @@ public class Game {
 
     private Parser parser;
     private Room currentRoom;
+    private String objective;
 
     public Game() {
         createRooms();
@@ -173,6 +174,8 @@ public class Game {
 
         } else if (commandWord == CommandWord.PLACE) {
 
+        } else if (commandWord == CommandWord.SHOW) {
+            show(command);
         }
         return wantToQuit;
     }
@@ -222,5 +225,27 @@ public class Game {
         } else {
             return true;
         }
+    }
+
+    private void show(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Show what?");
+            return;
+        }
+
+        String showSecond = command.getSecondWord();
+
+        Character Kevin = new Character();
+        Game objective = new Game();
+
+        if ("inventory".equals(showSecond)) {
+            System.out.println(Kevin.getInventory());
+        } else if ("objective".equals(showSecond)) {
+            System.out.println(getObjective());
+        }
+    }
+
+    private String getObjective() {
+        return objective;
     }
 }
