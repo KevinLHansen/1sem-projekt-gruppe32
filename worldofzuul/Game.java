@@ -5,6 +5,9 @@ public class Game {
     private Parser parser;
     private Room currentRoom;
     private String objective;
+    private final int WIN = 0;
+    private final int LOSE = 1;
+    private final int Q = 2;
 
     public Game() {
         createRooms();
@@ -183,9 +186,11 @@ public class Game {
     //Checks if a room has a setInfo that contains more than "", and prints the info.
     private void printInfo(String info) {
         if (info == "") {
-            System.out.println("There is nothing of interest in this location.");
+            System.out.println("Kevin doesn't think that there's anything he can do here. Maybe try something elsewhere.");
         } else {
-            System.out.println(info);
+            System.out.print("Kevin's thoughts: \"");
+            System.out.print(info + "\"\n");
+            
         }
     }
 
@@ -230,6 +235,7 @@ public class Game {
     private void show(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("Show what?");
+            System.out.println("show inventory | show objective");
             return;
         }
 
