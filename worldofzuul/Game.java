@@ -1,23 +1,23 @@
 package worldofzuul;
 
 public class Game {
-
-    
     
     private Parser parser;
     private Player kevin;
     private Nonplayer marv, harry;
-    private String objective;
+    private String objective, objectiveDescription;
     public final int WIN = 1;
     public int status;
     public final int LOSE = -1;
 
     public Game() {
-        createRooms();
         parser = new Parser();
         kevin = new Player("Kevin");
         marv = new Nonplayer("Marv");
         harry = new Nonplayer("Harry");
+        objective = "1: Prepare yourself. Set up an escape route.\n";
+        objectiveDescription = ("Find some rope in the attic.");
+        createRooms();
     }
 
     private void createRooms() {
@@ -116,7 +116,7 @@ public class Game {
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
-        kevin.currentRoom = foyer;
+        kevin.setCurrentRoom(foyer);
     }
 
     //Play method to start the game
@@ -161,11 +161,12 @@ public class Game {
         System.out.println("  Kevin:");
         System.out.println("  \"This is my house. I have to defend it!\"");
         System.out.println();
-        System.out.println("You'll be taking the role as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
+        System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
-        System.out.println(kevin.currentRoom.getLongDescription());
+        System.out.println("Your first objective is: " + objective);
+        System.out.println(kevin.getCurrentRoom().getLongDescription());
     }
 
     //Command processing, checking for a command and executing the associated method if the command exists.
@@ -186,7 +187,7 @@ public class Game {
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         } else if (commandWord == CommandWord.EXAMINE) {
-            printInfo(kevin.currentRoom.getInfo());
+            printInfo(kevin.getCurrentRoom().getInfo());
         } else if (commandWord == CommandWord.COLLECT) {
 
         } else if (commandWord == CommandWord.PLACE) {
@@ -210,7 +211,7 @@ public class Game {
 
     //Method used for calling the "help"-command that prints out instructions and commands.
     private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
+        System.out.println("You're home alone.");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
@@ -226,13 +227,13 @@ public class Game {
 
         String direction = command.getSecondWord();
 
-        Room nextRoom = kevin.currentRoom.getExit(direction);
+        Room nextRoom = kevin.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         } else {
-            kevin.currentRoom = nextRoom;
-            System.out.println(kevin.currentRoom.getLongDescription());
+            kevin.setCurrentRoom(nextRoom);
+            System.out.println(kevin.getCurrentRoom().getLongDescription());
         }
     }
 
@@ -259,7 +260,7 @@ public class Game {
         Game objective = new Game();
 
         if ("inventory".equals(showSecond)) {
-            System.out.println(Kevin.getInventory());
+            System.out.println(kevin.getInventory());
         } else if ("objective".equals(showSecond)) {
             System.out.println(getObjective());
         }
