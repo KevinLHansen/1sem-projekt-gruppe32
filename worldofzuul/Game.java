@@ -6,14 +6,18 @@ public class Game {
     
     private Parser parser;
     private Player kevin;
+    private Nonplayer marv, harry;
     private String objective;
     public final int WIN = 1;
+    public int status;
     public final int LOSE = -1;
 
     public Game() {
         createRooms();
         parser = new Parser();
-        kevin = new Player();
+        kevin = new Player("Kevin");
+        marv = new Nonplayer("Marv");
+        harry = new Nonplayer("Harry");
     }
 
     private void createRooms() {
@@ -129,7 +133,8 @@ public class Game {
             }
             
             if (status == LOSE) {
-                
+                System.out.println("You lose!");
+                finished = true;
             }
         }
         
@@ -159,7 +164,7 @@ public class Game {
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(kevin.currentRoom.getLongDescription());
     }
 
     //Command processing, checking for a command and executing the associated method if the command exists.
@@ -180,7 +185,7 @@ public class Game {
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         } else if (commandWord == CommandWord.EXAMINE) {
-            printInfo(currentRoom.getInfo());
+            printInfo(kevin.currentRoom.getInfo());
         } else if (commandWord == CommandWord.COLLECT) {
 
         } else if (commandWord == CommandWord.PLACE) {
@@ -220,13 +225,13 @@ public class Game {
 
         String direction = command.getSecondWord();
 
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = kevin.currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         } else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            kevin.currentRoom = nextRoom;
+            System.out.println(kevin.currentRoom.getLongDescription());
         }
     }
 
