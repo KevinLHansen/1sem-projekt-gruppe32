@@ -2,12 +2,18 @@ package worldofzuul;
 
 public class Game {
 
+    
+    
     private Parser parser;
-    private Room currentRoom;
+    private Player kevin;
+    private String objective;
+    public final int WIN = 1;
+    public final int LOSE = -1;
 
     public Game() {
         createRooms();
         parser = new Parser();
+        kevin = new Player();
     }
 
     private void createRooms() {
@@ -105,7 +111,7 @@ public class Game {
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
-        currentRoom = foyer;
+        kevin.currentRoom = foyer;
     }
 
     //Play method to start the game
@@ -117,10 +123,16 @@ public class Game {
             Command command = parser.getCommand();
             finished = processCommand(command);
             boolean objective1Complete = false; //Not in use yet, but will be crucial for when we write our win-conditions.
-            if (objective1Complete == true) {
+            if (status == WIN) {
+                System.out.println("You won!");
                 finished = true;
             }
+            
+            if (status == LOSE) {
+                
+            }
         }
+        
         System.out.println("Thank you for playing. Good bye.");
     }
 
@@ -173,6 +185,8 @@ public class Game {
 
         } else if (commandWord == CommandWord.PLACE) {
 
+        } else if (commandWord == CommandWord.SHOW) {
+            show(command);
         }
         return wantToQuit;
     }
@@ -180,9 +194,11 @@ public class Game {
     //Checks if a room has a setInfo that contains more than "", and prints the info.
     private void printInfo(String info) {
         if (info == "") {
-            System.out.println("There is nothing of interest in this location.");
+            System.out.println("Kevin doesn't think that there's anything he can do here. Maybe try something elsewhere.");
         } else {
-            System.out.println(info);
+            System.out.print("Kevin's thoughts: \"");
+            System.out.print(info + "\"\n");
+            
         }
     }
 
@@ -222,5 +238,28 @@ public class Game {
         } else {
             return true;
         }
+    }
+
+    private void show(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Show what?");
+            System.out.println("show inventory | show objective");
+            return;
+        }
+
+        String showSecond = command.getSecondWord();
+
+        Character Kevin = new Character();
+        Game objective = new Game();
+
+        if ("inventory".equals(showSecond)) {
+            System.out.println(Kevin.getInventory());
+        } else if ("objective".equals(showSecond)) {
+            System.out.println(getObjective());
+        }
+    }
+
+    private String getObjective() {
+        return objective;
     }
 }
