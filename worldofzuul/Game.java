@@ -68,6 +68,7 @@ public class Game {
 
         secondFloor.setExit("masterbedroom", masterBedroom);
         secondFloor.setExit("attic", attic);
+        secondFloor.setExit("downstairs", staircase);
         // secondFloor.setExit("room", room); 
         // Adding more rooms later depending on the items required and immersive experience.
         secondFloor.setInfo("Upstairs. Maybe a tripwire between the narrow hallway could slow them down...");
