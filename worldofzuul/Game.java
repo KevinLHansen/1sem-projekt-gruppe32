@@ -1,7 +1,7 @@
 package worldofzuul;
 
 public class Game {
-    
+
     private Parser parser;
     private Player kevin;
     private Nonplayer marv, harry;
@@ -48,14 +48,14 @@ public class Game {
         foyer.setExit("outside", porch);
         foyer.setExit("upstairs", staircase);
         foyer.setExit("diningroom", diningRoom);
-        foyer.setInfo("I can put my toy cars here...");
+        foyer.setInfo("I could put my toy cars here...");
 
         livingRoom.setExit("foyer", foyer);
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
 
         diningRoom.setExit("foyer", foyer);
         diningRoom.setExit("kitchen", kitchen);
-        diningRoom.setInfo("I could setup a trap here with glue, a fan and some feathers...");
+        diningRoom.setInfo("I could setup a chicken-trap here with glue, a fan and some feathers...");
 
         kitchen.setExit("basement", basement);
         kitchen.setExit("diningroom", diningRoom);
@@ -132,13 +132,13 @@ public class Game {
                 System.out.println("You won!");
                 finished = true;
             }
-            
+
             if (status == LOSE) {
                 System.out.println("You lose!");
                 finished = true;
             }
         }
-        
+
         System.out.println("Thank you for playing. Good bye.");
     }
 
@@ -181,7 +181,7 @@ public class Game {
         }
 
         if (commandWord == CommandWord.HELP) {
-            printHelp();
+            printHelp(command);
         } else if (commandWord == CommandWord.GO) {
             goRoom(command);
         } else if (commandWord == CommandWord.QUIT) {
@@ -205,17 +205,41 @@ public class Game {
         } else {
             System.out.print("Kevin's thoughts: \"");
             System.out.print(info + "\"\n");
-            
+
         }
     }
 
     //Method used for calling the "help"-command that prints out instructions and commands.
-    private void printHelp() {
-        System.out.println("You're home alone. ");
-        System.out.println("around at the university.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
+    private void printHelp(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println();
+            System.out.println("You're home alone. Your command words are:");
+            System.out.println();
+            parser.showCommands();
+            System.out.println();
+            System.out.println("Your current objective: ");
+            System.out.println(getObjective());
+            System.out.println("Type 'help' followed by the available command to get a detailed description of the command.");
+            return;
+        }
+        String helpSecond = command.getSecondWord();
+
+        if ("examine".equals(helpSecond)) {
+            System.out.println("'Examine' will list the items that are currently placed in the room where Kevin's currently located.");
+            System.out.println("Kevin will also give you his thoughts on whether or not you can place a certain trap in the room.");
+        } else if ("go".equals(helpSecond)) {
+            System.out.println("'Go' is your primary navigation tool. Use 'go' followed by the available exitpoint to navigate the McCallister estate.");
+        } else if ("show".equals(helpSecond)) {
+            System.out.println("'Show' helps you keep track of either your inventory or your game objective.");
+            System.out.println("Combine 'show' with 'inventory' or 'objective', like so:");
+            System.out.println("   >show inventory");
+            System.out.println("...to get an overview of your inventory.");
+        } else if ("place".equals(helpSecond)) {
+            System.out.println("'Place' will drop, or place the mentioned item from your inventory in the room that you're currently in.");
+            System.out.println("If there is an opportunity to setup a trap in the room with the 'placed' item, you will set up a trap automatically.");
+        } else if ("collect".equals(helpSecond)) {
+            System.out.println("'Collect' will pick up the mentioned item from the room that you're currently located.");
+        }
     }
 
     //Method used for walking between rooms and checks for any invalid rooms.
@@ -256,7 +280,6 @@ public class Game {
 
         String showSecond = command.getSecondWord();
 
-        Character Kevin = new Character();
         Game objective = new Game();
 
         if ("inventory".equals(showSecond)) {
