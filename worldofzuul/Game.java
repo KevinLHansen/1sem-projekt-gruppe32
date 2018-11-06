@@ -191,7 +191,7 @@ public class Game {
         } else if (commandWord == CommandWord.COLLECT) {
 
         } else if (commandWord == CommandWord.PLACE) {
-
+            
         } else if (commandWord == CommandWord.SHOW) {
             show(command);
         }
