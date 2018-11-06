@@ -6,7 +6,7 @@ package worldofzuul;
  *
  * @author Mathias
  */
-public class Player extends Character {
+public class Player extends Creature {
 
     private Item[] inventory;
 
@@ -61,8 +61,19 @@ public class Player extends Character {
 
     }
 
-    public void placeItem(Item i) {
-        //super.getCurrentRoom().addToInventory(i);
-        removeFromInventory(i);
+    public Item searchInventory(String itemName) {
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void setTrap(Item item) {
+        Trap t = (Trap)item;
+        t.setTrap();
+        //super.getCurrentRoom().addToInventory(t);
+        removeFromInventory(item);
     }
 }
