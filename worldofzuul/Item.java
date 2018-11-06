@@ -11,7 +11,7 @@ package worldofzuul;
  */
 public class Item {
 
-    private String name;
+    String name;
     private int size; // Used for inventory management, future
     private String type; // Trap, usable item(bb gun), part of trap
 
