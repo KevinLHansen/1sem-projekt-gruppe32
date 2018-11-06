@@ -3,7 +3,7 @@ package worldofzuul;
 /**
  * Needs commands for some of the commands like go
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class Character {
 
@@ -36,5 +36,35 @@ public class Character {
 
     public void setCurrentRoom(Room room) {
         this.currentRoom = room;
+    }
+
+    public String getInventory() {
+        String items = "";
+        for (Item i : inventory) {
+            if (i != null) {
+                // Need check if last item
+                items += i.toString() + ", ";
+            }
+        }
+        return items;
+    }
+
+    public boolean addToInventory(Item inventory) {
+        boolean saved = true;
+        // Traverse inventory array to find first available spot
+        int tail = -1;
+        for (int i = 0; i < this.inventory.length; i++) {
+            if (this.inventory[i] == null) {
+                tail = i;
+                break;
+            }
+        }
+        if (tail >= 0) {
+            this.inventory[tail] = inventory;
+        } else {
+            // No room in inventory
+            saved = false;
+        }
+        return saved;
     }
 }

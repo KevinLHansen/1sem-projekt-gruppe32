@@ -1,5 +1,7 @@
 package worldofzuul;
 
+import java.util.Scanner;
+
 public class Game {
 
     private Parser parser;
@@ -123,6 +125,10 @@ public class Game {
     public void play() {
         printWelcome();
 
+        startPlaying();
+        
+        System.out.println(currentRoom.getLongDescription());
+        
         boolean finished = false;
         while (!finished) {
             Command command = parser.getCommand();
@@ -144,23 +150,22 @@ public class Game {
 
     //Welcome screen for when the player runs the program
     private void printWelcome() {
-        System.out.println();
-        System.out.println("  _    _                                 _                  \n"
+        System.out.println(
+                  "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
                 + " | |__| | ___  _ __ ___   ___     /  \\  | | ___  _ __   ___ \n"
                 + " |  __  |/ _ \\| '_ ` _ \\ / _ \\   / /\\ \\ | |/ _ \\| '_ \\ / _ \\\n"
                 + " | |  | | (_) | | | | | |  __/  / ____ \\| | (_) | | | |  __/\n"
-                + " |_|  |_|\\___/|_| |_| |_|\\___| /_/    \\_\\_|\\___/|_| |_|\\___|\n"
-                + "                                                            \n"
-                + "                                                            ");
+                + " |_|  |_|\\___/|_| |_| |_|\\___| /_/    \\_\\_|\\___/|_| |_|\\___|\n");
         System.out.println("After having a conversation with the old man, Marley, in the church at Christmas Eve, Kevin McCallister rushes home to his house.");
-        System.out.println("He overheard earlier that day, that the two burglars, Marv and Harry, also known as \"The Wet Bandits\", planned a robbery at his house.");
+        System.out.println("He overheard earlier that day, that the two burglars, Marv and Harry, also known as \"The Wet Bandits\", are planning a burglary at his house.");
         System.out.println();
-        System.out.println("Kevin rushes through the front door, switching the lights on and locks the door behind him.");
+        System.out.println("Kevin rushes through the front door, switching the lights on and locking the door behind him.");
         System.out.println();
         System.out.println("  Kevin:");
         System.out.println("  \"This is my house. I have to defend it!\"");
         System.out.println();
+
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
@@ -169,6 +174,24 @@ public class Game {
         System.out.println(kevin.getCurrentRoom().getLongDescription());
     }
 
+    // Method to act as a "start-button" for the game.
+    private void startPlaying() {
+        System.out.println("\nWhen you are ready, input 'play' to start the game.");
+        boolean readyToPlay = false;
+        // Will loop until user has input "play"
+        while (readyToPlay == false) {
+            Scanner scanner = new Scanner(System.in);
+            String nextLine = scanner.nextLine();
+            
+            if (nextLine.equals("play")) {
+                readyToPlay = true;
+            }
+            else {
+                System.out.println("Invalid command. Try again.");
+            }
+        }
+    }
+    
     //Command processing, checking for a command and executing the associated method if the command exists.
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
@@ -191,7 +214,7 @@ public class Game {
         } else if (commandWord == CommandWord.COLLECT) {
 
         } else if (commandWord == CommandWord.PLACE) {
-            
+
         } else if (commandWord == CommandWord.SHOW) {
             show(command);
         }
@@ -205,7 +228,6 @@ public class Game {
         } else {
             System.out.print("Kevin's thoughts: \"");
             System.out.print(info + "\"\n");
-
         }
     }
 
@@ -279,7 +301,7 @@ public class Game {
         }
 
         String showSecond = command.getSecondWord();
-
+        /* IS THIS NEEDED? */
         Game objective = new Game();
 
         if ("inventory".equals(showSecond)) {
