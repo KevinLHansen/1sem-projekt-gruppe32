@@ -1,31 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package worldofzuul;
 
 /**
+ * Needs commands for some of the commands like go
  *
- * @author Mathias
+ * @author Gruppe 32
  */
-public class Person {
+public class Character {
 
     private String name;
-    private boolean npc; // Candidate for subclass?
-    private Item[] inventory; // Only PC(Kevin)
+    public Room currentRoom;
 
     // No argument constructor, in case of extending the class
-    public Person() {
+    public Character() {
         // Call to the default constructor, to initiate the variables
-        this("", false);
+        this("");
     }
 
-    // Default constructor to use, when creating a Person object
-    public Person(String name, boolean npc) {
+    // Default constructor to use, when creating a Character object
+    public Character(String name) {
         this.name = name;
-        this.npc = npc;
-        this.inventory = new Item[3];
     }
 
     // Getter and Setter functions for the class attributes
@@ -37,12 +30,12 @@ public class Person {
         this.name = name;
     }
 
-    public boolean isNpc() {
-        return npc;
+    public Room getCurrentRoom() {
+        return this.currentRoom;
     }
 
-    public void setNpc(boolean npc) {
-        this.npc = npc;
+    public void setCurrentRoom(Room room) {
+        this.currentRoom = room;
     }
 
     public String getInventory() {
