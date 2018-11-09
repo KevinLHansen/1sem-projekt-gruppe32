@@ -20,6 +20,7 @@ public class Game {
         objective = "1: Prepare yourself. Set up an escape route.\n";
         objectiveDescription = ("Find some rope in the attic.");
         createRooms();
+
     }
 
     private void createRooms() {
@@ -27,6 +28,7 @@ public class Game {
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
 
         foyer = new Room("Foyer - Front entrance");
+        foyer.addItem(new Item ("Rope", 2));
         livingRoom = new Room("Living room");
         diningRoom = new Room("Dining room");
         kitchen = new Room("Kitchen");
@@ -43,6 +45,8 @@ public class Game {
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
+       
+        
 
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
@@ -138,6 +142,8 @@ public void createItems() {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
+       
+        
 }
 
 
