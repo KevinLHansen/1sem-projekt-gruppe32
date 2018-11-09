@@ -20,6 +20,7 @@ public class Room {
         this.info = "";
         exits = new HashMap<String, Room>();
         items = new ArrayList<Item>();
+        trap = new Trap();
     }    
 
     public void addItem (Item item){
@@ -47,7 +48,7 @@ public class Room {
    *          : The string, not the 'real' item.
    * @return : The real item that is contained in the room.
    */
-  public Item getRealItem(Item item) {
+  public Item getRealItem(String item) {
     int index = items.indexOf(item);
     if (index != -1) return items.get(index);
     else return null;

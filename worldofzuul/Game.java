@@ -28,9 +28,9 @@ public class Game {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
         Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
-        
+
         foyer = new Room("Foyer - Front entrance");
-        foyer.addItem(new Item ("Rope", 2));
+        foyer.addItem(new Item("Rope", 2));
         livingRoom = new Room("Living room");
         diningRoom = new Room("Dining room");
         kitchen = new Room("Kitchen");
@@ -47,23 +47,23 @@ public class Game {
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
-      
-        rope = new Item("Rope", 1);
-        bbGun = new Item("bbGun", 1);
-        bucket = new Item("Bucket", 1);
-        hose = new Item("Hose", 1);
-        heater = new Item("Heater", 1);
-        tarAndNail = new Item("Tar and nail", 1);
-        iron = new Item("Clothes iron", 1);
-        blowtorch = new Item("Blowtorch", 1);
+
+        rope = new Trap("Rope", 1);
+        bbGun = new Trap("bbGun", 1);
+        bucket = new Trap("Bucket", 1);
+        hose = new Trap("Hose", 1);
+        heater = new Trap("Heater", 1);
+        tarAndNail = new Trap("Tar and nail", 1);
+        iron = new Trap("Clothes iron", 1);
+        blowtorch = new Trap("Blowtorch", 1);
 //        glue = new Item("Glue", 1);
 //        plasticWrap = new Item("Plastic wrap", 1);
 //        fan = new Item("Fan", 1);
 //        pillow = new Item("Pillow", 1);
-        ornaments = new Item("Ornaments", 1);
-        toyCars = new Item("Toy cars", 1);
-        paintBucket = new Item("Paint bucket", 1);
-        yarn = new Item("Yarn", 1);
+        ornaments = new Trap("Ornaments", 1);
+        toyCars = new Trap("Toy cars", 1);
+        paintBucket = new Trap("Paint bucket", 1);
+        yarn = new Trap("Yarn", 1);
 
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
@@ -74,7 +74,6 @@ public class Game {
         foyer.setInfo("I could put my toy cars here...");
         foyer.defineTrap(toyCars);
 
-
         livingRoom.setExit("foyer", foyer);
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
         livingRoom.defineTrap(ornaments);
@@ -83,7 +82,6 @@ public class Game {
         diningRoom.setExit("kitchen", kitchen);
 //        diningRoom.setInfo("I could setup a chicken-trap here with glue, a fan and some feathers...");
 //        diningRoom.defineTrap();
-
 
         kitchen.setExit("basement", basement);
         kitchen.setExit("diningroom", diningRoom);
@@ -111,7 +109,7 @@ public class Game {
         basement.setExit("outside", neGarden);
         basement.setInfo("There's tonnes of stuff down here I can use to set up traps.\nMaybe I could set up a trap with a nail and some tar on the steps. Or even switch out the lightbulb switch with a trapdoor...\nI could also use my dad's heater on the front doorknob.");
         basement.defineTrap(tarAndNail);
-        
+
         masterBedroom.setExit("hallway", secondFloor);
         masterBedroom.setInfo("Mom's and Dad's bedroom. There's a phone here I can use to call the cops when the crooks are inside the house...");
 
@@ -152,7 +150,8 @@ public class Game {
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
     }
-public void createItems() {
+
+    public void createItems() {
 
         Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
 
@@ -170,19 +169,17 @@ public void createItems() {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
-       
-        
-}
 
+    }
 
     //Play method to start the game
     public void play() {
         printWelcome();
 
         startPlaying();
-        
+
         System.out.println(kevin.getCurrentRoom().getLongDescription());
-        
+
         boolean finished = false;
         while (!finished) {
             Command command = parser.getCommand();
@@ -205,7 +202,7 @@ public void createItems() {
     //Welcome screen for when the player runs the program
     private void printWelcome() {
         System.out.println(
-                  "  _    _                                 _                  \n"
+                "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
                 + " | |__| | ___  _ __ ___   ___     /  \\  | | ___  _ __   ___ \n"
                 + " |  __  |/ _ \\| '_ ` _ \\ / _ \\   / /\\ \\ | |/ _ \\| '_ \\ / _ \\\n"
@@ -235,16 +232,15 @@ public void createItems() {
         while (readyToPlay == false) {
             Scanner scanner = new Scanner(System.in);
             String nextLine = scanner.nextLine();
-            
+
             if (nextLine.equals("play")) {
                 readyToPlay = true;
-            }
-            else {
+            } else {
                 System.out.println("Invalid command. Try again.");
             }
         }
     }
-    
+
     //Command processing, checking for a command and executing the associated method if the command exists.
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
@@ -265,9 +261,9 @@ public void createItems() {
         } else if (commandWord == CommandWord.EXAMINE) {
             printInfo(kevin.getCurrentRoom().getInfo());
         } else if (commandWord == CommandWord.COLLECT) {
-            
+
         } else if (commandWord == CommandWord.PLACE) {
-            
+
         } else if (commandWord == CommandWord.SHOW) {
             show(command);
         }
@@ -299,27 +295,29 @@ public void createItems() {
         }
         String helpSecond = command.getSecondWord();
 
-        if (null != helpSecond) switch (helpSecond) {
-            case "examine":
-                System.out.println("'Examine' will list the items that are currently placed in the room where Kevin's currently located.");
-                System.out.println("Kevin will also give you his thoughts on whether or not you can place a certain trap in the room.");
-                break;
-            case "go":
-                System.out.println("'Go' is your primary navigation tool. Use 'go' followed by the available exitpoint to navigate the McCallister estate.");
-                break;
-            case "show":
-                System.out.println("'Show' helps you keep track of either your inventory or your game objective.");
-                System.out.println("Combine 'show' with 'inventory' or 'objective', like so:");
-                System.out.println("   '>show inventory'");
-                System.out.println("...to get an overview of your inventory.");
-                break;
-            case "place":
-                System.out.println("'Place' will drop, or place the mentioned item from your inventory in the room that you're currently in.");
-                System.out.println("If there is an opportunity to setup a trap in the room with the 'placed' item, you will set up a trap automatically.");
-                break;
-            case "collect":
-                System.out.println("'Collect' will pick up the mentioned item from the room that you're currently located.");
-                break;
+        if (null != helpSecond) {
+            switch (helpSecond) {
+                case "examine":
+                    System.out.println("'Examine' will list the items that are currently placed in the room where Kevin's currently located.");
+                    System.out.println("Kevin will also give you his thoughts on whether or not you can place a certain trap in the room.");
+                    break;
+                case "go":
+                    System.out.println("'Go' is your primary navigation tool. Use 'go' followed by the available exitpoint to navigate the McCallister estate.");
+                    break;
+                case "show":
+                    System.out.println("'Show' helps you keep track of either your inventory or your game objective.");
+                    System.out.println("Combine 'show' with 'inventory' or 'objective', like so:");
+                    System.out.println("   '>show inventory'");
+                    System.out.println("...to get an overview of your inventory.");
+                    break;
+                case "place":
+                    System.out.println("'Place' will drop, or place the mentioned item from your inventory in the room that you're currently in.");
+                    System.out.println("If there is an opportunity to setup a trap in the room with the 'placed' item, you will set up a trap automatically.");
+                    break;
+                case "collect":
+                    System.out.println("'Collect' will pick up the mentioned item from the room that you're currently located.");
+                    break;
+            }
         }
     }
 
@@ -361,25 +359,28 @@ public void createItems() {
 
         String showSecond = command.getSecondWord();
 
-        if (null != showSecond) switch (showSecond) {
-            case "inventory":
-                System.out.println(kevin.getInventory());
-                break;
-            case "objective":
-                System.out.println(getObjective());
-                break;
+        if (null != showSecond) {
+            switch (showSecond) {
+                case "inventory":
+                    System.out.println(kevin.getInventory());
+                    break;
+                case "objective":
+                    System.out.println(getObjective());
+                    break;
 
+            }
         }
     }
 
     private String getObjective() {
         return objective;
     }
-    
-//    private void collect() {
-//        
-//        kevin.addToInventory(kevin.getCurrentRoom().);
-//        
-//    }
-    
+
+    private void collect(Command command) {
+
+        String secondWord = command.getSecondWord();
+
+        kevin.getCurrentRoom().getRealItem(secondWord);
+        
+    }
 }
