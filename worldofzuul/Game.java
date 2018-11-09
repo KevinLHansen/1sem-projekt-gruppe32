@@ -19,6 +19,7 @@ public class Game {
         harry = new Nonplayer("Harry");
         objective = "1: Prepare yourself. Set up an escape route.\n";
         objectiveDescription = ("Find some rope in the attic.");
+
         initializeGame();
 
     }
@@ -29,6 +30,7 @@ public class Game {
         Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
         
         foyer = new Room("Foyer - Front entrance");
+        foyer.addItem(new Item ("Rope", 2));
         livingRoom = new Room("Living room");
         diningRoom = new Room("Dining room");
         kitchen = new Room("Kitchen");
@@ -45,7 +47,7 @@ public class Game {
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
-        
+      
         rope = new Item("Rope", 1);
         bbGun = new Item("bbGun", 1);
         bucket = new Item("Bucket", 1);
@@ -168,6 +170,8 @@ public void createItems() {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
+       
+        
 }
 
 
