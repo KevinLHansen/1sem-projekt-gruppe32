@@ -31,7 +31,7 @@ public class Room {
         return items;
     }
     
-    public void removeItems(Item item){
+    public void removeItem(Item item){
         items.remove(item);
     }
 //      private String getItemString() {
