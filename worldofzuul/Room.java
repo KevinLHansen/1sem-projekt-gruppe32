@@ -10,13 +10,12 @@ public class Room {
 
     private String description;
     private HashMap<String, Room> exits;
-    private boolean trapSet;
+    private Trap trap;
     private String info;
 
     public Room(String description) {
         this.description = description;
         this.info = "";
-        this.trapSet = false;
         exits = new HashMap<String, Room>();
     }
 
@@ -52,4 +51,9 @@ public class Room {
     public String getInfo() {
         return info;
     }
+    
+    public void defineTrap(Item item) {
+        this.trap = (Trap)item;
+    }
+
 }
