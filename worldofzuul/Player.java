@@ -4,7 +4,7 @@ package worldofzuul;
  * Has specific methods for player, Kevin Needs methods for some of the commands
  * like examine, collect
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class Player extends Creature {
 

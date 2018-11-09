@@ -7,7 +7,7 @@ package worldofzuul;
 
 /**
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class Item {
 
