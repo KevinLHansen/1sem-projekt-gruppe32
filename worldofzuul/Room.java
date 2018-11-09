@@ -10,7 +10,7 @@ public class Room {
 
     private String description;
     private HashMap<String, Room> exits;
-    private boolean trapSet;
+    private Trap trap;
     private String info;
     private List<Item> items = new ArrayList<Item>();
     private static final String ITEM_STRING = "Items:";
@@ -18,7 +18,6 @@ public class Room {
     public Room(String description) {
         this.description = description;
         this.info = "";
-        this.trapSet = false;
         exits = new HashMap<String, Room>();
         items = new ArrayList<Item>();
     }    
@@ -87,4 +86,9 @@ public class Room {
     public String getInfo() {
         return info;
     }
+    
+    public void defineTrap(Item item) {
+        this.trap = (Trap)item;
+    }
+
 }
