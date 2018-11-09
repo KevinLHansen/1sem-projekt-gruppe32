@@ -34,25 +34,25 @@ public class Room {
     public void removeItems(Item item){
         items.remove(item);
     }
-      private String getItemString() {
-    if (items.isEmpty()) return "";
-    String returnString = ITEM_STRING;
-    for (Item i : items)
-      returnString += " " + i;
-    return returnString + "\n";
-  }
-   /**
-   * Get the real item from a passed in item name.
-   * 
-   * @param item
-   *          : The string, not the 'real' item.
-   * @return : The real item that is contained in the room.
-   */
-  public Item getRealItem(Item item) {
-    int index = items.indexOf(item);
-    if (index != -1) return items.get(index);
-    else return null;
-  }
+//      private String getItemString() {
+//    if (items.isEmpty()) return "";
+//    String returnString = ITEM_STRING;
+//    for (Item i : items)
+//      returnString += " " + i;
+//    return returnString + "\n";
+//  }
+//   /**
+//   * Get the real item from a passed in item name.
+//   * 
+//   * @param item
+//   *          : The string, not the 'real' item.
+//   * @return : The real item that is contained in the room.
+//   */
+//  public Item getRealItem(Item item) {
+//    int index = items.indexOf(item);
+//    if (index != -1) return items.get(index);
+//    else return null;
+//  }
 
    
     public void setExit(String direction, Room neighbor) {
