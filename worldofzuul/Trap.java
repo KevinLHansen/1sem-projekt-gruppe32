@@ -1,12 +1,23 @@
-
 package worldofzuul;
 
+/**
+ *
+ * @author Mathias
+ */
 public class Trap extends Item {
+    private boolean isSet;
     
-    private boolean isSet = false;
-    
-    public void setTrap(String item) {
-
+    //Constructor
+    public Trap() {
+        this.isSet = false;
     }
     
+    public boolean checkTrapSet() {
+        return this.isSet;
+    }
+    
+    // setTrap()
+    public void setTrap() {
+        this.isSet = true;
+    }
 }

@@ -11,21 +11,18 @@ package worldofzuul;
  */
 public class Item {
 
-    String name;
-    private int size; // Used for inventory management, future
-    private String type; // Trap, usable item(bb gun), part of trap
+    private String name;
+    private int size; // Used for inventory management - weight, future
 
     // No argument constructor, in case of extending the class
     public Item() {
-        // Call to the all argument constructor, to initiate the variables
-        this("", 0, "");
+        this("", 0);
     }
 
     // All argument constructor
-    public Item(String name, int size, String type) {
+    public Item(String name, int size) {
         this.name = name;
         this.size = size;
-        this.type = type;
     }
 
     // Getter and Setter functions for the class attributes
@@ -45,16 +42,21 @@ public class Item {
         this.size = size;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    @Override
+    public String toString() {
+        return this.name;// + "(" + this.type + ")";
     }
 
     @Override
-    public String toString() {
-        return this.name + "(" + this.type + ")";
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Item)) {
+            return false;
+        } else {
+            Item i = (Item) o;
+            return this.name.equals(i.getName());
+        }
     }
 }
