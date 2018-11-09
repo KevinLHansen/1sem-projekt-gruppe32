@@ -20,6 +20,7 @@ public class Game {
         objective = "1: Prepare yourself. Set up an escape route.\n";
         objectiveDescription = ("Find some rope in the attic.");
         initializeGame();
+
     }
 
     private void initializeGame() {
@@ -70,7 +71,7 @@ public class Game {
         foyer.setExit("diningroom", diningRoom);
         foyer.setInfo("I could put my toy cars here...");
         foyer.defineTrap(toyCars);
-        
+
 
         livingRoom.setExit("foyer", foyer);
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
@@ -80,6 +81,7 @@ public class Game {
         diningRoom.setExit("kitchen", kitchen);
 //        diningRoom.setInfo("I could setup a chicken-trap here with glue, a fan and some feathers...");
 //        diningRoom.defineTrap();
+
 
         kitchen.setExit("basement", basement);
         kitchen.setExit("diningroom", diningRoom);
@@ -148,6 +150,26 @@ public class Game {
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
     }
+public void createItems() {
+
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
+
+        rope = new Item("Rope", 1);
+        bbGun = new Item("bbGun", 1);
+        bucket = new Item("Bucket", 1);
+        hose = new Item("Hose", 1);
+        heater = new Item("Heater", 1);
+        tarAndNail = new Item("Tar and nail", 1);
+        blowtorch = new Item("Blowtorch", 1);
+        glue = new Item("Glue", 1);
+        fan = new Item("Fan", 1);
+        pillow = new Item("Pillow", 1);
+        ornaments = new Item("Ornaments", 1);
+        toyCars = new Item("Toy cars", 1);
+        paintBucket = new Item("Paint bucket", 1);
+        yarn = new Item("Yarn", 1);
+}
+
 
     //Play method to start the game
     public void play() {
@@ -342,6 +364,7 @@ public class Game {
             case "objective":
                 System.out.println(getObjective());
                 break;
+
         }
     }
 

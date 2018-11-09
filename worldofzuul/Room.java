@@ -55,4 +55,5 @@ public class Room {
     public void defineTrap(Item item) {
         this.trap = (Trap)item;
     }
+
 }
