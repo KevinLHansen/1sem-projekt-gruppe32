@@ -13,7 +13,7 @@ public class Room {
     private boolean trapSet;
     private String info;
     private List<Item> items = new ArrayList<Item>();
-    private static final String ITEM_STRING = "Items:";
+    //private static final String ITEM_STRING = "Items:";
 
     public Room(String description) {
         this.description = description;
