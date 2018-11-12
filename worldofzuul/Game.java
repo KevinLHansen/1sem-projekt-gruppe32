@@ -48,22 +48,22 @@ public class Game {
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
 
-        rope = new Trap("Rope", 1);
-        bbGun = new Trap("bbGun", 1);
-        bucket = new Trap("Bucket", 1);
-        hose = new Trap("Hose", 1);
-        heater = new Trap("Heater", 1);
-        tarAndNail = new Trap("Tar and nail", 1);
-        iron = new Trap("Clothes iron", 1);
-        blowtorch = new Trap("Blowtorch", 1);
+        rope = new Item("Rope", 1);
+        bbGun = new Item("bbGun", 1);
+        bucket = new Item("Bucket", 1);
+        hose = new Item("Hose", 1);
+        heater = new Item("Heater", 1);
+        tarAndNail = new Item("Tar and nail", 1);
+        iron = new Item("Clothes iron", 1);
+        blowtorch = new Item("Blowtorch", 1);
 //        glue = new Item("Glue", 1);
 //        plasticWrap = new Item("Plastic wrap", 1);
 //        fan = new Item("Fan", 1);
 //        pillow = new Item("Pillow", 1);
-        ornaments = new Trap("Ornaments", 1);
-        toyCars = new Trap("Toy cars", 1);
-        paintBucket = new Trap("Paint bucket", 1);
-        yarn = new Trap("Yarn", 1);
+        ornaments = new Item("Ornaments", 1);
+        toyCars = new Item("Toy cars", 1);
+        paintBucket = new Item("Paint bucket", 1);
+        yarn = new Item("Yarn", 1);
 
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
@@ -261,9 +261,9 @@ public class Game {
         } else if (commandWord == CommandWord.EXAMINE) {
             printInfo(kevin.getCurrentRoom().getInfo());
         } else if (commandWord == CommandWord.COLLECT) {
-
+            kevin.collectItem(command);
         } else if (commandWord == CommandWord.PLACE) {
-
+            kevin.placeTrap(command);
         } else if (commandWord == CommandWord.SHOW) {
             show(command);
         }
@@ -371,16 +371,14 @@ public class Game {
             }
         }
     }
-
+    
     private String getObjective() {
         return objective;
     }
 
-    private void collect(Command command) {
-
-        String secondWord = command.getSecondWord();
-
-        kevin.getCurrentRoom().getRealItem(secondWord);
-        
-    }
+//    private void collect() {
+//        
+//        kevin.addToInventory(kevin.getCurrentRoom().);
+//        
+//    }
 }

@@ -32,7 +32,7 @@ public class Player extends Creature {
         return items;
     }
 
-    public boolean addToInventory(Item item) {
+    private boolean addToInventory(Item item) {
         boolean saved = true;
         // Traverse inventory array to find first available spot
         int tail = -1;
@@ -52,7 +52,7 @@ public class Player extends Creature {
         return saved;
     }
 
-    public void removeFromInventory(Item item) {
+    private void removeFromInventory(Item item) {
         for (int i = inventory.length; i > 0; i--) {
             if (item.equals(i)) {
                 inventory[i] = null;
@@ -61,7 +61,7 @@ public class Player extends Creature {
 
     }
 
-    public Item searchInventory(String itemName) {
+    private Item searchInventory(String itemName) {
         for (Item item : inventory) {
             if (item.getName().equalsIgnoreCase(itemName)) {
                 return item;
@@ -70,10 +70,38 @@ public class Player extends Creature {
         return null;
     }
 
-    public void setTrap(Item item) {
-        Trap t = (Trap)item;
+    private void setTrap(Item item) {
+        Trap t = new Trap(item);
         t.setTrap();
-        //super.getCurrentRoom().addToInventory(t);
+        super.getCurrentRoom().addItem(t);
         removeFromInventory(item);
+    }
+
+    public void placeTrap(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Place what?");
+            this.getInventory();
+            return;
+        }
+
+        String secondWord = command.getSecondWord();
+        Item item = this.searchInventory(secondWord);
+        this.setTrap(item);
+        System.out.println("You place " + item);
+    }
+
+    public void collectItem(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Collect what?");
+            this.getCurrentRoom().getItems().toString();
+            return;
+        }
+
+        String secondWord = command.getSecondWord();
+        Item item = this.getCurrentRoom().getRealItem(secondWord);
+        System.out.println(item);
+        this.addToInventory(item);
+        this.getCurrentRoom().removeItem(item);
+        System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
     }
 }

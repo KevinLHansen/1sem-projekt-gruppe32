@@ -13,6 +13,10 @@ public class Trap extends Item {
         this("", 0, false, 10);
     }
     
+    public Trap(Item item) {
+        this(item.getName(), item.getSize(), false, 10);
+    }
+    
     public Trap(String name, int size) {
         this(name, size, false, 10);
     }
@@ -34,7 +38,7 @@ public class Trap extends Item {
     
     public void setDelay(int delay) {
         this.delay = delay;
-    }
+}
     
     public int getDelay() {
         return this.delay;
