@@ -17,7 +17,7 @@
  * @version 2006.03.30
  */
 
-package worldofzuul;
+package HomeAlone;
 
 public class Command
 {

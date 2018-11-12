@@ -1,4 +1,4 @@
-package worldofzuul;
+package HomeAlone;
 
 public enum CommandWord
 {

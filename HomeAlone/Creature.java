@@ -1,9 +1,9 @@
-package worldofzuul;
+package HomeAlone;
 
 /**
  * Needs commands for some of the commands like go
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class Creature {
 
@@ -37,5 +37,23 @@ public class Creature {
 
     public void setCurrentRoom(Room room) {
         this.currentRoom = room;
+    }
+    
+    public void goRoom(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        Room nextRoom = this.getCurrentRoom().getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        } else {
+            this.setCurrentRoom(nextRoom);
+            System.out.println(this.getCurrentRoom().getLongDescription());
+        }
     }
 }

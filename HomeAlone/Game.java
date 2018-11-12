@@ -1,4 +1,4 @@
-package worldofzuul;
+package HomeAlone;
 
 import java.util.Scanner;
 
@@ -97,7 +97,7 @@ public class Game {
         secondFloor.setExit("masterbedroom", masterBedroom);
         secondFloor.setExit("attic", attic);
         secondFloor.setExit("downstairs", staircase);
-        // secondFloor.setExit("room", room); 
+        // secondFloor.setExit("room", room);
         // Adding more rooms later depending on the items required and immersive experience.
         secondFloor.setInfo("Upstairs. Maybe a tripwire between the narrow hallway could slow them down...");
         secondFloor.defineTrap(yarn);
@@ -121,7 +121,7 @@ public class Game {
 
         nwGarden.setExit("east", nGarden);
         nwGarden.setExit("south", wGarden);
-        //nwGarden.setExit("window", livingRoom); 
+        //nwGarden.setExit("window", livingRoom);
         // Marv-only movement "idea" for GUI iteration of the game
 
         nGarden.setExit("treehouse", treehouse);
@@ -146,6 +146,24 @@ public class Game {
 
         treehouse.setExit("down", nGarden);
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
+
+        /*harry.addExitToPath(foyer);
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(kitchen);
+        harry.addExitToPath(basement);
+        harry.addExitToPath(neGarden);
+        harry.addExitToPath(kitchen);
+        harry.createPath();
+        harry.setCurrentPath(1);
+
+        marv.addExitToPath(kitchen);
+        marv.addExitToPath(diningRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.createPath();
+        marv.setCurrentPath(1);*/
+
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
@@ -184,6 +202,17 @@ public class Game {
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+/*
+            if (harry.getDelay() <= 0) {
+                harry.walkPath();
+            }
+            if (marv.getDelay() <= 0) {
+                marv.walkPath();
+            }
+            Item item = new Trap("Rope", 1);
+            kevin.setTrap(item);
+            System.out.println("trap set");
+            */
             boolean objective1Complete = false; //Not in use yet, but will be crucial for when we write our win-conditions.
             if (status == WIN) {
                 System.out.println("You won!");
@@ -202,7 +231,7 @@ public class Game {
     //Welcome screen for when the player runs the program
     private void printWelcome() {
         System.out.println(
-                "  _    _                                 _                  \n"
+                  "  _    _                                  _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
                 + " | |__| | ___  _ __ ___   ___     /  \\  | | ___  _ __   ___ \n"
                 + " |  __  |/ _ \\| '_ ` _ \\ / _ \\   / /\\ \\ | |/ _ \\| '_ \\ / _ \\\n"
@@ -255,7 +284,8 @@ public class Game {
         if (commandWord == CommandWord.HELP) {
             printHelp(command);
         } else if (commandWord == CommandWord.GO) {
-            goRoom(command);
+            /*goRoom(command) moved to Creature, call with Player object */
+            kevin.goRoom(command);
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         } else if (commandWord == CommandWord.EXAMINE) {
@@ -371,14 +401,14 @@ public class Game {
             }
         }
     }
-    
+
     private String getObjective() {
         return objective;
     }
 
 //    private void collect() {
-//        
+//
 //        kevin.addToInventory(kevin.getCurrentRoom().);
-//        
+//
 //    }
 }
