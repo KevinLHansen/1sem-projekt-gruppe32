@@ -34,7 +34,7 @@ public class Room {
         items.remove(item);
     }
 
-    private String getItemString() {
+    public String getItemString() {
         if (items.isEmpty()) {
             return "";
         }
@@ -63,10 +63,10 @@ public class Room {
     }
 
     public String getLongDescription() {
-        return "You are at/in the " + description + ".\n" + getExitString() + getItemString();
+        return "You are at/in the " + description + ".\n" + getExitString();
     }
 
-    private String getExitString() {
+    public String getExitString() {
         String returnString = "Exits: ";
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
