@@ -20,40 +20,40 @@ public class Room {
         this.info = "";
         exits = new HashMap<String, Room>();
         items = new ArrayList<Item>();
-    }    
+    }
 
-    public void addItem (Item item){
+    public void addItem(Item item) {
         items.add(item);
     }
 
     public List<Item> getItems() {
         return items;
     }
-    
-    public void removeItem(Item item){
+
+    public void removeItem(Item item) {
         items.remove(item);
     }
-      private String getItemString() {
-    if (items.isEmpty()) return "";
-    String returnString = ITEM_STRING;
-    for (Item i : items)
-      returnString += " " + i;
-    return returnString + "\n";
-  }
-   /**
-   * Get the real item from a passed in item name.
-   * 
-   * @param item
-   *          : The string, not the 'real' item.
-   * @return : The real item that is contained in the room.
-   */
-  public Item getRealItem(Item item) {
-    int index = items.indexOf(item);
-    if (index != -1) return items.get(index);
-    else return null;
-  }
 
-   
+    private String getItemString() {
+        if (items.isEmpty()) {
+            return "";
+        }
+        String returnString = ITEM_STRING;
+        for (Item i : items) {
+            returnString += " " + i;
+        }
+        return returnString + "\n";
+    }
+
+    public Item getRealItem(String itemName) {
+        for (Item item : items) {
+            if (item.getName().equals(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
     }
@@ -86,9 +86,10 @@ public class Room {
     public String getInfo() {
         return info;
     }
-    
+
     public void defineTrap(Item item) {
-        this.trap = (Trap)item;
+        Trap trap = new Trap(item);
+        this.trap = trap;
     }
 
 }
