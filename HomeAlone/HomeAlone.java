@@ -1,6 +1,6 @@
-package worldofzuul;
+package HomeAlone;
 
-public class Play {
+public class HomeAlone {
 
     public static void main(String[] args) {
 

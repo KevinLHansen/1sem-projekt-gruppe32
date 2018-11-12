@@ -1,8 +1,11 @@
-package worldofzuul;
+package HomeAlone;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 public class Room 
@@ -11,6 +14,7 @@ public class Room
     private HashMap<String, Room> exits;
     private boolean trapSet;
     private String info;
+    private List<Item> inventory;
 
     public Room(String description) 
     {
@@ -18,6 +22,7 @@ public class Room
         this.info ="";
         this.trapSet = false;
         exits = new HashMap<String, Room>();
+        this.inventory = new ArrayList<>();
     }
 
     public void setExit(String direction, Room neighbor) 
@@ -56,6 +61,39 @@ public class Room
 
     public String getInfo() {
         return info;
-    }   
+    }
+    
+    public int getNumberOfExits() {
+        return this.exits.size();
+    }
+    
+    public String getExitFromIndex(int index) {
+        int i=0;
+        for(Map.Entry<String, Room> entry: this.exits.entrySet()) {
+            if(index==i) {
+                return entry.getKey();
+            }
+            i++;
+        }
+        /* Possible exception point */
+        return "Exit not found";
+    }
+    /**
+     * Checks inventory for set traps, return true if any found
+     * @return 
+     */
+    public Trap checkTraps() {
+        Trap trap;
+        //boolean returnVal = false;
+        for (Item item : this.inventory) {
+            if(item instanceof Trap) {
+                trap = (Trap)item;
+                if(trap.checkTrapSet()) {
+                    return trap;
+                }
+            }
+        }
+        return null;
+    }
 }
 

@@ -1,4 +1,4 @@
-package worldofzuul;
+package HomeAlone;
 
 import java.util.Scanner;
 
@@ -117,6 +117,24 @@ public class Game {
         treehouse.setExit("down", nGarden);
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
 
+        /*harry.addExitToPath(foyer);
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(kitchen);
+        harry.addExitToPath(basement);
+        harry.addExitToPath(neGarden);
+        harry.addExitToPath(kitchen);
+        harry.createPath();
+        harry.setCurrentPath(1);
+        
+        marv.addExitToPath(kitchen);
+        marv.addExitToPath(diningRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.createPath();
+        marv.setCurrentPath(1);*/
+        
+        
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
     }
@@ -126,13 +144,24 @@ public class Game {
         printWelcome();
 
         startPlaying();
-        
-        System.out.println(currentRoom.getLongDescription());
-        
+
+        System.out.println(this.kevin.getCurrentRoom().getLongDescription());
+
         boolean finished = false;
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+/*
+            if (harry.getDelay() <= 0) {
+                harry.walkPath();
+            }
+            if (marv.getDelay() <= 0) {
+                marv.walkPath();
+            }
+            Item item = new Trap("Rope", 1);
+            kevin.setTrap(item);
+            System.out.println("trap set");
+            */
             boolean objective1Complete = false; //Not in use yet, but will be crucial for when we write our win-conditions.
             if (status == WIN) {
                 System.out.println("You won!");
@@ -151,7 +180,7 @@ public class Game {
     //Welcome screen for when the player runs the program
     private void printWelcome() {
         System.out.println(
-                  "  _    _                                 _                  \n"
+                "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
                 + " | |__| | ___  _ __ ___   ___     /  \\  | | ___  _ __   ___ \n"
                 + " |  __  |/ _ \\| '_ ` _ \\ / _ \\   / /\\ \\ | |/ _ \\| '_ \\ / _ \\\n"
@@ -182,16 +211,15 @@ public class Game {
         while (readyToPlay == false) {
             Scanner scanner = new Scanner(System.in);
             String nextLine = scanner.nextLine();
-            
+
             if (nextLine.equals("play")) {
                 readyToPlay = true;
-            }
-            else {
+            } else {
                 System.out.println("Invalid command. Try again.");
             }
         }
     }
-    
+
     //Command processing, checking for a command and executing the associated method if the command exists.
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
@@ -206,6 +234,7 @@ public class Game {
         if (commandWord == CommandWord.HELP) {
             printHelp(command);
         } else if (commandWord == CommandWord.GO) {
+            /*goRoom(command) moved to Creature, call with Player object */
             goRoom(command);
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
