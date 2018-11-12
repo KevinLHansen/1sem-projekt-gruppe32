@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class Room {
 
@@ -26,10 +27,20 @@ public class Room {
         items.add(item);
     }
 
-    public List<Item> getItems() {
+    public List<Item> getItemList() {
         return items;
     }
 
+    public String getItems() {
+        String items = "";
+        int j = 1;
+        for (Item item : this.items) {
+            items += item.toString() + ((this.items.size() > j) ? ", " : "");
+            j++;
+        }
+        return items;
+    }
+    
     public void removeItem(Item item) {
         items.remove(item);
     }
@@ -39,15 +50,17 @@ public class Room {
             return "";
         }
         String returnString = ITEM_STRING;
+        int j = 1;
         for (Item i : items) {
-            returnString += " " + i;
+            returnString += " " + i + ((this.items.size() > j) ? ", " : "");
+            j++;
         }
-        return returnString + "\n";
+        return returnString;
     }
 
     public Item getRealItem(String itemName) {
         for (Item item : items) {
-            if (item.getName().equals(itemName)) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
                 return item;
             }
         }
@@ -63,14 +76,16 @@ public class Room {
     }
 
     public String getLongDescription() {
-        return "You are at/in the " + description + ".\n" + getExitString() + getItemString();
+        return "You are at/in the " + description + ".\n" + getExitString() + ".\n" + getItemString() + ".";
     }
 
     private String getExitString() {
         String returnString = "Exits: ";
         Set<String> keys = exits.keySet();
+        int j = 1;
         for (String exit : keys) {
-            returnString += exit + ", ";
+            returnString += exit + ((this.exits.size() > j) ? ", " : "");
+            j++;
         }
         return returnString;
     }
@@ -109,7 +124,7 @@ public class Room {
     public Trap checkTraps() {
         Trap trap;
         //boolean returnVal = false;
-        for (Item item : this.inventory) {
+        for (Item item : this.items) {
             if(item instanceof Trap) {
                 trap = (Trap)item;
                 if(trap.checkTrapSet()) {
@@ -119,6 +134,10 @@ public class Room {
         }
         return null;
     }
-}
+    
+    public void defineTrap(Item item) {
+        Trap trap = new Trap(item);
+        this.trap = trap;
+    }
 
 }
