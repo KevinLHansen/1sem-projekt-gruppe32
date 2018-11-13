@@ -27,7 +27,7 @@ public class Game {
 
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
-        Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
+        Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
         Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
 
         foyer = new Room("Foyer - Front entrance");
@@ -37,6 +37,8 @@ public class Game {
         staircase = new Room("Staircase");
         secondFloor = new Room("Second floor corridor");
         attic = new Room("Attic");
+        kevinRoom = new Room("Kevin's room");
+        buzzRoom = new Room("Buzz' room");
         basement = new Room("Basement");
         masterBedroom = new Room("Master bedroom - Mom and dad's bedroom");
         porch = new Room("Porch - Southern outside area");
@@ -67,10 +69,10 @@ public class Game {
 
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
-        foyer.setExit("livingroom", livingRoom);
+        foyer.setExit("living room", livingRoom);
         foyer.setExit("outside", porch);
         foyer.setExit("upstairs", staircase);
-        foyer.setExit("diningroom", diningRoom);
+        foyer.setExit("dining room", diningRoom);
         foyer.setInfo("I could put my toy cars here...");
         foyer.defineTrap(toyCars);
 
@@ -86,7 +88,7 @@ public class Game {
 //        diningRoom.defineTrap();
 
         kitchen.setExit("basement", basement);
-        kitchen.setExit("diningroom", diningRoom);
+        kitchen.setExit("dining room", diningRoom);
         kitchen.setExit("outside", neGarden);
         kitchen.setInfo("I should get ready for when the crooks arrive. Buzz' BB gun could be useful if they decide to enter the backdoor... \nI could set up a blowtorch trap here...");
         kitchen.defineTrap(blowtorch);
@@ -97,11 +99,11 @@ public class Game {
         staircase.setInfo("I should set up at least one trap here, so that they won't get upstairs without a fight...\nMaybe the buckets of paint could work out...");
         staircase.defineTrap(paintBucket);
 
-        secondFloor.setExit("masterbedroom", masterBedroom);
+        secondFloor.setExit("master bedroom", masterBedroom);
         secondFloor.setExit("attic", attic);
         secondFloor.setExit("downstairs", staircase);
-        // secondFloor.setExit("room", room);
-        // Adding more rooms later depending on the items required and immersive experience.
+        secondFloor.setExit("kevins room", kevinRoom);
+        secondFloor.setExit("buzz room", buzzRoom);
         secondFloor.setInfo("Upstairs. Maybe a tripwire between the narrow hallway could slow them down...");
         secondFloor.defineTrap(yarn);
 
@@ -109,6 +111,14 @@ public class Game {
         attic.setInfo("The attic is the perfect way for a zipline escape route to my treehouse! My dad has some rope laying around somewhere...");
         attic.addItem(rope);
         attic.addItem(ornaments);
+        
+        kevinRoom.setExit("hallway", secondFloor);
+        kevinRoom.setInfo("Mom is always upset that I leave the toy cars around. Maybe they could be of use downstairs?");
+        kevinRoom.addItem(toyCars);
+                
+        buzzRoom.setExit("hallway", secondFloor);
+        buzzRoom.setInfo("Buzz will never let me walk in here. There must be something in here I can use to defend myself with...");
+        buzzRoom.addItem(bbGun);
 
         basement.setExit("kitchen", kitchen);
         basement.setExit("outside", neGarden);
