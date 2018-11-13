@@ -9,6 +9,7 @@ public enum CommandWord
     EXAMINE("examine"), 
     COLLECT("collect"), 
     PLACE("place"), 
+    START_GAME("play"),
     SHOW("show"); //Syntax: "show <secondWord>", just like the "go"-command, where it shows something HUD related, like objectives, inventory etc.
     
     

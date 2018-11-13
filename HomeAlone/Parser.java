@@ -28,7 +28,11 @@ public class Parser
         if(tokenizer.hasNext()) {
             word1 = tokenizer.next();
             if(tokenizer.hasNext()) {
-                word2 = tokenizer.next(); 
+                word2="";
+                while(tokenizer.hasNext()) {
+                    word2 += tokenizer.next() + " "; 
+                }
+                word2 = word2.trim();
             }
         }
 

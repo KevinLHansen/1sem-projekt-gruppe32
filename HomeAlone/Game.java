@@ -30,7 +30,6 @@ public class Game {
         Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
 
         foyer = new Room("Foyer - Front entrance");
-        foyer.addItem(new Item("Rope", 2));
         livingRoom = new Room("Living room");
         diningRoom = new Room("Dining room");
         kitchen = new Room("Kitchen");
@@ -251,14 +250,11 @@ public class Game {
         boolean readyToPlay = false;
         // Will loop until user has input "play"
         while (readyToPlay == false) {
-            Scanner scanner = new Scanner(System.in);
-            String nextLine = scanner.nextLine();
-
-            if (nextLine.equals("play")) {
-                readyToPlay = true;
-            } else {
-                System.out.println("Invalid command. Try again.");
-            }
+            Command command = parser.getCommand();
+            //Scanner scanner = new Scanner(System.in);
+            //String nextLine = scanner.nextLine();
+            
+            readyToPlay = processCommand(command);
         }
     }
 
@@ -274,20 +270,28 @@ public class Game {
         }
 
         if (commandWord == CommandWord.HELP) {
+            // Does not count as an action
             printHelp(command);
         } else if (commandWord == CommandWord.GO) {
             /*goRoom(command) moved to Creature, call with Player object */
+            // Counts as an action
             kevin.goRoom(command);
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         } else if (commandWord == CommandWord.EXAMINE) {
+            // Counts as an action
             printInfo(kevin.getCurrentRoom().getInfo());
         } else if (commandWord == CommandWord.COLLECT) {
+            // Counts as an action
             kevin.collectItem(command);
         } else if (commandWord == CommandWord.PLACE) {
+            // Counts as an action
             kevin.placeTrap(command);
         } else if (commandWord == CommandWord.SHOW) {
+            // Does not count as an action
             show(command);
+        } else if(commandWord == CommandWord.START_GAME) {
+            return true;
         }
         return wantToQuit;
     }
@@ -320,6 +324,8 @@ public class Game {
             System.out.println("Your current objective: ");
             System.out.println(getObjective());
             System.out.println("Type 'help' followed by the available command to get a detailed description of the command.");
+            System.out.println();
+            System.out.println("Exits: " + kevin.getCurrentRoom().getExitString());
             return;
         }
         String helpSecond = command.getSecondWord();

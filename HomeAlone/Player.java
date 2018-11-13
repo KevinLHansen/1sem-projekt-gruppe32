@@ -53,7 +53,7 @@ public class Player extends Creature {
     }
 
     private void removeFromInventory(Item item) {
-        for (int i = inventory.length-1; i >= 0; i--) {
+        for (int i = inventory.length - 1; i >= 0; i--) {
             if (item.equals(inventory[i])) {
                 inventory[i] = null;
             }
@@ -63,8 +63,10 @@ public class Player extends Creature {
 
     private Item searchInventory(String itemName) {
         for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                return item;
+            if (item != null) {
+                if (itemName.equalsIgnoreCase(item.getName())) {
+                    return item;
+                }
             }
         }
         return null;
@@ -86,8 +88,12 @@ public class Player extends Creature {
 
         String secondWord = command.getSecondWord();
         Item item = this.searchInventory(secondWord);
-        this.setTrap(item);
-        System.out.println("You place " + item);
+        if (item != null) {
+            this.setTrap(item);
+            System.out.println("You place " + item);
+        } else {
+            System.out.println("What item? " + secondWord + " not found.");
+        }
     }
 
     public void collectItem(Command command) {
@@ -99,8 +105,12 @@ public class Player extends Creature {
 
         String secondWord = command.getSecondWord();
         Item item = this.getCurrentRoom().getRealItem(secondWord);
+        if (item == null) {
+            System.out.println("Invalid item or no item found. Try again.");
+        } else {
         this.addToInventory(item);
         this.getCurrentRoom().removeItem(item);
         System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
+        }
     }
 }
