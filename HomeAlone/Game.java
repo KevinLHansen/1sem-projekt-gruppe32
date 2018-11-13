@@ -296,6 +296,8 @@ public class Game {
                 this.started = true;
                 return true;
             }
+        } else if(commandWord == CommandWord.DROP) {
+            kevin.dropCommand(command);
         }
         return wantToQuit;
     }
@@ -306,14 +308,21 @@ public class Game {
             System.out.println("Kevin doesn't think that there's anything he can do here. Maybe try something elsewhere.");
         } else {
             System.out.print("Kevin's thoughts: \"");
-            System.out.print(info + "\"\n");
-            System.out.println();
+            Trap t = kevin.getCurrentRoom().checkTraps();
+            if(t != null) {
+                System.out.println("I already set up a trap in this room. Better look somewhere else.\"");
+                System.out.print("Trap: ");
+                System.out.println(kevin.getCurrentRoom().getTrapString());
+            } else {
+                System.out.println(info + "\"\n");
+            }
             System.out.print("Items nearby: ");
             if (kevin.getCurrentRoom().getItemString() == "") {
-                System.out.print("There are no items here.\n");
+                System.out.println("There are no items here.");
             } else {
-                System.out.print(kevin.getCurrentRoom().getItemString() + "\n");
+                System.out.println(kevin.getCurrentRoom().getItemString());
             }
+            
         }
     }
 
@@ -349,12 +358,15 @@ public class Game {
                     System.out.println("   '>show inventory'");
                     System.out.println("...to get an overview of your inventory.");
                     break;
-                case "place":
-                    System.out.println("'Place' will drop, or place the mentioned item from your inventory in the room that you're currently in.");
-                    System.out.println("If there is an opportunity to setup a trap in the room with the 'placed' item, you will set up a trap automatically.");
+                case "setup":
+                    System.out.println("'Setup' will try and place the mentioned item from your inventory in the room that you're currently in.");
+                    System.out.println("If the item is a valid trap for the room, it will setup the trap.");
                     break;
                 case "collect":
                     System.out.println("'Collect' will pick up the mentioned item from the room that you're currently located.");
+                    break;
+                case "drop":
+                    System.out.println("'Drop' will drop an item, so there is space in inventory for another item.");
                     break;
                 case "play":
                     System.out.println("'Play' is used for starting the game. It has no function once the game is started.");

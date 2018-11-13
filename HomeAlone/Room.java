@@ -11,7 +11,7 @@ public class Room {
 
     private String description;
     private HashMap<String, Room> exits;
-    private Trap trap;
+    private List<Trap> trap;
     private String info;
     private List<Item> items = new ArrayList<Item>();
 
@@ -20,6 +20,7 @@ public class Room {
         this.info = "";
         exits = new HashMap<String, Room>();
         items = new ArrayList<Item>();
+        trap = new ArrayList<>();
     }
 
     public void addItem(Item item) {
@@ -51,8 +52,25 @@ public class Room {
         String returnString = "";
         int j = 1;
         for (Item i : items) {
+            if(!(i instanceof Trap)) {
             returnString += " " + i + ((this.items.size() > j) ? ", " : "");
             j++;
+            }
+        }
+        return returnString;
+    }
+    
+    public String getTrapString() {
+        if (items.isEmpty()) {
+            return "";
+        }
+        String returnString = "";
+        int j = 1;
+        for (Item i : items) {
+            if(i instanceof Trap) {
+            returnString += " " + i + ((this.items.size() > j) ? ", " : "");
+            j++;
+            }
         }
         return returnString;
     }
@@ -136,7 +154,10 @@ public class Room {
     
     public void defineTrap(Item item) {
         Trap trap = new Trap(item);
-        this.trap = trap;
+        this.trap.add(trap);
     }
-
+    
+    public List<Trap> getPossibleTraps() {
+        return this.trap;
+    }
 }
