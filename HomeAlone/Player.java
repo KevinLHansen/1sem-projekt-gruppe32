@@ -1,5 +1,8 @@
 package HomeAlone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Has specific methods for player, Kevin Needs methods for some of the commands
  * like examine, collect
@@ -62,10 +65,10 @@ public class Player extends Creature {
     }
 
     private Item searchInventory(String itemName) {
-        for (Item item : inventory) {
-            if (item != null) {
-                if (itemName.equalsIgnoreCase(item.getName())) {
-                    return item;
+        for(int i=0;i<this.inventory.length;i++)  {
+            if (inventory[i] != null) {
+                if (itemName.equalsIgnoreCase(inventory[i].getName())) {
+                    return inventory[i];
                 }
             }
         }
@@ -81,18 +84,24 @@ public class Player extends Creature {
 
     public void placeTrap(Command command) {
         if (!command.hasSecondWord()) {
-            System.out.println("Place what?");
+            System.out.println("Set up what?");
             System.out.println(this.getInventory());
             return;
         }
 
         String secondWord = command.getSecondWord();
         Item item = this.searchInventory(secondWord);
-        if (item != null) {
-            this.setTrap(item);
-            System.out.println("You place " + item);
-        } else {
+        if (item == null) {
             System.out.println("What item? " + secondWord + " not found.");
+        } else {
+            List<Trap> traps = this.getCurrentRoom().getPossibleTraps();
+            
+            if(traps.contains(item)) {
+                this.setTrap(item);
+                System.out.println("You set up a trap using " + item);
+            } else {
+                System.out.println("Can't put " + item + " here.");
+            }
         }
     }
 
@@ -107,10 +116,30 @@ public class Player extends Creature {
         Item item = this.getCurrentRoom().getRealItem(secondWord);
         if (item == null) {
             System.out.println("Invalid item or no item found. Try again.");
+        } else if(item instanceof Trap) {
+            System.out.println("Traps can't be picked up once they have been placed.");
         } else {
-        this.addToInventory(item);
-        this.getCurrentRoom().removeItem(item);
-        System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
+            this.addToInventory(item);
+            this.getCurrentRoom().removeItem(item);
+            System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
+        }
+    }
+    
+    public void dropCommand(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Drop what?");
+            System.out.println(this.getInventory());
+            return;
+        }
+
+        String secondWord = command.getSecondWord();
+        Item item = this.searchInventory(secondWord);
+        if (item == null) {
+            System.out.println("What item? " + secondWord + " not found.");
+        } else {
+            this.getCurrentRoom().addItem(item);
+            this.removeFromInventory(item);
+            System.out.println("You dropped " + item);
         }
     }
 }
