@@ -182,27 +182,6 @@ public class Game {
         kevin.setCurrentRoom(foyer);
     }
 
-    public void createItems() {
-
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
-
-        rope = new Item("Rope", 1);
-        bbGun = new Item("bbGun", 1);
-        bucket = new Item("Bucket", 1);
-        hose = new Item("Hose", 1);
-        heater = new Item("Heater", 1);
-        tarAndNail = new Item("Tar and nail", 1);
-        blowtorch = new Item("Blowtorch", 1);
-        glue = new Item("Glue", 1);
-        fan = new Item("Fan", 1);
-        pillow = new Item("Pillow", 1);
-        ornaments = new Item("Ornaments", 1);
-        toyCars = new Item("Toy cars", 1);
-        paintBucket = new Item("Paint bucket", 1);
-        yarn = new Item("Yarn", 1);
-
-    }
-
     //Play method to start the game
     public void play() {
         printWelcome();
@@ -370,7 +349,7 @@ public class Game {
             }
         }
     }
-
+/* Moved to Creature/Player
     //Method used for walking between rooms and checks for any invalid rooms.
     private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
@@ -390,7 +369,7 @@ public class Game {
             System.out.println(kevin.getCurrentRoom().getLongDescription());
         }
     }
-
+*/
     //Quit program method
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {

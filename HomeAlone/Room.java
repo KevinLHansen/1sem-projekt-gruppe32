@@ -14,7 +14,6 @@ public class Room {
     private Trap trap;
     private String info;
     private List<Item> items = new ArrayList<Item>();
-    private static final String ITEM_STRING = "Items:";
 
     public Room(String description) {
         this.description = description;
@@ -45,11 +44,11 @@ public class Room {
         items.remove(item);
     }
 
-    private String getItemString() {
+    public String getItemString() {
         if (items.isEmpty()) {
             return "";
         }
-        String returnString = ITEM_STRING;
+        String returnString = "";
         int j = 1;
         for (Item i : items) {
             returnString += " " + i + ((this.items.size() > j) ? ", " : "");
@@ -76,10 +75,10 @@ public class Room {
     }
 
     public String getLongDescription() {
-        return "You are at/in the " + description + ".\n" + getExitString() + ".\n" + getItemString() + ".";
+        return "You are at/in the " + description + ".\n" + getExitString();
     }
 
-    private String getExitString() {
+    public String getExitString() {
         String returnString = "Exits: ";
         Set<String> keys = exits.keySet();
         int j = 1;
