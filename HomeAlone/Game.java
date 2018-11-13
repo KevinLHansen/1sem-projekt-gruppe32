@@ -77,6 +77,8 @@ public class Game {
         livingRoom.setExit("foyer", foyer);
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
         livingRoom.defineTrap(ornaments);
+        // livingRoom.addItem(fan);
+        // livingRoom.addItem(pillow);
 
         diningRoom.setExit("foyer", foyer);
         diningRoom.setExit("kitchen", kitchen);
@@ -88,6 +90,7 @@ public class Game {
         kitchen.setExit("outside", neGarden);
         kitchen.setInfo("I should get ready for when the crooks arrive. Buzz' BB gun could be useful if they decide to enter the backdoor... \nI could set up a blowtorch trap here...");
         kitchen.defineTrap(blowtorch);
+        // kitchen.addItem(plasticWrap);
 
         staircase.setExit("up", secondFloor);
         staircase.setExit("down", foyer);
@@ -104,14 +107,22 @@ public class Game {
 
         attic.setExit("hallway", secondFloor);
         attic.setInfo("The attic is the perfect way for a zipline escape route to my treehouse! My dad has some rope laying around somewhere...");
+        attic.addItem(rope);
+        attic.addItem(ornaments);
 
         basement.setExit("kitchen", kitchen);
         basement.setExit("outside", neGarden);
         basement.setInfo("There's tonnes of stuff down here I can use to set up traps.\nMaybe I could set up a trap with a nail and some tar on the steps. Or even switch out the lightbulb switch with a trapdoor...\nI could also use my dad's heater on the front doorknob.");
         basement.defineTrap(tarAndNail);
+        basement.addItem(heater);
+        basement.addItem(tarAndNail);
+        basement.addItem(blowtorch);
+        // basement.addItem(glue);
+        basement.addItem(paintBucket);
 
         masterBedroom.setExit("hallway", secondFloor);
-        masterBedroom.setInfo("Mom's and Dad's bedroom. There's a phone here I can use to call the cops when the crooks are inside the house...");
+        masterBedroom.setInfo("Mom's and Dad's bedroom. Is there anything in here I can use to make a tripwire?\nI can use the phone to call the cops when the crooks are inside the house...");
+        masterBedroom.addItem(yarn);
 
         porch.setExit("inside", foyer);
         porch.setExit("west", swGarden);
@@ -134,6 +145,7 @@ public class Game {
         neGarden.setExit("kitchen", kitchen);
         neGarden.setInfo("I know the crooks are trying to come through the kitchen door first.\nThe garden hose could help me set up an ice-slippery trap to the basement.");
         neGarden.defineTrap(hose);
+        neGarden.addItem(hose);
 
         wGarden.setExit("north", nwGarden);
         wGarden.setExit("south", swGarden);
@@ -143,6 +155,7 @@ public class Game {
 
         seGarden.setExit("west", porch);
         seGarden.setInfo("There's a bucket here. I can fill it with water and pour the water onto the steps at the front porch...");
+        seGarden.addItem(bucket);
 
         treehouse.setExit("down", nGarden);
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
@@ -231,7 +244,7 @@ public class Game {
     //Welcome screen for when the player runs the program
     private void printWelcome() {
         System.out.println(
-                  "  _    _                                  _                  \n"
+                "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
                 + " | |__| | ___  _ __ ___   ___     /  \\  | | ___  _ __   ___ \n"
                 + " |  __  |/ _ \\| '_ ` _ \\ / _ \\   / /\\ \\ | |/ _ \\| '_ \\ / _ \\\n"
@@ -307,6 +320,13 @@ public class Game {
         } else {
             System.out.print("Kevin's thoughts: \"");
             System.out.print(info + "\"\n");
+            System.out.println();
+            System.out.print("Items nearby: ");
+            if (kevin.getCurrentRoom().getItemString() == "") {
+                System.out.print("There are no items here.\n");
+            } else {
+                System.out.print(kevin.getCurrentRoom().getItemString() + "\n");
+            }
         }
     }
 
@@ -355,6 +375,7 @@ public class Game {
     private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("Go where?");
+            System.out.println("Exits: " + kevin.getCurrentRoom().getExitString());
             return;
         }
 
