@@ -11,6 +11,7 @@ public class Game {
     public final int WIN = 1;
     public int status;
     public final int LOSE = -1;
+    private boolean started = false;
 
     public Game() {
         parser = new Parser();
@@ -291,7 +292,10 @@ public class Game {
             // Does not count as an action
             show(command);
         } else if(commandWord == CommandWord.START_GAME) {
-            return true;
+            if(!this.started) {
+                this.started = true;
+                return true;
+            }
         }
         return wantToQuit;
     }
@@ -351,6 +355,9 @@ public class Game {
                     break;
                 case "collect":
                     System.out.println("'Collect' will pick up the mentioned item from the room that you're currently located.");
+                    break;
+                case "play":
+                    System.out.println("'Play' is used for starting the game. It has no function once the game is started.");
                     break;
             }
         }
