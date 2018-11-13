@@ -1,4 +1,4 @@
-package worldofzuul;
+package HomeAlone;
 
 import java.util.Scanner;
 
@@ -99,7 +99,7 @@ public class Game {
         secondFloor.setExit("masterbedroom", masterBedroom);
         secondFloor.setExit("attic", attic);
         secondFloor.setExit("downstairs", staircase);
-        // secondFloor.setExit("room", room); 
+        // secondFloor.setExit("room", room);
         // Adding more rooms later depending on the items required and immersive experience.
         secondFloor.setInfo("Upstairs. Maybe a tripwire between the narrow hallway could slow them down...");
         secondFloor.defineTrap(yarn);
@@ -131,7 +131,7 @@ public class Game {
 
         nwGarden.setExit("east", nGarden);
         nwGarden.setExit("south", wGarden);
-        //nwGarden.setExit("window", livingRoom); 
+        //nwGarden.setExit("window", livingRoom);
         // Marv-only movement "idea" for GUI iteration of the game
 
         nGarden.setExit("treehouse", treehouse);
@@ -159,29 +159,26 @@ public class Game {
         treehouse.setExit("down", nGarden);
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
 
+        /*harry.addExitToPath(foyer);
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(kitchen);
+        harry.addExitToPath(basement);
+        harry.addExitToPath(neGarden);
+        harry.addExitToPath(kitchen);
+        harry.createPath();
+        harry.setCurrentPath(1);
+
+        marv.addExitToPath(kitchen);
+        marv.addExitToPath(diningRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.createPath();
+        marv.setCurrentPath(1);*/
+
+
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
-    }
-
-    public void createItems() {
-
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
-
-        rope = new Item("Rope", 1);
-        bbGun = new Item("bbGun", 1);
-        bucket = new Item("Bucket", 1);
-        hose = new Item("Hose", 1);
-        heater = new Item("Heater", 1);
-        tarAndNail = new Item("Tar and nail", 1);
-        blowtorch = new Item("Blowtorch", 1);
-        glue = new Item("Glue", 1);
-        fan = new Item("Fan", 1);
-        pillow = new Item("Pillow", 1);
-        ornaments = new Item("Ornaments", 1);
-        toyCars = new Item("Toy cars", 1);
-        paintBucket = new Item("Paint bucket", 1);
-        yarn = new Item("Yarn", 1);
-
     }
 
     //Play method to start the game
@@ -196,6 +193,17 @@ public class Game {
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+/*
+            if (harry.getDelay() <= 0) {
+                harry.walkPath();
+            }
+            if (marv.getDelay() <= 0) {
+                marv.walkPath();
+            }
+            Item item = new Trap("Rope", 1);
+            kevin.setTrap(item);
+            System.out.println("trap set");
+            */
             boolean objective1Complete = false; //Not in use yet, but will be crucial for when we write our win-conditions.
             if (status == WIN) {
                 System.out.println("You won!");
@@ -242,14 +250,11 @@ public class Game {
         boolean readyToPlay = false;
         // Will loop until user has input "play"
         while (readyToPlay == false) {
-            Scanner scanner = new Scanner(System.in);
-            String nextLine = scanner.nextLine();
-
-            if (nextLine.equals("play")) {
-                readyToPlay = true;
-            } else {
-                System.out.println("Invalid command. Try again.");
-            }
+            Command command = parser.getCommand();
+            //Scanner scanner = new Scanner(System.in);
+            //String nextLine = scanner.nextLine();
+            
+            readyToPlay = processCommand(command);
         }
     }
 
@@ -265,19 +270,28 @@ public class Game {
         }
 
         if (commandWord == CommandWord.HELP) {
+            // Does not count as an action
             printHelp(command);
         } else if (commandWord == CommandWord.GO) {
-            goRoom(command);
+            /*goRoom(command) moved to Creature, call with Player object */
+            // Counts as an action
+            kevin.goRoom(command);
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         } else if (commandWord == CommandWord.EXAMINE) {
+            // Counts as an action
             printInfo(kevin.getCurrentRoom().getInfo());
         } else if (commandWord == CommandWord.COLLECT) {
+            // Counts as an action
             kevin.collectItem(command);
         } else if (commandWord == CommandWord.PLACE) {
+            // Counts as an action
             kevin.placeTrap(command);
         } else if (commandWord == CommandWord.SHOW) {
+            // Does not count as an action
             show(command);
+        } else if(commandWord == CommandWord.START_GAME) {
+            return true;
         }
         return wantToQuit;
     }
@@ -310,6 +324,8 @@ public class Game {
             System.out.println("Your current objective: ");
             System.out.println(getObjective());
             System.out.println("Type 'help' followed by the available command to get a detailed description of the command.");
+            System.out.println();
+            System.out.println("Exits: " + kevin.getCurrentRoom().getExitString());
             return;
         }
         String helpSecond = command.getSecondWord();
@@ -339,7 +355,7 @@ public class Game {
             }
         }
     }
-
+/* Moved to Creature/Player
     //Method used for walking between rooms and checks for any invalid rooms.
     private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
@@ -359,7 +375,7 @@ public class Game {
             System.out.println(kevin.getCurrentRoom().getLongDescription());
         }
     }
-
+*/
     //Quit program method
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
@@ -391,14 +407,14 @@ public class Game {
             }
         }
     }
-    
+
     private String getObjective() {
         return objective;
     }
 
 //    private void collect() {
-//        
+//
 //        kevin.addToInventory(kevin.getCurrentRoom().);
-//        
+//
 //    }
 }

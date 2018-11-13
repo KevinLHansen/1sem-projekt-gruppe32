@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package worldofzuul;
+package HomeAlone;
 
 /**
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class Item {
 

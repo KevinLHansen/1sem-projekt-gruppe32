@@ -1,4 +1,4 @@
-package worldofzuul;
+package HomeAlone;
 
 /**
  *
@@ -38,7 +38,7 @@ public class Trap extends Item {
     
     public void setDelay(int delay) {
         this.delay = delay;
-}
+    }
     
     public int getDelay() {
         return this.delay;

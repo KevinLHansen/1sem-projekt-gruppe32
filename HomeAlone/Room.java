@@ -1,10 +1,11 @@
-package worldofzuul;
+package HomeAlone;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class Room {
 
@@ -13,7 +14,6 @@ public class Room {
     private Trap trap;
     private String info;
     private List<Item> items = new ArrayList<Item>();
-    private static final String ITEM_STRING = "Items:";
 
     public Room(String description) {
         this.description = description;
@@ -26,10 +26,20 @@ public class Room {
         items.add(item);
     }
 
-    public List<Item> getItems() {
+    public List<Item> getItemList() {
         return items;
     }
 
+    public String getItems() {
+        String items = "";
+        int j = 1;
+        for (Item item : this.items) {
+            items += item.toString() + ((this.items.size() > j) ? ", " : "");
+            j++;
+        }
+        return items;
+    }
+    
     public void removeItem(Item item) {
         items.remove(item);
     }
@@ -38,16 +48,18 @@ public class Room {
         if (items.isEmpty()) {
             return "";
         }
-        String returnString = ITEM_STRING;
+        String returnString = "";
+        int j = 1;
         for (Item i : items) {
-            returnString += " " + i;
+            returnString += " " + i + ((this.items.size() > j) ? ", " : "");
+            j++;
         }
-        return returnString + "\n";
+        return returnString;
     }
 
     public Item getRealItem(String itemName) {
         for (Item item : items) {
-            if (item.getName().equals(itemName)) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
                 return item;
             }
         }
@@ -69,8 +81,10 @@ public class Room {
     public String getExitString() {
         String returnString = "Exits: ";
         Set<String> keys = exits.keySet();
+        int j = 1;
         for (String exit : keys) {
-            returnString += exit + ", ";
+            returnString += exit + ((this.exits.size() > j) ? ", " : "");
+            j++;
         }
         return returnString;
     }
@@ -86,7 +100,40 @@ public class Room {
     public String getInfo() {
         return info;
     }
+    
+    public int getNumberOfExits() {
+        return this.exits.size();
+    }
 
+    public String getExitFromIndex(int index) {
+        int i=0;
+        for(Map.Entry<String, Room> entry: this.exits.entrySet()) {
+            if(index==i) {
+                return entry.getKey();
+            }
+            i++;
+        }
+        /* Possible exception point */
+        return "Exit not found";
+    }
+    /**
+     * Checks inventory for set traps, return true if any found
+     * @return
+     */
+    public Trap checkTraps() {
+        Trap trap;
+        //boolean returnVal = false;
+        for (Item item : this.items) {
+            if(item instanceof Trap) {
+                trap = (Trap)item;
+                if(trap.checkTrapSet()) {
+                    return trap;
+                }
+            }
+        }
+        return null;
+    }
+    
     public void defineTrap(Item item) {
         Trap trap = new Trap(item);
         this.trap = trap;
