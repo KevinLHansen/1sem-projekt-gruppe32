@@ -1,6 +1,12 @@
 package HomeAlone;
 
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 public class Game {
 
@@ -197,7 +203,31 @@ public class Game {
         printWelcome();
 
         startPlaying();
-
+        
+        System.out.println("\n  Kevin:");
+        System.out.println("  \"This is my house. I have to defend it!\"");
+        System.out.println();
+        /*
+        playing sound using AudioPlayer, which gets args from AudioStream, whcih gets args from FileInputStream
+        The line: 
+        AudioPlayer.player.start(new AudioStream(new FileInputStream("sfx/startQuote.wav")));
+        is the same as:
+        FileInputStream inputStream = new FileInputStream("sfx/startQuote.wav");
+        AudioStream audioStream = new AudioStream(inputStream);
+        AudioPlayer.player.start(inputStream);
+        */
+        try {
+            AudioPlayer.player.start(new AudioStream(new FileInputStream("sfx/startQuote.wav")));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
+        System.out.println();
+        System.out.println("Your first objective is: " + objective);
+        
         System.out.println(kevin.getCurrentRoom().getLongDescription());
 
         boolean finished = false;
@@ -232,6 +262,8 @@ public class Game {
 
     //Welcome screen for when the player runs the program
     private void printWelcome() {
+        
+        
         System.out.println(
                 "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
@@ -244,15 +276,10 @@ public class Game {
         System.out.println();
         System.out.println("Kevin rushes through the front door, switching the lights on and locking the door behind him.");
         System.out.println();
-        System.out.println("  Kevin:");
-        System.out.println("  \"This is my house. I have to defend it!\"");
-        System.out.println();
+    
 
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
-        System.out.println();
-        System.out.println("Your first objective is: " + objective);
     }
 
     // Method to act as a "start-button" for the game.
