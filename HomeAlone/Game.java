@@ -348,7 +348,7 @@ public class Game {
             System.out.println(getObjective());
             System.out.println("Type 'help' followed by the available command to get a detailed description of the command.");
             System.out.println();
-            System.out.println("Exits: " + kevin.getCurrentRoom().getExitString());
+            System.out.println(kevin.getCurrentRoom().getExitString());
             return;
         }
         String helpSecond = command.getSecondWord();
