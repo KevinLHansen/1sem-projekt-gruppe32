@@ -75,6 +75,7 @@ public class Game {
         foyer.setExit("dining room", diningRoom);
         foyer.setInfo("I could put my toy cars here...");
         foyer.defineTrap(toyCars);
+        foyer.defineTrap(heater);
 
         livingRoom.setExit("foyer", foyer);
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
