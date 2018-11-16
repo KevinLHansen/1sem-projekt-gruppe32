@@ -25,10 +25,10 @@ public class Player extends Creature {
             // Check if there is an item
             if (i != null) {
                 //                        Check for last item in array, no "," needed if its the last.
-                items += i + ((this.inventory.length < j) ? ", " : "");
+                items += i + ((this.inventory.length > j) ? ", " : "");
             } // If there is no item, no need to finish the loop.
             else {
-                break;
+                //break;
             }
             j++;
         }
@@ -61,7 +61,15 @@ public class Player extends Creature {
                 inventory[i] = null;
             }
         }
-
+        for(int i = 0; i < inventory.length;i++) {
+            
+            if(i < (inventory.length-1)) {
+                if(inventory[i] == null) {
+                    inventory[i] = inventory[i+1];
+                    inventory[i+1] = null;
+                }
+            }
+        }
     }
 
     private Item searchInventory(String itemName) {
@@ -119,9 +127,12 @@ public class Player extends Creature {
         } else if(item instanceof Trap) {
             System.out.println("Traps can't be picked up once they have been placed.");
         } else {
-            this.addToInventory(item);
-            this.getCurrentRoom().removeItem(item);
-            System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
+            if(this.addToInventory(item)) {
+                this.getCurrentRoom().removeItem(item);
+                System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
+            } else {
+                System.out.println("Inventory is full. Drop an item to make room.");
+            }
         }
     }
     

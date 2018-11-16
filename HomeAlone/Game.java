@@ -1,6 +1,8 @@
 package HomeAlone;
 
-import java.util.Scanner;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -8,12 +10,17 @@ public class Game {
     private Player kevin;
     private Nonplayer marv, harry;
     private String objective, objectiveDescription;
+    private List<Room> rooms;
     public final int WIN = 1;
     public int status;
     public final int LOSE = -1;
     private boolean started = false;
+    private final long time;
 
     public Game() {
+        this.time = 2;
+        this.rooms = new ArrayList<>();
+        this.status = 0;
         parser = new Parser();
         kevin = new Player("Kevin");
         marv = new Nonplayer("Marv");
@@ -50,6 +57,26 @@ public class Game {
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
 
+        rooms.add(foyer);
+        rooms.add(livingRoom);
+        rooms.add(diningRoom);
+        rooms.add(kitchen);
+        rooms.add(staircase);
+        rooms.add(secondFloor);
+        rooms.add(attic);
+        rooms.add(kevinRoom);
+        rooms.add(buzzRoom);
+        rooms.add(basement);
+        rooms.add(masterBedroom);
+        rooms.add(porch);
+        rooms.add(nwGarden);
+        rooms.add(nGarden);
+        rooms.add(neGarden);
+        rooms.add(wGarden);
+        rooms.add(swGarden);
+        rooms.add(seGarden);
+        rooms.add(treehouse);
+        
         rope = new Item("Rope", 1);
         bbGun = new Item("bbGun", 1);
         bucket = new Item("Bucket", 1);
@@ -75,15 +102,18 @@ public class Game {
         foyer.setExit("dining room", diningRoom);
         foyer.setInfo("I could put my toy cars here...");
         foyer.defineTrap(toyCars);
+        foyer.setRoomID(1);
 
         livingRoom.setExit("foyer", foyer);
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
         livingRoom.defineTrap(ornaments);
+        livingRoom.setRoomID(2);
         // livingRoom.addItem(fan);
         // livingRoom.addItem(pillow);
 
         diningRoom.setExit("foyer", foyer);
         diningRoom.setExit("kitchen", kitchen);
+        diningRoom.setRoomID(3);
 //        diningRoom.setInfo("I could setup a chicken-trap here with glue, a fan and some feathers...");
 //        diningRoom.defineTrap();
 
@@ -92,12 +122,14 @@ public class Game {
         kitchen.setExit("outside", neGarden);
         kitchen.setInfo("I should get ready for when the crooks arrive. Buzz' BB gun could be useful if they decide to enter the backdoor... \nI could set up a blowtorch trap here...");
         kitchen.defineTrap(blowtorch);
+        kitchen.setRoomID(4);
         // kitchen.addItem(plasticWrap);
 
         staircase.setExit("up", secondFloor);
         staircase.setExit("down", foyer);
         staircase.setInfo("I should set up at least one trap here, so that they won't get upstairs without a fight...\nMaybe the buckets of paint could work out...");
         staircase.defineTrap(paintBucket);
+        staircase.setRoomID(5);
 
         secondFloor.setExit("master bedroom", masterBedroom);
         secondFloor.setExit("attic", attic);
@@ -106,19 +138,23 @@ public class Game {
         secondFloor.setExit("buzz room", buzzRoom);
         secondFloor.setInfo("Upstairs. Maybe a tripwire between the narrow hallway could slow them down...");
         secondFloor.defineTrap(yarn);
+        secondFloor.setRoomID(6);
 
         attic.setExit("hallway", secondFloor);
         attic.setInfo("The attic is the perfect way for a zipline escape route to my treehouse! My dad has some rope laying around somewhere...");
         attic.addItem(rope);
         attic.addItem(ornaments);
+        attic.setRoomID(7);
         
         kevinRoom.setExit("hallway", secondFloor);
         kevinRoom.setInfo("Mom is always upset that I leave the toy cars around. Maybe they could be of use downstairs?");
         kevinRoom.addItem(toyCars);
+        kevinRoom.setRoomID(8);
                 
         buzzRoom.setExit("hallway", secondFloor);
         buzzRoom.setInfo("Buzz will never let me walk in here. There must be something in here I can use to defend myself with...");
         buzzRoom.addItem(bbGun);
+        buzzRoom.setRoomID(9);
 
         basement.setExit("kitchen", kitchen);
         basement.setExit("outside", neGarden);
@@ -129,19 +165,23 @@ public class Game {
         basement.addItem(blowtorch);
         // basement.addItem(glue);
         basement.addItem(paintBucket);
+        basement.setRoomID(10);
 
         masterBedroom.setExit("hallway", secondFloor);
         masterBedroom.setInfo("Mom's and Dad's bedroom. Is there anything in here I can use to make a tripwire?\nI can use the phone to call the cops when the crooks are inside the house...");
         masterBedroom.addItem(yarn);
+        masterBedroom.setRoomID(11);
 
         porch.setExit("inside", foyer);
         porch.setExit("west", swGarden);
         porch.setExit("east", seGarden);
         porch.setInfo("There's nothing much here, but the door is very undefended. I could pour water over the stairs so that they slip when they try to get in...");
         porch.defineTrap(bucket);
+        porch.setRoomID(12);
 
         nwGarden.setExit("east", nGarden);
         nwGarden.setExit("south", wGarden);
+        nwGarden.setRoomID(13);
         //nwGarden.setExit("window", livingRoom);
         // Marv-only movement "idea" for GUI iteration of the game
 
@@ -149,6 +189,7 @@ public class Game {
         nGarden.setExit("west", nwGarden);
         nGarden.setExit("east", neGarden);
         nGarden.setInfo("My treehouse is nearby. Could make for an excellent escape route from the attic...");
+        nGarden.setRoomID(14);
 
         neGarden.setExit("west", nGarden);
         neGarden.setExit("basement", basement);
@@ -156,19 +197,24 @@ public class Game {
         neGarden.setInfo("I know the crooks are trying to come through the kitchen door first.\nThe garden hose could help me set up an ice-slippery trap to the basement.");
         neGarden.defineTrap(hose);
         neGarden.addItem(hose);
+        neGarden.setRoomID(15);
 
         wGarden.setExit("north", nwGarden);
         wGarden.setExit("south", swGarden);
+        wGarden.setRoomID(16);
 
         swGarden.setExit("north", wGarden);
         swGarden.setExit("east", porch);
+        swGarden.setRoomID(17);
 
         seGarden.setExit("west", porch);
         seGarden.setInfo("There's a bucket here. I can fill it with water and pour the water onto the steps at the front porch...");
         seGarden.addItem(bucket);
+        seGarden.setRoomID(18);
 
         treehouse.setExit("down", nGarden);
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
+        treehouse.setRoomID(19);
 
         /*harry.addExitToPath(foyer);
         harry.addExitToPath(diningRoom);
@@ -197,13 +243,21 @@ public class Game {
         printWelcome();
 
         startPlaying();
-
+        LocalTime endGame = LocalTime.now().plusMinutes(this.time);
+        //endGame.plusMinutes(this.time);
         System.out.println(kevin.getCurrentRoom().getLongDescription());
 
         boolean finished = false;
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            
+            LocalTime time = LocalTime.now();
+            if(time.isAfter(endGame)) {
+                System.out.println("Time has run out. The wet bandits have arrived!");
+                finished = true;
+            }
+            
 /*
             if (harry.getDelay() <= 0) {
                 harry.walkPath();
@@ -216,17 +270,19 @@ public class Game {
             System.out.println("trap set");
             */
             boolean objective1Complete = false; //Not in use yet, but will be crucial for when we write our win-conditions.
-            if (status == WIN) {
-                System.out.println("You won!");
-                finished = true;
-            }
-
-            if (status == LOSE) {
-                System.out.println("You lose!");
-                finished = true;
-            }
+            
+        }
+        /**
+         * Check if traps have been set, change status accordingly
+         */
+        checkObjectives();
+        if (status == WIN) {
+            System.out.println("You won!");
         }
 
+        if (status == LOSE) {
+            System.out.println("You lose!");
+        }
         System.out.println("Thank you for playing. Good bye.");
     }
 
@@ -384,27 +440,7 @@ public class Game {
             }
         }
     }
-/* Moved to Creature/Player
-    //Method used for walking between rooms and checks for any invalid rooms.
-    private void goRoom(Command command) {
-        if (!command.hasSecondWord()) {
-            System.out.println("Go where?");
-            System.out.println("Exits: " + kevin.getCurrentRoom().getExitString());
-            return;
-        }
 
-        String direction = command.getSecondWord();
-
-        Room nextRoom = kevin.getCurrentRoom().getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        } else {
-            kevin.setCurrentRoom(nextRoom);
-            System.out.println(kevin.getCurrentRoom().getLongDescription());
-        }
-    }
-*/
     //Quit program method
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
@@ -440,10 +476,19 @@ public class Game {
     private String getObjective() {
         return objective;
     }
-
-//    private void collect() {
-//
-//        kevin.addToInventory(kevin.getCurrentRoom().);
-//
-//    }
+    
+    private void checkObjectives() {
+        for (Room room : rooms) {
+            if(room.getRoomID() == 1 || room.getRoomID() == 3){
+                Trap t = room.checkTraps();
+                if(t != null) {
+                    if(t.checkTrapSet()) {
+                        this.status = WIN;
+                    } else {
+                        this.status = LOSE;
+                    }
+                }
+            }
+        }
+    }
 }
