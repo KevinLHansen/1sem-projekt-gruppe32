@@ -372,8 +372,8 @@ public class Game {
                     System.out.println("'Setup' will try and place the mentioned item from your inventory in the room that you're currently in.");
                     System.out.println("If the item is a valid trap for the room, it will setup the trap.");
                     break;
-                case "collect":
-                    System.out.println("'Collect' will pick up the mentioned item from the room that you're currently located.");
+                case "pickup":
+                    System.out.println("'Pickup' will pick up the mentioned item from the room that you're currently located.");
                     break;
                 case "drop":
                     System.out.println("'Drop' will drop an item, so there is space in inventory for another item.");
