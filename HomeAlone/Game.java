@@ -251,7 +251,8 @@ public class Game {
 
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
-        System.out.println("Use " + CommandWord.EXAMINE + " ");
+        System.out.println("Use " + CommandWord.EXAMINE + " to examine the rooms you're in.");
+        System.out.println();
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
         System.out.println("Your first objective is: " + objective);

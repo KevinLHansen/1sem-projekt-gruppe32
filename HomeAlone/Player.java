@@ -105,6 +105,7 @@ public class Player extends Creature {
         }
     }
 
+
     public void pickupItem(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("Pickup what?");
