@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
 
 public class Game {
 
@@ -207,22 +205,12 @@ public class Game {
         System.out.println("\n  Kevin:");
         System.out.println("  \"This is my house. I have to defend it!\"");
         System.out.println();
-        /*
-        playing sound using AudioPlayer, which gets args from AudioStream, whcih gets args from FileInputStream
-        The line: 
-        AudioPlayer.player.start(new AudioStream(new FileInputStream("sfx/startQuote.wav")));
-        is the same as:
-        FileInputStream inputStream = new FileInputStream("sfx/startQuote.wav");
-        AudioStream audioStream = new AudioStream(inputStream);
-        AudioPlayer.player.start(inputStream);
-        */
-        try {
-            AudioPlayer.player.start(new AudioStream(new FileInputStream("sfx/startQuote.wav")));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        // instantiate AudioFile object for startQuote soundfile
+        AudioFile startQuote = null;
+        startQuote = new AudioFile("sfx/startQuote.wav");
+        // play the file
+        startQuote.playFile();
         
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
