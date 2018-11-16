@@ -292,7 +292,7 @@ public class Game {
         } else if (commandWord == CommandWord.EXAMINE) {
             // Counts as an action
             printInfo(kevin.getCurrentRoom().getInfo());
-        } else if (commandWord == CommandWord.COLLECT) {
+        } else if (commandWord == CommandWord.PICKUP) {
             // Counts as an action
             kevin.collectItem(command);
         } else if (commandWord == CommandWord.PLACE) {
