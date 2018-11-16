@@ -14,13 +14,23 @@ public class Room {
     private List<Trap> trap;
     private String info;
     private List<Item> items = new ArrayList<Item>();
+    private int roomID;
 
     public Room(String description) {
         this.description = description;
         this.info = "";
         exits = new HashMap<String, Room>();
-        items = new ArrayList<Item>();
+        items = new ArrayList<>();
         trap = new ArrayList<>();
+        roomID = 0;
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
     }
 
     public void addItem(Item item) {
