@@ -105,9 +105,10 @@ public class Player extends Creature {
         }
     }
 
-    public void collectItem(Command command) {
+
+    public void pickupItem(Command command) {
         if (!command.hasSecondWord()) {
-            System.out.println("Collect what?");
+            System.out.println("Pickup what?");
             System.out.println(this.getCurrentRoom().getItems());
             return;
         }
