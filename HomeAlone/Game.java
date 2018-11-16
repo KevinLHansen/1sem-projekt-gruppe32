@@ -1,6 +1,6 @@
 package HomeAlone;
 
-import java.util.Scanner;
+// import java.util.Scanner;
 
 public class Game {
 
@@ -250,6 +250,7 @@ public class Game {
 
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
+        System.out.println("Use " + CommandWord.EXAMINE + " ");
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
         System.out.println("Your first objective is: " + objective);
@@ -294,7 +295,7 @@ public class Game {
             printInfo(kevin.getCurrentRoom().getInfo());
         } else if (commandWord == CommandWord.PICKUP) {
             // Counts as an action
-            kevin.collectItem(command);
+            kevin.pickupItem(command);
         } else if (commandWord == CommandWord.PLACE) {
             // Counts as an action
             kevin.placeTrap(command);
