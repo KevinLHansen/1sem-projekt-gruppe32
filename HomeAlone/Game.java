@@ -307,7 +307,7 @@ public class Game {
 
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
-        System.out.println("Use " + CommandWord.EXAMINE + " to examine the rooms you're in.");
+        System.out.println("Use '" + CommandWord.EXAMINE + "' to examine the rooms you're in.");
         System.out.println();
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
@@ -482,7 +482,7 @@ public class Game {
 
     private void checkObjectives() {
         for (Room room : rooms) {
-            if(room.getRoomID() == 1 || room.getRoomID() == 3){
+            if(room.getRoomID() == 1){
                 Trap t = room.checkTraps();
                 if(t != null) {
                     if(t.checkTrapSet()) {
@@ -490,6 +490,8 @@ public class Game {
                     } else {
                         this.status = LOSE;
                     }
+                } else {
+                    this.status = LOSE;
                 }
             }
         }
