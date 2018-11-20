@@ -1,13 +1,5 @@
 package HomeAlone;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
 public class Game {
 
     private Parser parser;
@@ -210,7 +202,7 @@ public class Game {
         
         // instantiate AudioFile object for startquote sound
         AudioFile startQuote = null;
-        startQuote = new AudioFile("sfx/startQuote.wav");
+        startQuote = new AudioFile("build/classes/HomeAlone/sfx/startQuote.wav");
         // play the sound file
         startQuote.playFile();
         
