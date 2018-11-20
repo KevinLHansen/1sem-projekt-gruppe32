@@ -246,6 +246,20 @@ public class Game {
         startPlaying();
         LocalTime endGame = LocalTime.now().plusMinutes(this.time);
         //endGame.plusMinutes(this.time);
+
+        System.out.println("\n  Kevin:");
+        System.out.println("  \"This is my house. I have to defend it!\"");
+        System.out.println();
+
+        // instantiate AudioFile object for startquote sound
+        AudioFile startQuote = null;
+        startQuote = new AudioFile("build/classes/HomeAlone/sfx/startQuote.wav");
+        // play the sound file
+        startQuote.playFile();
+        
+        System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
+        System.out.println();
+        System.out.println("Your first objective is: " + objective);
         System.out.println(kevin.getCurrentRoom().getLongDescription());
 
         boolean finished = false;
@@ -289,6 +303,8 @@ public class Game {
 
     //Welcome screen for when the player runs the program
     private void printWelcome() {
+
+
         System.out.println(
                 "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
@@ -301,9 +317,7 @@ public class Game {
         System.out.println();
         System.out.println("Kevin rushes through the front door, switching the lights on and locking the door behind him.");
         System.out.println();
-        System.out.println("  Kevin:");
-        System.out.println("  \"This is my house. I have to defend it!\"");
-        System.out.println();
+
 
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
