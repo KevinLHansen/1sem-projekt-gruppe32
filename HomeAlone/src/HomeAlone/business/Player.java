@@ -1,5 +1,6 @@
-package HomeAlone;
+package HomeAlone.business;
 
+import HomeAlone.textUI.Command;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +25,7 @@ public class Player extends Creature {
         for (Item i : inventory) {
             // Check if there is an item
             if (i != null) {
-                //                        Check for last item in array, no "," needed if its the last.
                 items += i + ((this.inventory.length > j) ? ", " : "");
-            } // If there is no item, no need to finish the loop.
-            else {
-                //break;
             }
             j++;
         }
@@ -90,68 +87,55 @@ public class Player extends Creature {
         removeFromInventory(item);
     }
 
-    public void placeTrap(Command command) {
-        if (!command.hasSecondWord()) {
-            System.out.println("Set up what?");
-            System.out.println(this.getInventory());
-            return;
-        }
-
-        String secondWord = command.getSecondWord();
-        Item item = this.searchInventory(secondWord);
+    public boolean placeTrap(String itemName) {
+        
+        Item item = this.searchInventory(itemName);
         if (item == null) {
-            System.out.println("What item? " + secondWord + " not found.");
+            errorList.put("setup", "What item? " + itemName + " not found.");
+            return false;
         } else {
             List<Trap> traps = this.getCurrentRoom().getPossibleTraps();
             
             if(traps.contains(item)) {
                 this.setTrap(item);
-                System.out.println("You set up a trap using " + item);
+                return true; //"You set up a trap using " + item + "\n";
             } else {
-                System.out.println("Can't put " + item + " here.");
+                errorList.put("setup", "Can't put " + itemName + " here.\n");
+                return false;
             }
         }
     }
 
 
-    public void pickupItem(Command command) {
-        if (!command.hasSecondWord()) {
-            System.out.println("Pickup what?");
-            System.out.println(this.getCurrentRoom().getItems());
-            return;
-        }
-
-        String secondWord = command.getSecondWord();
+    public boolean pickupItem(String secondWord) {
+        
         Item item = this.getCurrentRoom().getRealItem(secondWord);
         if (item == null) {
-            System.out.println("Invalid item or no item found. Try again.");
+            errorList.put("pickup","Invalid item or no item found. Try again.\n");
+            return false;
         } else if(item instanceof Trap) {
-            System.out.println("Traps can't be picked up once they have been placed.");
+            errorList.put("pickup","Traps can't be picked up once they have been placed.\n");
+            return false;
         } else {
             if(this.addToInventory(item)) {
                 this.getCurrentRoom().removeItem(item);
-                System.out.println("You pick up " + item + " from " + this.getCurrentRoom().getShortDescription());
+                return true;
             } else {
-                System.out.println("Inventory is full. Drop an item to make room.");
+                errorList.put("pickup", "Inventory is full. Drop an item to make room.\n");
+                return false;
             }
         }
     }
     
-    public void dropCommand(Command command) {
-        if (!command.hasSecondWord()) {
-            System.out.println("Drop what?");
-            System.out.println(this.getInventory());
-            return;
-        }
-
-        String secondWord = command.getSecondWord();
-        Item item = this.searchInventory(secondWord);
+    public boolean dropCommand(String itemName) {
+        Item item = this.searchInventory(itemName);
         if (item == null) {
-            System.out.println("What item? " + secondWord + " not found.");
+            errorList.put("drop","What item? " + itemName + " not found.");
+            return false;
         } else {
             this.getCurrentRoom().addItem(item);
             this.removeFromInventory(item);
-            System.out.println("You dropped " + item);
+            return true;
         }
     }
 }

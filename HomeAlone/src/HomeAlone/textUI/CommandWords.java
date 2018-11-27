@@ -1,4 +1,4 @@
-package HomeAlone;
+package HomeAlone.textUI;
 import java.util.HashMap;
 
 

@@ -1,4 +1,7 @@
-package HomeAlone;
+package HomeAlone.business;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Needs commands for some of the commands like go
@@ -9,6 +12,7 @@ public class Creature {
 
     private String name;
     private Room currentRoom;
+    protected Map<String, String> errorList;
 
     // No argument constructor, in case of extending the class
     public Creature() {
@@ -19,6 +23,7 @@ public class Creature {
     // Default constructor to use, when creating a Creature object
     public Creature(String name) {
         this.name = name;
+        errorList = new HashMap<>();
         //this.currentRoom = new Room();
     }
 
@@ -39,18 +44,23 @@ public class Creature {
         this.currentRoom = room;
     }
     
-    public void goRoom(Command command) {
-        if (!command.hasSecondWord()) {
-            System.out.println("Go where?");
-            return;
+    public String getError(String e) {
+        String error = "";
+        if(e.equalsIgnoreCase("pickup")) {
+            error = errorList.get(e);
+        } else if(e.equalsIgnoreCase("setup")) {
+            error = errorList.get(e);
+        } else if(e.equalsIgnoreCase("drop")) {
+            error = errorList.get(e);
         }
-
-        String direction = command.getSecondWord();
-
+        return error;
+    }
+    
+    public boolean goRoom(String direction) {
         Room nextRoom = this.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            return false;
         } else {
             // footstep sound every time player moves between rooms
             AudioFile footStepSound = null;
@@ -58,7 +68,7 @@ public class Creature {
             footStepSound.playFile();
             
             this.setCurrentRoom(nextRoom);
-            System.out.println(this.getCurrentRoom().getLongDescription());
+            return true;
         }
     }
 }

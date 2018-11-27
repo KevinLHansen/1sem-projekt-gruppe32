@@ -1,9 +1,8 @@
-package HomeAlone;
+package HomeAlone.business;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -148,9 +147,22 @@ public class Room {
      * Checks inventory for set traps, return true if any found
      * @return
      */
-    public Trap checkTraps() {
+    public String checkTrapSet() {
         Trap trap;
         //boolean returnVal = false;
+        for (Item item : this.items) {
+            if(item instanceof Trap) {
+                trap = (Trap)item;
+                if(trap.checkTrapSet()) {
+                    return trap.getName();
+                }
+            }
+        }
+        return "";
+    }
+    
+    public Trap checkTraps() {
+        Trap trap;
         for (Item item : this.items) {
             if(item instanceof Trap) {
                 trap = (Trap)item;

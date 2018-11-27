@@ -1,4 +1,4 @@
-package HomeAlone;
+package HomeAlone.business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class Nonplayer extends Creature {
     /**
      * Walk the path created
      */
-    public void walkPath() {
+    public String walkPath() {
         if (this.currentPath.length > this.step) {
             Room r = this.currentPath[this.step];
 
@@ -72,9 +72,9 @@ public class Nonplayer extends Creature {
             if (!(null == trap)) {
                 this.delay = trap.getDelay();
             }
-            System.out.println(this.getName() + " is in: " + super.getCurrentRoom().getShortDescription());
+            return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
         } else {
-            System.out.println(this.getName() + " has reach the end. Reciding in " + super.getCurrentRoom().getShortDescription());
+            return this.getName() + " has reach the end. Standing in " + super.getCurrentRoom().getShortDescription();
         }
     }
 
