@@ -64,7 +64,7 @@ public class Creature {
         } else {
             // footstep sound every time player moves between rooms
             AudioFile footStepSound = null;
-            footStepSound = new AudioFile("build/classes/HomeAlone/sfx/footStep.wav");
+            footStepSound = new AudioFile("sfx/footStep.wav");
             footStepSound.playFile();
             
             this.setCurrentRoom(nextRoom);

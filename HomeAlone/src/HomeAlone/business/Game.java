@@ -7,6 +7,8 @@ import HomeAlone.textUI.PresentationControl;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Game {
 
@@ -302,6 +304,24 @@ public class Game {
     
     public boolean dropItem(String itemName) {
         return kevin.dropCommand(itemName);
+    }
+    
+    public ObservableList getExitsObservableList() {
+        String[] exits = kevin.getCurrentRoom().getExitString().split(", ");
+        ObservableList<String> exitList = FXCollections.observableArrayList();
+        for (String exit : exits) {
+            exitList.add(exit);
+        }
+        return exitList;
+    }
+    
+    public ObservableList getItemsObservableList() {
+        String[] items = kevin.getCurrentRoom().getItems().split(", ");
+        ObservableList<String> itemList = FXCollections.observableArrayList();
+        for (String item : items) {
+            itemList.add(item);
+        }
+        return itemList;
     }
     
     //Method used for calling the "help"-command that prints out instructions and commands.

@@ -106,7 +106,7 @@ public class Room {
     }
 
     public String getExitString() {
-        String returnString = "Exits: ";
+        String returnString = "";
         Set<String> keys = exits.keySet();
         int j = 1;
         for (String exit : keys) {
