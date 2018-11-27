@@ -5,6 +5,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,7 +19,24 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FXMLDocumentController">
    <children>
-      <GridPane prefHeight="534.0" prefWidth="532.0">
+      <MenuBar prefHeight="25.0" prefWidth="575.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Game">
+               <items>
+                  <MenuItem fx:id="menuItemRestart" mnemonicParsing="false" onAction="#handleMenuItemRestart" text="Restart" />
+                  <MenuItem fx:id="menuItemShowMap" mnemonicParsing="false" onAction="#handleMenuItemShowMap" text="Show map" />
+                  <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                <MenuItem fx:id="menuItemHTP" mnemonicParsing="false" onAction="#handleMenuItemHTP" text="How to play" />
+                  <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <GridPane layoutY="25.0" prefHeight="509.0" prefWidth="532.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>

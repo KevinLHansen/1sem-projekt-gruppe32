@@ -24,6 +24,7 @@ public class Creature {
     public Creature(String name) {
         this.name = name;
         errorList = new HashMap<>();
+        errorList.put("pickup", "");
         //this.currentRoom = new Room();
     }
 

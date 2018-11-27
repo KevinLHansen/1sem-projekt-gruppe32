@@ -135,6 +135,7 @@ public class Player extends Creature {
         } else {
             this.getCurrentRoom().addItem(item);
             this.removeFromInventory(item);
+            errorList.put("pickup", "");
             return true;
         }
     }

@@ -266,7 +266,7 @@ public class Game {
     public String getError(String e) {
         String error = "";
         if(e.equalsIgnoreCase("pickup")) {
-            kevin.getError(e);
+            error = kevin.getError(e);
         }
         return error;
     }
