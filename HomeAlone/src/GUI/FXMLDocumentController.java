@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import HomeAlone.business.AudioFile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -125,6 +126,10 @@ public class FXMLDocumentController implements Initializable {
                 lvInventory.setItems(inventoryList);
                 lvItemsNearby.setItems(game.getItemsObservableList());
                 //lvItemsNearby.
+                        
+                AudioFile pickupSound = null;
+                pickupSound = new AudioFile("sfx/pickup.wav");
+                pickupSound.playFile();
             } else {
                 txtOutput.setText(game.getError("pickup"));
             }
@@ -147,6 +152,10 @@ public class FXMLDocumentController implements Initializable {
         game.dropItem(itemName);
         inventoryList.remove(itemName);
         lvItemsNearby.setItems(game.getItemsObservableList());
+        
+        AudioFile dropSound = null;
+        dropSound = new AudioFile("sfx/drop.wav");
+        dropSound.playFile();
     }
 
     @FXML
