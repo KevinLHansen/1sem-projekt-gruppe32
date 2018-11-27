@@ -53,17 +53,17 @@ public class FXMLDocumentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lvAvailableExits.setItems(game.getExitsObservableList());
+        lvAvailableExits.setItems(game.getExitsObservableList()); // show available exits at currentRoom (foyer)
     }    
 
     @FXML
     private void handleBtnMove(ActionEvent event) {
-        String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem();
-        txtCurrentLocation.setText("Current location: " + nextRoom);
+        String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
+        txtCurrentLocation.setText("Current location: " + nextRoom); // update Current location label with using the nextRoom String
         
-        game.goRoom(nextRoom);
-        lvAvailableExits.setItems(game.getExitsObservableList());
-        txtOutput.setText("");
+        game.goRoom(nextRoom); // move to nextRoom
+        lvAvailableExits.setItems(game.getExitsObservableList()); // update available exits at new currentRoom
+        txtOutput.setText(""); // clear output box
         
     }
 
@@ -71,21 +71,21 @@ public class FXMLDocumentController implements Initializable {
     private void handleBtnExamine(ActionEvent event) {
         String returnString = game.getCurrentRoomInfo();
         String outputText = "";
-        if ("".equals(returnString)) {
+        if ("".equals(returnString)) { // if RoomInfo is empty
             txtOutput.setText("Kevin doesn't think that there's anything he can do here. Maybe try something elsewhere.");
         } else {
             outputText += "Kevin's thoughts: \n\"";
             String t = game.getTrapInfo();
-            if(t.equalsIgnoreCase("")) {
+            if(t.equalsIgnoreCase("")) { 
                 outputText +=  returnString + "\"";
             } else {
                 outputText += "I already set up a trap in this room. Better look somewhere else.\"";
                 outputText += "\nTrap: ";
                 outputText += game.getTrapString();
             }
-            txtOutput.setText(outputText);
+            txtOutput.setText(outputText); // paste outputText to output box
         }
-        lvItemsNearby.setItems(game.getItemsObservableList());
+        lvItemsNearby.setItems(game.getItemsObservableList()); // update nearby items list with nearby items
             
     }
 
