@@ -251,7 +251,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField alignment="CENTER" prefHeight="65.0" prefWidth="194.0" text="999">
+                        <TextField fx:id="txtTimeLeft" alignment="CENTER" editable="false" prefHeight="65.0" prefWidth="194.0" text="999">
                            <font>
                               <Font size="38.0" />
                            </font>
