@@ -30,8 +30,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextArea
 import javafx.stage.Window;
+import javafx.scene.control.TextField
 
 /**
  * FXML Controller class
@@ -65,6 +66,7 @@ public class FXMLDocumentController implements Initializable {
 
     Game game = new Game();
     ObservableList<String> inventoryList = FXCollections.observableArrayList();
+
     @FXML
     private MenuItem menuItemRestart;
     @FXML
@@ -77,6 +79,8 @@ public class FXMLDocumentController implements Initializable {
     private MenuItem menuItemAbout;
     @FXML
     private MenuBar menuBar;
+    @FXML
+    private TextField txtTimeLeft;
 
     /**
      * Initializes the controller class.
@@ -132,7 +136,7 @@ public class FXMLDocumentController implements Initializable {
                 lvInventory.setItems(inventoryList);
                 lvItemsNearby.setItems(game.getItemsObservableList());
                 //lvItemsNearby.
-                        
+
                 AudioFile pickupSound = null;
                 pickupSound = new AudioFile("sfx/pickup.wav");
                 pickupSound.playFile();
@@ -158,7 +162,7 @@ public class FXMLDocumentController implements Initializable {
         game.dropItem(itemName);
         inventoryList.remove(itemName);
         lvItemsNearby.setItems(game.getItemsObservableList());
-        
+
         AudioFile dropSound = null;
         dropSound = new AudioFile("sfx/drop.wav");
         dropSound.playFile();
@@ -169,23 +173,23 @@ public class FXMLDocumentController implements Initializable {
         try {
             Stage primaryStage = (Stage)((Node)menuBar).getScene().getWindow();
             primaryStage.close();
-            
+
             game = null;
             game = new Game();
-            
+
             Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            
+
             stage.setTitle("HOME ALONE™");
             stage.getIcons().add(new Image("file:img/icon.png"));
-            
+
             stage.setResizable(false);
-            stage.setScene(scene);       
+            stage.setScene(scene);
             stage.show();
-            
-            
+
+
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -241,10 +245,10 @@ public class FXMLDocumentController implements Initializable {
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            
+
             stage.setTitle("HOME ALONE™ - About");
             stage.getIcons().add(new Image("file:img/icon.png"));
-            
+
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
