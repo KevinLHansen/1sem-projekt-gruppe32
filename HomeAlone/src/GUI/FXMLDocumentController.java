@@ -261,14 +261,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleListItemClicked(MouseEvent event) {
 
-        Tooltip loc = new Tooltip();
-        loc.setText(game.getCurrentRoomShortDescription());
-        txtCurrentLocation.setTooltip(loc);
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
         if (event.getClickCount() == 2) {
             game.goRoom(nextRoom);
             txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
-
+            Tooltip loc = new Tooltip();
+            loc.setText(game.getCurrentRoomShortDescription());
+            txtCurrentLocation.setTooltip(loc);
             lvAvailableExits.setItems(game.getExitsObservableList()); // update available exits at new currentRoom
             txtOutput.setText(""); // clear output box
         }

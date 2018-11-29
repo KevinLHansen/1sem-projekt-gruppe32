@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="480.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ShowMapController">
    <children>
-      <TextArea editable="false" layoutX="15.0" layoutY="109.0" prefHeight="511.0" prefWidth="451.0" text="Text." wrapText="true">
+      <TextArea editable="false" layoutX="15.0" layoutY="109.0" prefHeight="511.0" prefWidth="451.0" text="Version 8047  HA HA&#10;Syddansk Universitet&#10;Home Alone &#10;Gruppe 32 &#10;Software engineering/Softwareteknologi&#10;" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
