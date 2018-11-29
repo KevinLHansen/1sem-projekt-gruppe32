@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -61,6 +62,7 @@ public class FXMLDocumentController implements Initializable {
 
     Game game = new Game();
     ObservableList<String> inventoryList = FXCollections.observableArrayList();
+    
     @FXML
     private MenuItem menuItemRestart;
     @FXML
@@ -71,6 +73,8 @@ public class FXMLDocumentController implements Initializable {
     private MenuItem menuItemHTP;
     @FXML
     private MenuItem menuItemAbout;
+    @FXML
+    private TextField txtTimeLeft;
 
     /**
      * Initializes the controller class.
