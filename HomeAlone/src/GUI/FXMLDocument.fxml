@@ -25,8 +25,8 @@
          <menus>
             <Menu mnemonicParsing="false" text="Game">
                <items>
-                  <MenuItem fx:id="menuItemRestart" mnemonicParsing="false" onAction="#handleMenuItemRestart" text="Restart" />
                   <MenuItem fx:id="menuItemShowMap" mnemonicParsing="false" onAction="#handleMenuItemShowMap" text="Show map" />
+                  <MenuItem fx:id="menuItemRestart" mnemonicParsing="false" onAction="#handleMenuItemRestart" text="Restart" />
                   <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
                </items>
             </Menu>

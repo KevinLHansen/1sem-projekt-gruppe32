@@ -194,6 +194,21 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleMenuItemHTP(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("HowToPlay.fxml"));
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            stage.setTitle("HOME ALONE™ - How to play");
+            stage.getIcons().add(new Image("file:img/icon.png"));
+
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
