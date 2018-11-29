@@ -173,7 +173,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="txtObjective" editable="false" prefHeight="112.0" prefWidth="142.0">
+                              <TextArea fx:id="txtObjective" editable="false" prefHeight="112.0" prefWidth="142.0" text="Prepare yourself. Setup traps to stop the burglars!" wrapText="true">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>
