@@ -33,6 +33,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.stage.Window;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -111,8 +112,8 @@ public class FXMLDocumentController implements Initializable {
         } else {
             outputText += "Kevin's thoughts: \n\"";
             String t = game.getTrapInfo();
-            if(t.equalsIgnoreCase("")) {
-                outputText +=  returnString + "\"";
+            if (t.equalsIgnoreCase("")) {
+                outputText += returnString + "\"";
             } else {
                 outputText += "I already set up a trap in this room. Better look somewhere else.\"";
                 outputText += "\nTrap: ";
@@ -172,7 +173,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleMenuItemRestart(ActionEvent event) {
         try {
-            Stage primaryStage = (Stage)((Node)menuBar).getScene().getWindow();
+            Stage primaryStage = (Stage) ((Node) menuBar).getScene().getWindow();
             primaryStage.close();
 
             game = null;
@@ -189,7 +190,6 @@ public class FXMLDocumentController implements Initializable {
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
-
 
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -260,12 +260,15 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleListItemClicked(MouseEvent event) {
-        
-        if(event.getClickCount() == 2) {
-            String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
 
+        Tooltip loc = new Tooltip();
+        loc.setText(game.getCurrentRoomShortDescription());
+        txtCurrentLocation.setTooltip(loc);
+        String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
+        if (event.getClickCount() == 2) {
             game.goRoom(nextRoom);
             txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
+
             lvAvailableExits.setItems(game.getExitsObservableList()); // update available exits at new currentRoom
             txtOutput.setText(""); // clear output box
         }
