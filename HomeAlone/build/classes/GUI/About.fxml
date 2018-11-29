@@ -12,7 +12,7 @@
             <Font size="14.0" />
          </font>
       </TextArea>
-      <Label layoutX="15.0" layoutY="14.0" text="How to play:" textFill="WHITE">
+      <Label layoutX="15.0" layoutY="14.0" text="About:" textFill="WHITE">
          <font>
             <Font name="Century" size="24.0" />
          </font>
