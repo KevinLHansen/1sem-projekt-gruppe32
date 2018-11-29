@@ -23,11 +23,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -71,6 +75,8 @@ public class FXMLDocumentController implements Initializable {
     private MenuItem menuItemHTP;
     @FXML
     private MenuItem menuItemAbout;
+    @FXML
+    private MenuBar menuBar;
 
     /**
      * Initializes the controller class.
@@ -100,8 +106,8 @@ public class FXMLDocumentController implements Initializable {
         } else {
             outputText += "Kevin's thoughts: \n\"";
             String t = game.getTrapInfo();
-            if (t.equalsIgnoreCase("")) {
-                outputText += returnString + "\"";
+            if(t.equalsIgnoreCase("")) {
+                outputText +=  returnString + "\"";
             } else {
                 outputText += "I already set up a trap in this room. Better look somewhere else.\"";
                 outputText += "\nTrap: ";
@@ -126,7 +132,7 @@ public class FXMLDocumentController implements Initializable {
                 lvInventory.setItems(inventoryList);
                 lvItemsNearby.setItems(game.getItemsObservableList());
                 //lvItemsNearby.
-
+                        
                 AudioFile pickupSound = null;
                 pickupSound = new AudioFile("sfx/pickup.wav");
                 pickupSound.playFile();
@@ -152,7 +158,7 @@ public class FXMLDocumentController implements Initializable {
         game.dropItem(itemName);
         inventoryList.remove(itemName);
         lvItemsNearby.setItems(game.getItemsObservableList());
-
+        
         AudioFile dropSound = null;
         dropSound = new AudioFile("sfx/drop.wav");
         dropSound.playFile();
@@ -161,8 +167,22 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleMenuItemRestart(ActionEvent event) {
         try {
-            Runtime.getRuntime().exec("java -jar HomeAloneGUI.jar");
-            System.exit(0);
+            Stage primaryStage = (Stage)((Node)menuBar).getScene().getWindow();
+            primaryStage.close();
+            
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            
+            stage.setTitle("HOME ALONE™");
+            stage.getIcons().add(new Image("file:img/icon.png"));
+            
+            stage.setResizable(false);
+            stage.setScene(scene);       
+            stage.show();
+            
+            
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -215,16 +235,18 @@ public class FXMLDocumentController implements Initializable {
     private void handleMenuItemAbout(ActionEvent event) {
         try {
             Parent root = root = FXMLLoader.load(getClass().getResource("About.fxml"));
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.setTitle("HOME ALONE™ - ABOUT");
+            
+            stage.setTitle("HOME ALONE™ - About");
             stage.getIcons().add(new Image("file:img/icon.png"));
+            
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }
     }
+}

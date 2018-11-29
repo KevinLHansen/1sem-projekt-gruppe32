@@ -21,7 +21,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="529.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FXMLDocumentController">
    <children>
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="544.0">
+      <MenuBar fx:id="menuBar" layoutY="1.0" prefHeight="26.0" prefWidth="544.0">
          <menus>
             <Menu mnemonicParsing="false" text="Game">
                <items>
