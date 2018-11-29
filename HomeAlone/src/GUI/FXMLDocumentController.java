@@ -30,9 +30,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea
+import javafx.scene.control.TextArea;
 import javafx.stage.Window;
-import javafx.scene.control.TextField
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -254,6 +255,19 @@ public class FXMLDocumentController implements Initializable {
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleListItemClicked(MouseEvent event) {
+        
+        if(event.getClickCount() == 2) {
+            String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
+
+            game.goRoom(nextRoom);
+            txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
+            lvAvailableExits.setItems(game.getExitsObservableList()); // update available exits at new currentRoom
+            txtOutput.setText(""); // clear output box
         }
     }
 }
