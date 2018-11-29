@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -78,7 +79,7 @@
                                           <Insets left="5.0" />
                                        </padding>
                                     </Label>
-                                    <Label fx:id="txtCurrentLocation" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="198.0" style="-fx-background-color: e5e5e5;" text="Current location: foyer">
+                                    <Label fx:id="txtCurrentLocation" alignment="CENTER_RIGHT" cache="true" cacheHint="QUALITY" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="198.0" style="-fx-background-color: e5e5e5;" text="Current location: foyer">
                                        <HBox.margin>
                                           <Insets right="5.0" />
                                        </HBox.margin>
@@ -88,6 +89,9 @@
                                        <font>
                                           <Font size="10.0" />
                                        </font>
+                                       <tooltip>
+                                          <Tooltip fx:id="CurrentLoc" text="Current location" />
+                                       </tooltip>
                                     </Label>
                                  </children>
                                  <VBox.margin>
