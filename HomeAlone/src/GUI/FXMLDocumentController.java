@@ -79,6 +79,7 @@ public class FXMLDocumentController implements Initializable {
     private Timeline timeline = new Timeline();
     //private boolean isRunning;
     private int min = countDown;
+    private int phase = 1;
 
     @FXML
     private MenuItem menuItemRestart;
@@ -102,6 +103,7 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lvAvailableExits.setItems(game.getExitsObservableList()); // show available exits at currentRoom (foyer)
         txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
+        txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription());
         startTimer();
     }
 
@@ -112,25 +114,42 @@ public class FXMLDocumentController implements Initializable {
 
                 startTimeSec--;
                 boolean isSecondsZero = startTimeSec == 0;
-                boolean timeToChangeBackground = startTimeSec == 0 && countDown == 0;
+                boolean isSecondsLessThanZero = startTimeSec < 0;
+                boolean timeToChangePhase = startTimeSec == 0 && countDown == 0;
 
                 if (isSecondsZero) {
                     countDown--;
                     startTimeSec = 60;
                 }
-                if (timeToChangeBackground) {
+                if (isSecondsLessThanZero) {
+                    countDown--;
+                    startTimeSec = 10;//59;
+                }
+                if (timeToChangePhase) {
                     timeline.stop();
-                    countDown = 0;
-                    startTimeSec = 0;
-                    txtTimeLeft.setText(String.valueOf(countDown));
                     // Start next phase here
+                    phase = game.changePhase();
+                    if(!game.checkStatus()) {
+                        // YOU LOSE
+                        txtOutput.setText("YOU LOSE!!");
+                    } else {
+                        if(phase == 2) {
+                            countDown = 1;
+                            startTimeSec = 0;
+                            timeline.playFromStart();
+                        }
+                        if(phase == 3) {
+                            txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
+                        }
+                        txtObjective.setText(game.getObjective());
+                    }
                 }
 
                 txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
-
+                
             }
         });
-        startTimeSec = 60; // Change to 60!
+        startTimeSec = 10; // Change to 60!
         countDown = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
@@ -143,23 +162,41 @@ public class FXMLDocumentController implements Initializable {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
 
         game.goRoom(nextRoom);
+        
+        if(phase > 1) {
+            if(!game.checkStatus()){
+                // LOSE
+                txtOutput.setText("YOU LOSE!!");
+                return;
+            }
+        }
         txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
         lvAvailableExits.setItems(game.getExitsObservableList()); // update available exits at new currentRoom
         txtOutput.setText(""); // clear output box
+        if(phase == 3) {
+            String s = game.checkNeighbourRoom();
+            txtOutput.appendText(s);
+        }
 
     }
 
     @FXML
     private void handleBtnExamine(ActionEvent event) {
-        String returnString = game.getCurrentRoomInfo();
+        if(phase > 1) {
+            if(!game.checkStatus()) {
+                txtOutput.setText("YOU LOSE!!");
+                return;
+            }
+        }
+        String roomInfo = game.getCurrentRoomInfo();
         String outputText = "";
-        if ("".equals(returnString)) { // if RoomInfo is empty
+        if ("".equals(roomInfo)) { // if RoomInfo is empty
             txtOutput.setText("Kevin doesn't think that there's anything he can do here. Maybe try something elsewhere.");
         } else {
             outputText += "Kevin's thoughts: \n\"";
             String t = game.getTrapInfo();
             if (t.equalsIgnoreCase("")) {
-                outputText += returnString + "\"";
+                outputText += roomInfo + "\"";
             } else {
                 outputText += "I already set up a trap in this room. Better look somewhere else.\"";
                 outputText += "\nTrap: ";
@@ -167,13 +204,23 @@ public class FXMLDocumentController implements Initializable {
             }
             txtOutput.setText(outputText); // paste outputText to output box
         }
+        if(phase == 3) {
+            String s = game.checkNeighbourRoom();
+            txtOutput.appendText(s);
+        }
         lvItemsNearby.setItems(game.getItemsObservableList()); // update nearby items list with nearby items
+        
 
     }
 
     @FXML
     private void handleBtnPickup(ActionEvent event) {
-
+        if(phase > 1) {
+            if(!game.checkStatus()) {
+                txtOutput.setText("YOU LOSE!!");
+                return;
+            }
+        }
         String itemName = lvItemsNearby.getSelectionModel().getSelectedItem();
         if (itemName != null) {
             game.pickupItem(itemName);
@@ -196,7 +243,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleBtnSetup(ActionEvent event) {
-
+        if(phase > 1) {
+            if(!game.checkStatus()) {
+                txtOutput.setText("YOU LOSE!!");
+                return;
+            }
+        }
         String itemName = lvInventory.getSelectionModel().getSelectedItem();
         game.setTrap(itemName);
         inventoryList.remove(itemName);
@@ -205,7 +257,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleBtnDrop(ActionEvent event) {
-
+        if(phase > 1) {
+            if(!game.checkStatus()) {
+                txtOutput.setText("YOU LOSE!!");
+                return;
+            }
+        }
         String itemName = lvInventory.getSelectionModel().getSelectedItem();
         game.dropItem(itemName);
         inventoryList.remove(itemName);
@@ -310,12 +367,23 @@ public class FXMLDocumentController implements Initializable {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
         if (event.getClickCount() == 2) {
             game.goRoom(nextRoom);
+            if(phase > 1) {
+                if(!game.checkStatus()){
+                    // LOSE
+                    txtOutput.setText("YOU LOSE!!");
+                    return;
+                }
+            }
             txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
             Tooltip loc = new Tooltip();
             loc.setText(game.getCurrentRoomShortDescription());
             txtCurrentLocation.setTooltip(loc);
             lvAvailableExits.setItems(game.getExitsObservableList()); // update available exits at new currentRoom
             txtOutput.setText(""); // clear output box
+            if(phase == 3) {
+                String s = game.checkNeighbourRoom();
+                txtOutput.appendText(s);
+            }
         }
     }
 }
