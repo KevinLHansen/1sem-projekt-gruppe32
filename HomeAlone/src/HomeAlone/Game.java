@@ -36,7 +36,7 @@ public class Game {
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn, phone;
 
         foyer = new Room("Foyer - Front entrance");
         livingRoom = new Room("Living room");
@@ -61,9 +61,6 @@ public class Game {
         Room[] phoneRooms = {
             masterBedroom, livingRoom
         };
-        
-        int index = new Random().nextInt(phoneRooms.length);
-        phoneRooms[index].addItem(phone);
         
         rooms.add(foyer);
         rooms.add(livingRoom);
@@ -101,6 +98,10 @@ public class Game {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
+        phone = new Item("Phone", 1);
+        
+        int index = new Random().nextInt(phoneRooms.length);
+        phoneRooms[index].addItem(phone);
 
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
