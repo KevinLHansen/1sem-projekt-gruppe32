@@ -62,22 +62,146 @@ public class Nonplayer extends Creature {
      * Walk the path created
      */
     public String walkPath() {
-        if (this.currentPath.length > this.step) {
-            Room r = this.currentPath[this.step];
+        if(this.delay <= 0) {
+            if (this.currentPath.length > this.step) {
+                Room r = this.currentPath[this.step];
 
-            this.setPreviousRoom();
-            super.setCurrentRoom(r);
-            this.step++;
-            Trap trap = super.getCurrentRoom().checkTraps();
-            if (!(null == trap)) {
-                this.delay = trap.getDelay();
+                checkExitTrap(this.getCurrentRoom().getRoomID(), r.getRoomID());
+
+                this.setPreviousRoom();
+                super.setCurrentRoom(r);
+                this.step++;
+                Trap trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    this.delay = trap.getDelay();
+                }
+                return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
+            } else {
+                return "Reached end of path";
             }
-            return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
         } else {
-            return this.getName() + " has reach the end. Standing in " + super.getCurrentRoom().getShortDescription();
+            this.delay -= 2;
+            return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
         }
     }
 
+    public boolean checkExitTrap(int roomID, int nextRoomID) {
+        // North-East Gardens
+        if (roomID == 15) {
+
+            // Checks if Harry walks into the kitchen and meets the blowtorch trap.
+            if (nextRoomID == 4) {
+                Trap trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    if (trap.getName().equals("Blowtorch")) {
+                        this.delay = trap.getDelay();
+                        return true;
+                    }
+                }
+            }
+
+            // Checks if there's slippery steps when Marv walks downstairs to the basement.
+            if (nextRoomID == 10) {
+                Trap trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    this.delay = trap.getDelay();
+                    return true;
+                }
+            }
+
+            // Basement
+        } else if (roomID == 10) {
+
+            // Checks if Marv walks into the tar and nail trap, and changes Marv's path if the trap has been sprung
+            if (nextRoomID == 4) {
+                Trap trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    this.delay = trap.getDelay();
+                    // TO-DO: Change path
+                    return true;
+                }
+            }
+
+            // North-West Gardens
+        } else if (roomID == 13) {
+
+            // Checks if the ornaments trap has been set when Marv climbs through the window.
+            if (nextRoomID == 2) {
+                Trap trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    if (trap.getName().equals("Ornaments")) {
+                        this.delay = trap.getDelay();
+                        return true;
+                    }
+                }
+            }
+
+            // Foyer
+        } else if (roomID == 1) {
+            Trap trap = super.getCurrentRoom().checkTraps();
+
+            // Checks if the enemy collides with the toy car trap, and removes its functionality.
+            if (!(null == trap)) {
+                if (trap.getName().equals("Toy cars")) {
+                    this.delay = trap.getDelay();
+                    // TO-DO: Remove trap
+                    return true;
+                }
+            }
+
+            // Checks if one enemy collides with the swinging paint bucket trap on their way to the second floor, and removes its functionality.
+            if (nextRoomID == 5) {
+                trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    if (trap.getName().equals("Paint bucket")) {
+                        this.delay = trap.getDelay();
+                        // TO-DO: Remove trap
+                        return true;
+                    }
+                }
+            }
+
+            // Second-floor hallway
+        } else if (roomID == 6) {
+
+            //Checks if the enemy collides with the tripwire trap, and removes its functionality
+            Trap trap = super.getCurrentRoom().checkTraps();
+
+            if (!(null == trap)) {
+                if (trap.getName().equals("Yarn")) {
+                    this.delay = trap.getDelay();
+                    // TO-DO: Remove trap
+                    return true;
+                }
+            }
+
+            // Porch
+        } else if (roomID == 12) {
+
+            // Checks if Harry slips on the porch steps.
+            Trap trap = super.getCurrentRoom().checkTraps();
+            if (!(null == trap)) {
+                if (trap.getName().equals("Bucket")) {
+                    this.delay = trap.getDelay();
+                    return true;
+                }
+            }
+
+            //Checks if the heater trap has been put on the front door, and changes Harry's path.
+            if (nextRoomID == 1) {
+                trap = super.getCurrentRoom().checkTraps();
+                if (!(null == trap)) {
+                    if (trap.getName().equals("Heater")) {
+                        this.delay = trap.getDelay();
+                        // TO-DO: Change path
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
     private void decreaseDelay() {
         this.delay--;
     }

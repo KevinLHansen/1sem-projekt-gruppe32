@@ -2,6 +2,7 @@ package HomeAlone.business;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +39,7 @@ public class Game {
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn, phone;
 
         foyer = new Room("Foyer - Front entrance");
         livingRoom = new Room("Living room");
@@ -60,6 +61,10 @@ public class Game {
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
 
+        Room[] phoneRooms = {
+            masterBedroom, livingRoom
+        };
+        
         rooms.add(foyer);
         rooms.add(livingRoom);
         rooms.add(diningRoom);
@@ -96,7 +101,11 @@ public class Game {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
+        phone = new Item("Phone", 1);
 
+        int index = new Random().nextInt(phoneRooms.length);
+        phoneRooms[index].addItem(phone);
+        
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
         foyer.setExit("living room", livingRoom);
@@ -220,22 +229,86 @@ public class Game {
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
         treehouse.setRoomID(19);
 
-        /*harry.addExitToPath(foyer);
+        //Harry path 1
+        harry.addExitToPath(swGarden); //DELAY
+        harry.addExitToPath(porch); //DELAY
+        harry.addExitToPath(foyer); //DELAY
         harry.addExitToPath(diningRoom);
         harry.addExitToPath(kitchen);
-        harry.addExitToPath(basement);
-        harry.addExitToPath(neGarden);
-        harry.addExitToPath(kitchen);
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(livingRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(staircase); //DELAY
+        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(masterBedroom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(kevinRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(buzzRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(attic);
+        
         harry.createPath();
         harry.setCurrentPath(1);
+        
+        //Harry path 2
+        harry.addExitToPath(porch);
+        harry.addExitToPath(neGarden); //DELAY
+        harry.addExitToPath(kitchen); //DELAY
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(foyer); //DELAY
+        harry.addExitToPath(livingRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(staircase); //DELAY
+        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(masterBedroom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(kevinRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(buzzRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(attic);
+        harry.createPath();
 
+        //Marv path 1
+        marv.addExitToPath(basement);
         marv.addExitToPath(kitchen);
         marv.addExitToPath(diningRoom);
         marv.addExitToPath(foyer);
+        marv.addExitToPath(livingRoom);
+        marv.addExitToPath(foyer);
         marv.addExitToPath(staircase);
         marv.addExitToPath(secondFloor);
+        marv.addExitToPath(kevinRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(buzzRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(masterBedroom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(attic);
+        
         marv.createPath();
-        marv.setCurrentPath(1);*/
+        marv.setCurrentPath(1);
+
+        //Marv path 2
+        marv.addExitToPath(basement);
+        marv.addExitToPath(neGarden);
+        marv.addExitToPath(nGarden);
+        marv.addExitToPath(nwGarden);
+        marv.addExitToPath(livingRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(kevinRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(buzzRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(masterBedroom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(attic);
+        
+        marv.createPath();
 
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
@@ -328,6 +401,10 @@ public class Game {
     private void walkPath(Nonplayer npc) {
         if(checkStatus()) {
             npc.walkPath();
+            // If 1 of the wet bandits reach the attic the player loses the game.
+            if(npc.getCurrentRoom().getRoomID() == 7) {
+                this.status = LOSE;
+            }
             checkForKevin(npc);
         }
     }

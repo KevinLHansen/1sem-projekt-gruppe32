@@ -73,12 +73,12 @@ public class FXMLDocumentController implements Initializable {
     private ObservableList<String> inventoryList = FXCollections.observableArrayList();
     private Timer timer = new Timer();
    // private int delay = 1000;
-    private int countDown = 1;
-    //private int period = countDown * 60 * 60 * 1000; // 10min in milliseconds
+    private int startTimeMin = 1;
+    //private int period = startTimeMin * 60 * 60 * 1000; // 10min in milliseconds
     private int startTimeSec = 0;
     private Timeline timeline = new Timeline();
     //private boolean isRunning;
-    private int min = countDown;
+    private int min = startTimeMin;
     private int phase = 1;
 
     @FXML
@@ -95,6 +95,8 @@ public class FXMLDocumentController implements Initializable {
     private MenuBar menuBar;
     @FXML
     private TextField txtTimeLeft;
+    @FXML
+    private Label lblTimeLeft;
 
     /**
      * Initializes the controller class.
@@ -102,7 +104,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lvAvailableExits.setItems(game.getExitsObservableList()); // show available exits at currentRoom (foyer)
-        txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
+        txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
         txtCurrentLocation.setText("Current location: " + game.getCurrentRoomShortDescription());
         startTimer();
     }
@@ -115,15 +117,15 @@ public class FXMLDocumentController implements Initializable {
                 startTimeSec--;
                 boolean isSecondsZero = startTimeSec == 0;
                 boolean isSecondsLessThanZero = startTimeSec < 0;
-                boolean timeToChangePhase = startTimeSec == 0 && countDown == 0;
+                boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
 
                 if (isSecondsZero) {
-                    countDown--;
+                    startTimeMin--;
                     startTimeSec = 60;
                 }
                 if (isSecondsLessThanZero) {
-                    countDown--;
-                    startTimeSec = 10;//59;
+                    startTimeMin--;
+                    startTimeSec = 59;
                 }
                 if (timeToChangePhase) {
                     timeline.stop();
@@ -134,23 +136,27 @@ public class FXMLDocumentController implements Initializable {
                         txtOutput.setText("YOU LOSE!!");
                     } else {
                         if(phase == 2) {
-                            countDown = 1;
+                            startTimeMin = 1;
                             startTimeSec = 0;
                             timeline.playFromStart();
                         }
                         if(phase == 3) {
+                            startTimeMin = 0;
+                            startTimeSec = 0;
+                            txtTimeLeft.setVisible(false);
+                            lblTimeLeft.setVisible(false);
                             txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
                         }
                         txtObjective.setText(game.getObjective());
                     }
                 }
 
-                txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
+                txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
                 
             }
         });
-        startTimeSec = 10; // Change to 60!
-        countDown = min - 1;
+        startTimeSec = 60; // Change to 60!
+        startTimeMin = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
         timeline.playFromStart();
