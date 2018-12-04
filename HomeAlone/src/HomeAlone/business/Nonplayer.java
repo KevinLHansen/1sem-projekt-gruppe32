@@ -60,20 +60,18 @@ public class Nonplayer extends Creature {
 
     /**
      * Walk the path created
+     * String returned not needed?
      */
     public String walkPath() {
         if(this.delay <= 0) {
             if (this.currentPath.length > this.step) {
                 Room r = this.currentPath[this.step];
 
-                checkExitTrap(this.getCurrentRoom().getRoomID(), r.getRoomID());
-
-                this.setPreviousRoom();
-                super.setCurrentRoom(r);
-                this.step++;
-                Trap trap = super.getCurrentRoom().checkTraps();
-                if (!(null == trap)) {
-                    this.delay = trap.getDelay();
+                boolean trapSprung = checkExitTrap(this.getCurrentRoom().getRoomID(), r.getRoomID());
+                
+                if(!trapSprung) {
+                    super.setCurrentRoom(r);
+                    this.step++;
                 }
                 return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
             } else {
@@ -81,7 +79,7 @@ public class Nonplayer extends Creature {
             }
         } else {
             this.delay -= 2;
-            return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
+            return this.getName() + " is delayed in: " + super.getCurrentRoom().getShortDescription();
         }
     }
 
