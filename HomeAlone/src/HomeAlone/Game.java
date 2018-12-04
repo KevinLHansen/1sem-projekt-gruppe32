@@ -3,6 +3,7 @@ package HomeAlone;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
 
@@ -56,7 +57,14 @@ public class Game {
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
-
+        
+        Room[] phoneRooms = {
+            masterBedroom, livingRoom
+        };
+        
+        int index = new Random().nextInt(phoneRooms.length);
+        phoneRooms[index].addItem(phone);
+        
         rooms.add(foyer);
         rooms.add(livingRoom);
         rooms.add(diningRoom);
@@ -217,26 +225,39 @@ public class Game {
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
         treehouse.setRoomID(19);
 
-        /*harry.addExitToPath(foyer);
-        harry.addExitToPath(diningRoom);
-        harry.addExitToPath(kitchen);
-        harry.addExitToPath(basement);
+        //Harry path 1
         harry.addExitToPath(neGarden);
-        harry.addExitToPath(kitchen);
+        harry.addExitToPath(swGarden);
         harry.createPath();
         harry.setCurrentPath(1);
+        
+        //Harry path 2
+        harry.addExitToPath(neGarden);
+        harry.addExitToPath(kitchen);
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(foyer);
 
-        marv.addExitToPath(kitchen);
-        marv.addExitToPath(diningRoom);
-        marv.addExitToPath(foyer);
-        marv.addExitToPath(staircase);
-        marv.addExitToPath(secondFloor);
+        //Marv path 1
+        marv.addExitToPath(wGarden);
+        marv.addExitToPath(nwGarden);
+        marv.addExitToPath(nGarden);
+        marv.addExitToPath(neGarden);
         marv.createPath();
-        marv.setCurrentPath(1);*/
-
+        marv.setCurrentPath(1);
+        
+        //Marv path 2
+        marv.addExitToPath(neGarden);
+        marv.addExitToPath(basement);
+        marv.addExitToPath(kitchen);
+        marv.createPath();
+        
+        
+        
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
+//        harry.setCurrentRoom(swGarden);
+//        marv.setCurrentRoom(neGarden);
     }
 
     //Play method to start the game
