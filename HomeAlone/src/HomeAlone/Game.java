@@ -57,11 +57,11 @@ public class Game {
         swGarden = new Room("South west gardens - South western outside area");
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
-        
+
         Room[] phoneRooms = {
             masterBedroom, livingRoom
         };
-        
+
         rooms.add(foyer);
         rooms.add(livingRoom);
         rooms.add(diningRoom);
@@ -99,7 +99,7 @@ public class Game {
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
         phone = new Item("Phone", 1);
-        
+
         int index = new Random().nextInt(phoneRooms.length);
         phoneRooms[index].addItem(phone);
 
@@ -227,37 +227,93 @@ public class Game {
         treehouse.setRoomID(19);
 
         //Harry path 1
-        harry.addExitToPath(neGarden);
-        harry.addExitToPath(swGarden);
-        harry.createPath();
-        harry.setCurrentPath(1);
-        
-        //Harry path 2
-        harry.addExitToPath(neGarden);
+        harry.addExitToPath(swGarden); //DELAY
+        harry.addExitToPath(porch); //DELAY
+        harry.addExitToPath(foyer); //DELAY
+        harry.addExitToPath(diningRoom);
         harry.addExitToPath(kitchen);
         harry.addExitToPath(diningRoom);
         harry.addExitToPath(foyer);
+        harry.addExitToPath(livingRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(staircase); //DELAY
+        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(masterBedroom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(kevinRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(buzzRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(attic);
+
+
+        harry.createPath();
+        harry.setCurrentPath(1);
+
+        //Harry path 2
+        harry.addExitToPath(porch);
+        harry.addExitToPath(neGarden); //DELAY
+        harry.addExitToPath(kitchen); //DELAY
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(foyer); //DELAY
+        harry.addExitToPath(livingRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(staircase); //DELAY
+        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(masterBedroom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(kevinRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(buzzRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(attic);
+        harry.createPath();
+
+        
 
         //Marv path 1
-        marv.addExitToPath(wGarden);
-        marv.addExitToPath(nwGarden);
-        marv.addExitToPath(nGarden);
-        marv.addExitToPath(neGarden);
-        marv.createPath();
-        marv.setCurrentPath(1);
-        
-        //Marv path 2
-        marv.addExitToPath(neGarden);
         marv.addExitToPath(basement);
         marv.addExitToPath(kitchen);
+        marv.addExitToPath(diningRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(livingRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(kevinRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(buzzRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(masterBedroom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(attic);
+        
+        
         marv.createPath();
+        marv.setCurrentPath(1);
+
+        //Marv path 2
+        marv.addExitToPath(basement);
+        marv.addExitToPath(neGarden);
+        marv.addExitToPath(nGarden);
+        marv.addExitToPath(nwGarden);
+        marv.addExitToPath(livingRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(kevinRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(buzzRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(masterBedroom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(attic);
         
-        
-        
+        marv.createPath();
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
-//        harry.setCurrentRoom(swGarden);
+//        harry.setCurrentRoom(neGarden);
 //        marv.setCurrentRoom(neGarden);
     }
 
@@ -278,7 +334,7 @@ public class Game {
         startQuote = new AudioFile("build/classes/HomeAlone/sfx/startQuote.wav");
         // play the sound file
         startQuote.playFile();
-        
+
         System.out.println("Type '" + CommandWord.HELP + "' if you need any help.");
         System.out.println();
         System.out.println("Your first objective is: " + objective);
@@ -290,22 +346,22 @@ public class Game {
             finished = processCommand(command);
 
             LocalTime time = LocalTime.now();
-            if(time.isAfter(endGame)) {
+            if (time.isAfter(endGame)) {
                 System.out.println("Time has run out. The wet bandits have arrived!");
                 finished = true;
             }
 
-/*
-            if (harry.getDelay() <= 0) {
-                harry.walkPath();
-            }
-            if (marv.getDelay() <= 0) {
-                marv.walkPath();
-            }
-            Item item = new Trap("Rope", 1);
-            kevin.setTrap(item);
-            System.out.println("trap set");
-            */
+            /*
+             if (harry.getDelay() <= 0) {
+             harry.walkPath();
+             }
+             if (marv.getDelay() <= 0) {
+             marv.walkPath();
+             }
+             Item item = new Trap("Rope", 1);
+             kevin.setTrap(item);
+             System.out.println("trap set");
+             */
             boolean objective1Complete = false; //Not in use yet, but will be crucial for when we write our win-conditions.
 
         }
@@ -326,7 +382,6 @@ public class Game {
     //Welcome screen for when the player runs the program
     private void printWelcome() {
 
-
         System.out.println(
                 "  _    _                                 _                  \n"
                 + " | |  | |                          /\\   | |                 \n"
@@ -339,7 +394,6 @@ public class Game {
         System.out.println();
         System.out.println("Kevin rushes through the front door, switching the lights on and locking the door behind him.");
         System.out.println();
-
 
         System.out.println("You'll be playing as Kevin McCallister. You must set up booby traps around the house to prevent the burglars from catching you.");
         System.out.println("You can move around the house by typing '" + CommandWord.GO + "' followed up by the available exitpoint.");
@@ -396,12 +450,12 @@ public class Game {
         } else if (commandWord == CommandWord.SHOW) {
             // Does not count as an action
             show(command);
-        } else if(commandWord == CommandWord.START_GAME) {
-            if(!this.started) {
+        } else if (commandWord == CommandWord.START_GAME) {
+            if (!this.started) {
                 this.started = true;
                 return true;
             }
-        } else if(commandWord == CommandWord.DROP) {
+        } else if (commandWord == CommandWord.DROP) {
             kevin.dropCommand(command);
         }
         return wantToQuit;
@@ -414,7 +468,7 @@ public class Game {
         } else {
             System.out.print("Kevin's thoughts: \"");
             Trap t = kevin.getCurrentRoom().checkTraps();
-            if(t != null) {
+            if (t != null) {
                 System.out.println("I already set up a trap in this room. Better look somewhere else.\"");
                 System.out.print("Trap: ");
                 System.out.println(kevin.getCurrentRoom().getTrapString());
@@ -518,10 +572,10 @@ public class Game {
 
     private void checkObjectives() {
         for (Room room : rooms) {
-            if(room.getRoomID() == 1){
+            if (room.getRoomID() == 1) {
                 Trap t = room.checkTraps();
-                if(t != null) {
-                    if(t.checkTrapSet()) {
+                if (t != null) {
+                    if (t.checkTrapSet()) {
                         this.status = WIN;
                     } else {
                         this.status = LOSE;
