@@ -22,12 +22,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="529.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.GameController">
    <children>
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="544.0">
+      <MenuBar fx:id="menuBar" layoutY="1.0" prefHeight="26.0" prefWidth="544.0">
          <menus>
             <Menu mnemonicParsing="false" text="Game">
                <items>
-                  <MenuItem fx:id="menuItemRestart" mnemonicParsing="false" onAction="#handleMenuItemRestart" text="Restart" />
                   <MenuItem fx:id="menuItemShowMap" mnemonicParsing="false" onAction="#handleMenuItemShowMap" text="Show map" />
+                  <MenuItem fx:id="menuItemRestart" mnemonicParsing="false" onAction="#handleMenuItemRestart" text="Restart" />
                   <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
                </items>
             </Menu>
@@ -98,14 +98,14 @@
                                     <Insets left="2.0" right="2.0" top="2.0" />
                                  </padding>
                               </HBox>
-                              <ListView fx:id="lvAvailableExits" prefHeight="274.0" prefWidth="298.0">
+                              <ListView fx:id="lvAvailableExits" onMouseClicked="#handleListItemClicked" prefHeight="274.0" prefWidth="298.0">
                                  <VBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </VBox.margin>
                               </ListView>
                            </children>
                         </VBox>
-                        <TextArea fx:id="txtOutput" editable="false" prefHeight="268.0" prefWidth="298.0" text="Output window&#10;&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin bibendum ac mauris quis euismod. Nam condimentum at eros vitae bibendum. Nulla felis elit, auctor fermentum ultricies interdum, faucibus quis mauris. Sed aliquet dui id leo euismod suscipit. Pellentesque vulputate magna non arcu vestibulum, quis vulputate diam iaculis. Vestibulum pharetra lectus euismod, suscipit dui sed, consequat massa. Praesent lobortis erat at convallis imperdiet. Nullam et placerat libero, vitae mattis leo. Donec elementum, ante vitae sodales dictum, risus orci efficitur dui, at ullamcorper lorem orci et quam." wrapText="true">
+                        <TextArea fx:id="txtOutput" editable="false" prefHeight="268.0" prefWidth="298.0" text="After having a conversation with the old man, Marley, in the church at Christmas Eve, Kevin McCallister rushes home to his house.&#10;&#10;He overheard earlier that day, that the two burglars, Marv and Harry, also known as &quot;The Wet Bandits&quot;, are planning a burglary at his house.&#10;&#10;Kevin rushes through the front door, switching the lights on and locking the door behind him.&#10;&#10;You are in the foyer." wrapText="true">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -141,9 +141,9 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="176.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="314.4000244140625" minHeight="10.0" prefHeight="163.80003662109374" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="314.4000244140625" minHeight="0.0" prefHeight="32.19998779296873" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="314.4000244140625" minHeight="10.0" prefHeight="132.20001220703125" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="314.4000244140625" minHeight="10.0" prefHeight="123.80001220703126" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="314.4000244140625" minHeight="0.0" prefHeight="28.80000000000001" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="314.4000244140625" minHeight="10.0" prefHeight="148.8" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <VBox prefHeight="335.0" prefWidth="203.0" GridPane.rowIndex="1">
@@ -173,14 +173,14 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="txtObjective" editable="false" prefHeight="112.0" prefWidth="142.0">
+                              <TextArea fx:id="txtObjective" editable="false" prefHeight="112.0" prefWidth="142.0" text="Prepare yourself. Setup traps to stop the burglars!" wrapText="true">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>
                               </TextArea>
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="203.0" GridPane.rowIndex="2">
                            <children>
                               <Button fx:id="btnPickup" mnemonicParsing="false" onAction="#handleBtnPickup" prefHeight="26.0" prefWidth="60.0" text="PICKUP">
                                  <HBox.margin>
@@ -208,7 +208,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+                        <VBox prefHeight="148.0" prefWidth="203.0" GridPane.rowIndex="3">
                            <children>
                               <Label prefHeight="20.0" prefWidth="321.0" style="-fx-background-color: e5e5e5;" text="Items nearby">
                                  <font>
@@ -251,7 +251,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtTimeLeft" alignment="CENTER" editable="false" prefHeight="65.0" prefWidth="194.0" text="999">
+                        <TextField fx:id="txtTimeLeft" alignment="CENTER" disable="true" editable="false" prefHeight="65.0" prefWidth="194.0" style="-fx-opacity: 1;" text="999">
                            <font>
                               <Font size="38.0" />
                            </font>

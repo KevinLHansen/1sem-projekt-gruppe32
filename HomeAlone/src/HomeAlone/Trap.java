@@ -1,4 +1,4 @@
-package HomeAlone.business;
+package HomeAlone;
 
 /**
  *
@@ -24,7 +24,7 @@ public class Trap extends Item {
     public Trap(String name, int size, boolean isSet, int delay) {
         super(name, size);
         this.isSet = false;
-        this.delay = delay;
+        this.delay = 10;
     }
     
     public boolean checkTrapSet() {
