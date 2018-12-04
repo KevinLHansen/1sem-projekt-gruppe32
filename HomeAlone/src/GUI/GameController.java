@@ -69,7 +69,8 @@ public class GameController implements Initializable {
     @FXML
     private Label txtCurrentLocation;
 
-    private Game game = new Game();
+    private Stage gameStage;
+    private Game game;
     private ObservableList<String> inventoryList = FXCollections.observableArrayList();
     private Timer timer = new Timer();
    // private int delay = 1000;
@@ -100,6 +101,7 @@ public class GameController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        game = new Game();
         lvAvailableExits.setItems(game.getExitsObservableList()); // show available exits at currentRoom (foyer)
         txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
         startTimer();
@@ -124,6 +126,7 @@ public class GameController implements Initializable {
                     startTimeSec = 0;
                     txtTimeLeft.setText(String.valueOf(countDown));
                     // Start next phase here
+
                 }
 
                 txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
@@ -225,7 +228,7 @@ public class GameController implements Initializable {
             game = null;
             game = new Game();
 
-            Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -281,7 +284,7 @@ public class GameController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -300,7 +303,7 @@ public class GameController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
