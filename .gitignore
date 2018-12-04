@@ -1,1 +1,4 @@
 /HomeAlone/dist/
+*.class
+/HomeAlone/build/
+*.class
