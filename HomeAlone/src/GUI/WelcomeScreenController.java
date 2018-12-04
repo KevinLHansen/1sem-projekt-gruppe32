@@ -41,7 +41,7 @@ public class WelcomeScreenController implements Initializable {
     @FXML
     private void handleBtnStartGame(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -61,7 +61,7 @@ public class WelcomeScreenController implements Initializable {
             startQuote = new AudioFile("sfx/startQuote.wav");
             startQuote.playFile();
         } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

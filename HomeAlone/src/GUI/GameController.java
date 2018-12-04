@@ -35,7 +35,7 @@ import javafx.scene.control.TextField;
  *
  * @author skoti
  */
-public class FXMLDocumentController implements Initializable {
+public class GameController implements Initializable {
 
     @FXML
     private ListView<String> lvAvailableExits;
@@ -168,7 +168,7 @@ public class FXMLDocumentController implements Initializable {
             Runtime.getRuntime().exec("java -jar HomeAloneGUI.jar");
             System.exit(0);
         } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -187,7 +187,7 @@ public class FXMLDocumentController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
