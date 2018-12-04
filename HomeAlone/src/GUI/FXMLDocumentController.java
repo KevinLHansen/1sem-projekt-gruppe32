@@ -16,25 +16,28 @@ import HomeAlone.business.Game;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.stage.Window;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -66,8 +69,16 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label txtCurrentLocation;
 
-    Game game = new Game();
-    ObservableList<String> inventoryList = FXCollections.observableArrayList();
+    private Game game = new Game();
+    private ObservableList<String> inventoryList = FXCollections.observableArrayList();
+    private Timer timer = new Timer();
+   // private int delay = 1000;
+    private int countDown = 1;
+    //private int period = countDown * 60 * 60 * 1000; // 10min in milliseconds
+    private int startTimeSec = 0;
+    private Timeline timeline = new Timeline();
+    //private boolean isRunning;
+    private int min = countDown;
 
     @FXML
     private MenuItem menuItemRestart;
@@ -90,8 +101,43 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lvAvailableExits.setItems(game.getExitsObservableList()); // show available exits at currentRoom (foyer)
+        txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
+        startTimer();
     }
 
+    private void startTimer() {
+        KeyFrame keyframe = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                startTimeSec--;
+                boolean isSecondsZero = startTimeSec == 0;
+                boolean timeToChangeBackground = startTimeSec == 0 && countDown == 0;
+
+                if (isSecondsZero) {
+                    countDown--;
+                    startTimeSec = 60;
+                }
+                if (timeToChangeBackground) {
+                    timeline.stop();
+                    countDown = 0;
+                    startTimeSec = 0;
+                    txtTimeLeft.setText(String.valueOf(countDown));
+                    // Start next phase here
+                }
+
+                txtTimeLeft.setText(String.format("%d:%02d", countDown, startTimeSec));
+
+            }
+        });
+        startTimeSec = 60; // Change to 60!
+        countDown = min - 1;
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(keyframe);
+        timeline.playFromStart();
+        //isRunning = true;
+    }
+    
     @FXML
     private void handleBtnMove(ActionEvent event) {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String

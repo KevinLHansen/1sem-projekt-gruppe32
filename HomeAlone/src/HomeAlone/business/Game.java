@@ -21,12 +21,10 @@ public class Game {
     public int status;
     public final int LOSE = -1;
     private boolean started = false;
-    private final long time;
     
 //    private PresentationControl out = new PresentationControl();
 
     public Game() {
-        this.time = 5;
         this.rooms = new ArrayList<>();
         this.status = 0;
         

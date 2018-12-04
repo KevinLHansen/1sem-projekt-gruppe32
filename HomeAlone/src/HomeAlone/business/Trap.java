@@ -24,7 +24,7 @@ public class Trap extends Item {
     public Trap(String name, int size, boolean isSet, int delay) {
         super(name, size);
         this.isSet = false;
-        this.delay = 10;
+        this.delay = delay;
     }
     
     public boolean checkTrapSet() {
