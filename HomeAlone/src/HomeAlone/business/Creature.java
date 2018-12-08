@@ -24,7 +24,6 @@ public class Creature {
     public Creature(String name) {
         this.name = name;
         errorList = new HashMap<>();
-        errorList.put("pickup", "");
         //this.currentRoom = new Room();
     }
 
@@ -47,6 +46,9 @@ public class Creature {
     
     public String getError(String e) {
         String error = "";
+        if(errorList.isEmpty()) {
+            return "";
+        }
         if(e.equalsIgnoreCase("pickup")) {
             error = errorList.get(e);
         } else if(e.equalsIgnoreCase("setup")) {

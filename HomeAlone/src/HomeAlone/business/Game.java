@@ -389,10 +389,8 @@ public class Game {
 
                 this.turn++;
 
-                if(this.turn % 2 == 0){
-                    walkPath(marv);
-                    walkPath(harry);
-                }
+                walkPath(marv);
+                walkPath(harry);
             }
         }
         return returnVal;
@@ -400,12 +398,14 @@ public class Game {
     
     private void walkPath(Nonplayer npc) {
         if(checkStatus()) {
-            npc.walkPath();
-            // If 1 of the wet bandits reach the attic the player loses the game.
-            if(npc.getCurrentRoom().getRoomID() == 7) {
-                this.status = LOSE;
+            if(this.turn % 2 == 0) {
+                npc.walkPath();
+                // If 1 of the wet bandits reach the attic the player loses the game.
+                if(npc.getCurrentRoom().getRoomID() == 7) {
+                    this.status = LOSE;
+                }
+                checkForKevin(npc);
             }
-            checkForKevin(npc);
         }
     }
     
@@ -416,7 +416,7 @@ public class Game {
     public boolean pickupItem(String command) {
         if(checkStatus()) {
             if(phase == 3) {
-                this.turn += .5;
+                this.turn++;
             }
             return kevin.pickupItem(command);
         } else {
@@ -426,9 +426,7 @@ public class Game {
     
     public String getError(String e) {
         String error = "";
-        if(e.equalsIgnoreCase("pickup")) {
-            error = kevin.getError(e);
-        }
+        error = kevin.getError(e);
         return error;
     }
     
@@ -497,6 +495,15 @@ public class Game {
     
     public ObservableList getItemsObservableList() {
         String[] items = kevin.getCurrentRoom().getItems().split(", ");
+        ObservableList<String> itemList = FXCollections.observableArrayList();
+        for (String item : items) {
+            itemList.add(item);
+        }
+        return itemList;
+    }
+    
+    public ObservableList getInventoryObservableList() {
+        String[] items = kevin.getInventory().split(", ");
         ObservableList<String> itemList = FXCollections.observableArrayList();
         for (String item : items) {
             itemList.add(item);

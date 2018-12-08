@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import HomeAlone.business.AudioFile;
@@ -16,13 +11,10 @@ import HomeAlone.business.Game;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -42,7 +34,7 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author skoti
+ * @author gruppe 32
  */
 public class FXMLDocumentController implements Initializable {
 
@@ -70,11 +62,7 @@ public class FXMLDocumentController implements Initializable {
     private Label txtCurrentLocation;
 
     private Game game = new Game();
-    private ObservableList<String> inventoryList = FXCollections.observableArrayList();
-    private Timer timer = new Timer();
-   // private int delay = 1000;
     private int startTimeMin = 1;
-    //private int period = startTimeMin * 60 * 60 * 1000; // 10min in milliseconds
     private int startTimeSec = 0;
     private Timeline timeline = new Timeline();
     //private boolean isRunning;
@@ -230,11 +218,11 @@ public class FXMLDocumentController implements Initializable {
         String itemName = lvItemsNearby.getSelectionModel().getSelectedItem();
         if (itemName != null) {
             game.pickupItem(itemName);
-
             //if (inventoryList.size() < 3) {
             if (game.getError("pickup").equals("")) {
-                inventoryList.add(itemName);
-                lvInventory.setItems(inventoryList);
+                lvInventory.setItems(game.getInventoryObservableList());
+                /*inventoryList.add(itemName);
+                lvInventory.setItems(inventoryList);*/
                 lvItemsNearby.setItems(game.getItemsObservableList());
                 //lvItemsNearby.
 
@@ -257,8 +245,8 @@ public class FXMLDocumentController implements Initializable {
         }
         String itemName = lvInventory.getSelectionModel().getSelectedItem();
         game.setTrap(itemName);
-        inventoryList.remove(itemName);
-
+        //inventoryList.remove(itemName);
+        lvInventory.setItems(game.getInventoryObservableList());
     }
 
     @FXML
@@ -271,7 +259,8 @@ public class FXMLDocumentController implements Initializable {
         }
         String itemName = lvInventory.getSelectionModel().getSelectedItem();
         game.dropItem(itemName);
-        inventoryList.remove(itemName);
+        //inventoryList.remove(itemName);
+        lvInventory.setItems(game.getInventoryObservableList());
         lvItemsNearby.setItems(game.getItemsObservableList());
 
         AudioFile dropSound = null;
