@@ -116,13 +116,15 @@ public class GameController implements Initializable {
                 boolean isSecondsLessThanZero = startTimeSec < 0;
                 boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
 
-                if (isSecondsZero) {
-                    startTimeMin--;
-                    startTimeSec = 60;
-                }
-                if (isSecondsLessThanZero) {
-                    startTimeMin--;
-                    startTimeSec = 59;
+                if(!timeToChangePhase){
+                  if (isSecondsZero) {
+                      startTimeMin--;
+                      startTimeSec = 60;
+                  }
+                  if (isSecondsLessThanZero) {
+                      startTimeMin--;
+                      startTimeSec = 59;
+                  }
                 }
                 if (timeToChangePhase) {
                     timeline.stop();
@@ -147,15 +149,39 @@ public class GameController implements Initializable {
                             panePopup.setVisible(true);
                             popupSound.playFile();
                         }
-                        txtObjective.setText(Game.getInstance().getObjective());
                     }
-                }
+                    if (timeToChangePhase) {
+                        timeline.stop();
+                        // Start next phase here
+                        phase = Game.getInstance().changePhase();
+                        if(!Game.getInstance().checkStatus()) {
+                            // YOU LOSE
+                            txtOutput.appendText("YOU LOSE!!");
+                            timeline.stop();
+                        } else {
+                            if(phase == 2) {
+                                startTimeMin = 1;
+                                startTimeSec = 0;
+                                timeline.playFromStart();
+                            }
+                            if(phase == 3) {
+                                startTimeMin = 0;
+                                startTimeSec = 0;
+                                txtTimeLeft.setVisible(false);
+                                lblTimeLeft.setVisible(false);
+                                txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
+                            }
+                            txtObjective.setText(Game.getInstance().getObjective());
+                        }
+                    }
+
 
                 txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
 
             }
         });
-        startTimeSec = 5; // Change to 60!
+
+        startTimeSec = 60; // Change to 60!
         startTimeMin = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
@@ -183,6 +209,9 @@ public class GameController implements Initializable {
         if(phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
+            if(Game.getInstance().getFinished()) {
+                endGame();
+            }
         }
 
     }
@@ -215,6 +244,7 @@ public class GameController implements Initializable {
         if(phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
+
         }
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList()); // update nearby items list with nearby items
 
@@ -289,7 +319,7 @@ public class GameController implements Initializable {
     private void handleMenuItemRestart(ActionEvent event) {
         try {
             Game.getInstance().restart();
-            
+
             Stage primaryStage = (Stage) ((Node) menuBar).getScene().getWindow();
             primaryStage.close();
 
@@ -403,16 +433,16 @@ public class GameController implements Initializable {
             // close current window
             Stage primaryStage = (Stage)btnMove.getScene().getWindow();
             primaryStage.close();
-            
+
             // open EndScreen window
             Parent root = FXMLLoader.load(getClass().getResource("EndScreen.fxml"));
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            
+
             stage.setTitle("HOME ALONE™");
             stage.getIcons().add(new Image("file:img/icon.png"));
-            
+
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
@@ -420,17 +450,17 @@ public class GameController implements Initializable {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 
     @FXML
     private void handleBtnPopupOk(ActionEvent event) {
         panePopup.setVisible(false);
-        
+
         // start timer back up after clicking OK
         if(phase == 2) {
             startTimeMin = 1;
             startTimeSec = 0;
-            timeline.playFromStart();          
+            timeline.playFromStart();
         }
         else if(phase == 3) {
             startTimeMin = 0;
@@ -438,6 +468,6 @@ public class GameController implements Initializable {
             txtTimeLeft.setVisible(false);
             lblTimeLeft.setVisible(false);
         }
-            
+
     }
-} 
+}

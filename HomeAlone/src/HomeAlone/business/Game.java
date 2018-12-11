@@ -17,7 +17,7 @@ public class Game {
     public final int WIN = 1;
     public int status;
     public final int LOSE = -1;
-    private boolean started = false;
+    private boolean finished = false;
     private int phase;
     private int turn;
 
@@ -347,9 +347,21 @@ public class Game {
             if(kevin.getCurrentRoom().getRoomID() != 4) {
                 this.status = LOSE;
             } else {
-                kevin.getInventory();
-                // loop inventory, check for BB gun
+                boolean bbGunFound = false;
+                String[] inventory = kevin.getInventory().split(", ");
+                for (String item : inventory) {
+                    if(item == "bbGun" && !bbGunFound) {
+                        this.status = WIN;
+                        bbGunFound = true;
+                        break;
+                    } else {
+                        this.status = LOSE;
+                    }
+                }
             }
+            marv.setCurrentRoom(rooms.get(14));
+            harry.setCurrentRoom(rooms.get(16));
+
         }
         
         return this.phase;
@@ -398,6 +410,10 @@ public class Game {
                 }
             }
             if(phase == 3) {
+                if(kevin.getCurrentRoom().getRoomID() == 7) {
+                    this.status = WIN;
+                    finished = true;
+                }
                 checkForKevin(marv);
                 checkForKevin(harry);
 
@@ -408,6 +424,10 @@ public class Game {
             }
         }
         return returnVal;
+    }
+    
+    public boolean getFinished() {
+        return this.finished;
     }
     
     private void walkPath(Nonplayer npc) {
