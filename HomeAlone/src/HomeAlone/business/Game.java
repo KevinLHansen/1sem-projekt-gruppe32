@@ -1,12 +1,9 @@
 package HomeAlone.business;
 
-import HomeAlone.textUI.CommandWord;
-import HomeAlone.textUI.Parser;
-import HomeAlone.textUI.Command;
-import HomeAlone.textUI.PresentationControl;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -21,12 +18,13 @@ public class Game {
     public int status;
     public final int LOSE = -1;
     private boolean started = false;
-    
-//    private PresentationControl out = new PresentationControl();
+    private int phase;
+    private int turn;
 
     public Game() {
         this.rooms = new ArrayList<>();
         this.status = 0;
+        this.phase = 1;
         
         kevin = new Player("Kevin");
         marv = new Nonplayer("Marv");
@@ -41,7 +39,7 @@ public class Game {
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn;
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn, phone;
 
         foyer = new Room("Foyer - Front entrance");
         livingRoom = new Room("Living room");
@@ -63,6 +61,10 @@ public class Game {
         seGarden = new Room("South east gardens - South eastern outside area");
         treehouse = new Room("Treehouse - Northern outside area");
 
+        Room[] phoneRooms = {
+            masterBedroom, livingRoom
+        };
+        
         rooms.add(foyer);
         rooms.add(livingRoom);
         rooms.add(diningRoom);
@@ -99,7 +101,11 @@ public class Game {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
+        phone = new Item("Phone", 1);
 
+        int index = new Random().nextInt(phoneRooms.length);
+        phoneRooms[index].addItem(phone);
+        
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
         foyer.setExit("living room", livingRoom);
@@ -223,34 +229,184 @@ public class Game {
         treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
         treehouse.setRoomID(19);
 
-        /*harry.addExitToPath(foyer);
+        //Harry path 1
+        harry.addExitToPath(swGarden); //DELAY
+        harry.addExitToPath(porch); //DELAY
+        harry.addExitToPath(foyer); //DELAY
         harry.addExitToPath(diningRoom);
         harry.addExitToPath(kitchen);
-        harry.addExitToPath(basement);
-        harry.addExitToPath(neGarden);
-        harry.addExitToPath(kitchen);
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(livingRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(staircase); //DELAY
+        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(masterBedroom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(kevinRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(buzzRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(attic);
+        
         harry.createPath();
         harry.setCurrentPath(1);
+        
+        //Harry path 2
+        harry.addExitToPath(porch);
+        harry.addExitToPath(neGarden); //DELAY
+        harry.addExitToPath(kitchen); //DELAY
+        harry.addExitToPath(diningRoom);
+        harry.addExitToPath(foyer); //DELAY
+        harry.addExitToPath(livingRoom);
+        harry.addExitToPath(foyer);
+        harry.addExitToPath(staircase); //DELAY
+        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(masterBedroom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(kevinRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(buzzRoom);
+        harry.addExitToPath(secondFloor);
+        harry.addExitToPath(attic);
+        harry.createPath();
 
+        //Marv path 1
+        marv.addExitToPath(basement);
         marv.addExitToPath(kitchen);
         marv.addExitToPath(diningRoom);
         marv.addExitToPath(foyer);
+        marv.addExitToPath(livingRoom);
+        marv.addExitToPath(foyer);
         marv.addExitToPath(staircase);
         marv.addExitToPath(secondFloor);
+        marv.addExitToPath(kevinRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(buzzRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(masterBedroom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(attic);
+        
         marv.createPath();
-        marv.setCurrentPath(1);*/
+        marv.setCurrentPath(1);
+
+        //Marv path 2
+        marv.addExitToPath(basement);
+        marv.addExitToPath(neGarden);
+        marv.addExitToPath(nGarden);
+        marv.addExitToPath(nwGarden);
+        marv.addExitToPath(livingRoom);
+        marv.addExitToPath(foyer);
+        marv.addExitToPath(staircase);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(kevinRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(buzzRoom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(masterBedroom);
+        marv.addExitToPath(secondFloor);
+        marv.addExitToPath(attic);
+        
+        marv.createPath();
 
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
     }
 
+    public int changePhase() {
+        this.phase++;
+        if(this.phase == 2) {
+            this.objective = "Find the BB gun and bring it to the kitchen.";
+            this.objectiveDescription = "You need to get to the kitchen with the BB gun to defend the door.";
+            // LOSE - outside when the wet bandits arrives
+            int[] restrictedRoomIDs = {12,13,14,15,16,17,18,19};
+            if(IntStream.of(restrictedRoomIDs).anyMatch(x->x==kevin.getCurrentRoom().getRoomID())) {
+                this.status = LOSE;
+            }
+        } else if(this.phase == 3) {
+            this.turn = 0;
+            this.objective = "Call the police and escape the house.";
+            this.objectiveDescription = "You need to find the phone and call the police. Then you should get out of the house.";
+            // LOSE - not in kitchen with BB gun
+            if(kevin.getCurrentRoom().getRoomID() != 4) {
+                this.status = LOSE;
+            } else {
+                kevin.getInventory();
+                // loop inventory, check for BB gun
+            }
+        }
+        
+        return this.phase;
+    }
+    
+    public String checkNeighbourRoom() {
+        String s = "", exitString = "";
+        String[] exits = kevin.getCurrentRoom().getExitString().split(", ");
+        int exitsLen = exits.length;
+        for (int i = 0; i < exitsLen; i++) {
+            if(kevin.getCurrentRoom().getExit(exits[i]).equals(marv.getCurrentRoom()) || kevin.getCurrentRoom().getExit(exits[i]).equals(harry.getCurrentRoom())) {
+                  exitString += exits[i] +((i < exitsLen) ? " and " : "");
+            }
+        }
+        if(!exitString.equals("")) {
+            s = "You hear footsteps coming from " + exitString;
+        }
+        return s;
+    }
+    
+    public void checkForKevin(Nonplayer npc) {
+        if(npc.getCurrentRoom().equals(kevin.getCurrentRoom())) {
+            this.status = LOSE;
+        }
+    }
+    
+    public boolean checkStatus() {
+        if(this.status == this.LOSE) {
+            return false;
+        }
+        return true;
+    }
+    
     public String getCurrentRoomItems() {
         return kevin.getCurrentRoom().getItems()+"\n";
     }       
     
     public boolean goRoom(String command) {
-        return kevin.goRoom(command);
+        boolean returnVal = true;
+        if(checkStatus()) {
+            returnVal = kevin.goRoom(command);
+            if(this.phase == 2) {
+                int[] restrictedRoomIDs = {12,13,14,15,16,17,18,19};
+                if(IntStream.of(restrictedRoomIDs).anyMatch(x->x==kevin.getCurrentRoom().getRoomID())) {
+                    this.status = LOSE; 
+                }
+            }
+            if(phase == 3) {
+                checkForKevin(marv);
+                checkForKevin(harry);
+
+                this.turn++;
+
+                walkPath(marv);
+                walkPath(harry);
+            }
+        }
+        return returnVal;
+    }
+    
+    private void walkPath(Nonplayer npc) {
+        if(checkStatus()) {
+            if(this.turn % 2 == 0) {
+                npc.walkPath();
+                // If 1 of the wet bandits reach the attic the player loses the game.
+                if(npc.getCurrentRoom().getRoomID() == 7) {
+                    this.status = LOSE;
+                }
+                checkForKevin(npc);
+            }
+        }
     }
     
     public String getCurrentRoomLongDescription() {
@@ -258,14 +414,19 @@ public class Game {
     }
     
     public boolean pickupItem(String command) {
-        return kevin.pickupItem(command);
+        if(checkStatus()) {
+            if(phase == 3) {
+                this.turn++;
+            }
+            return kevin.pickupItem(command);
+        } else {
+            return false;
+        }
     }
     
     public String getError(String e) {
         String error = "";
-        if(e.equalsIgnoreCase("pickup")) {
-            error = kevin.getError(e);
-        }
+        error = kevin.getError(e);
         return error;
     }
     
@@ -275,11 +436,22 @@ public class Game {
 
     //Checks if a room has a setInfo that contains more than "", and prints the info.
     public String getCurrentRoomInfo() {
-        return kevin.getCurrentRoom().getInfo();
+        if(checkStatus()) {
+            if(phase == 3) {
+                this.turn += .5;
+            }
+            return kevin.getCurrentRoom().getInfo();
+        } else {
+            return "";
+        }
     }
     
     public boolean setTrap(String trapName) {
-        return kevin.placeTrap(trapName);
+        if(checkStatus()) {
+            return kevin.placeTrap(trapName);
+        } else {
+            return false;
+        }
     }
     
     public String getItemString(String command) {
@@ -293,7 +465,11 @@ public class Game {
     }
     
     public String getTrapString() {
-        return kevin.getCurrentRoom().getTrapString();
+        if(checkStatus()) {
+            return kevin.getCurrentRoom().getTrapString();
+        } else {
+            return "";
+        }
     }
     
     public String getTrapInfo() {
@@ -301,7 +477,11 @@ public class Game {
     }
     
     public boolean dropItem(String itemName) {
-        return kevin.dropCommand(itemName);
+        if(checkStatus()) {
+            return kevin.dropCommand(itemName);
+        } else {
+            return false;
+        }
     }
     
     public ObservableList getExitsObservableList() {
@@ -322,16 +502,29 @@ public class Game {
         return itemList;
     }
     
+    public ObservableList getInventoryObservableList() {
+        String[] items = kevin.getInventory().split(", ");
+        ObservableList<String> itemList = FXCollections.observableArrayList();
+        for (String item : items) {
+            itemList.add(item);
+        }
+        return itemList;
+    }
+    
     //Method used for calling the "help"-command that prints out instructions and commands.
     public String printHelp() {
-        return kevin.getCurrentRoom().getExitString() + "\n";
+        if(checkStatus()) {
+            return kevin.getCurrentRoom().getExitString() + "\n";
+        } else {
+            return "";
+        }
     }
 
-    //Quit program method
+    //Quit program method - TextUI
     public boolean quit() {
         return true;
     }
-
+// TextUI
     public String show(String command) {
         if (command.equalsIgnoreCase("inventory")) {
             return kevin.getInventory();
@@ -345,6 +538,7 @@ public class Game {
     }
     
     /* Need a list of traps that need to be set, temporary win condition for 1st game stage */
+    /* OBSOLETE
     public void checkObjectives() {
         for (Room room : rooms) {
             if(room.getRoomID() == 1){
@@ -363,5 +557,5 @@ public class Game {
                 }
             }
         }
-    }
+    }*/
 }

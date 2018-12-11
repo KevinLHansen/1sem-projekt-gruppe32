@@ -246,7 +246,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                      <children>
-                        <Label alignment="CENTER" minHeight="-Infinity" prefHeight="20.0" prefWidth="207.0" style="-fx-background-color: e5e5e5;" text="TIME LEFT">
+                        <Label fx:id="lblTimeLeft" alignment="CENTER" minHeight="-Infinity" prefHeight="20.0" prefWidth="207.0" style="-fx-background-color: e5e5e5;" text="TIME LEFT">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
