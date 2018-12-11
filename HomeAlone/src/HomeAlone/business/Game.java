@@ -30,6 +30,11 @@ public class Game {
         return instance;
     }
     
+    // necesarry method to reset Game instance when restarting game
+    public static void restart() {
+        instance = null;
+    }
+    
     private Game() {
         this.rooms = new ArrayList<>();
         this.status = 0;
@@ -547,8 +552,12 @@ public class Game {
     }
     
     public String getResult() {
-        // put logic here
-        return "";
+        if(checkStatus()) {
+            return "WIN";
+        }
+        else {
+            return "LOSE";
+        }
     }
     
     /* Need a list of traps that need to be set, temporary win condition for 1st game stage */

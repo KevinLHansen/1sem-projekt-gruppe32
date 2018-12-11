@@ -90,32 +90,10 @@ public class GameController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        try {
-            // close current window
-           // Stage primaryStage = (Stage)btnMove.getScene().getWindow();
-            //primaryStage.close();
-            
-            // open EndScreen window
-            Parent root = FXMLLoader.load(getClass().getResource("EndScreen.fxml"));
-            
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            
-            stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
-            
-            stage.setResizable(false);
-            stage.setScene(scene);
-            stage.show();
-            
-            lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // show available exits at currentRoom (foyer)
-            txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
-            txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription());
-            startTimer();
-        } catch (IOException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // show available exits at currentRoom (foyer)
+        txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
+        txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription());
+        startTimer();
     }
 
     private void startTimer() {
@@ -292,6 +270,8 @@ public class GameController implements Initializable {
     @FXML
     private void handleMenuItemRestart(ActionEvent event) {
         try {
+            Game.getInstance().restart();
+            
             Stage primaryStage = (Stage) ((Node) menuBar).getScene().getWindow();
             primaryStage.close();
 

@@ -50,6 +50,8 @@ public class EndScreenController implements Initializable {
     @FXML
     private void handleBtnYes(ActionEvent event) {
         try {
+            Game.getInstance().restart();
+            
             Stage primaryStage = (Stage)btnYes.getScene().getWindow();
             primaryStage.close();
             
