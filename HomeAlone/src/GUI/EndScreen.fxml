@@ -23,9 +23,9 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="txtResult" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="51.0" prefWidth="350.0" style="-fx-font-family: Century;" text="[RESULT]">
+            <Label fx:id="txtResult" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="51.0" prefWidth="350.0" text="[RESULT]">
                <font>
-                  <Font size="50.0" />
+                  <Font name="Century" size="50.0" />
                </font>
                <padding>
                   <Insets bottom="-100.0" left="-100.0" right="-100.0" top="-100.0" />
