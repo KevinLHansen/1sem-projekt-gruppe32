@@ -28,7 +28,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 /**
@@ -84,6 +86,14 @@ public class GameController implements Initializable {
     private TextField txtTimeLeft;
     @FXML
     private Label lblTimeLeft;
+    @FXML
+    private Pane panePopup;
+    @FXML
+    private ImageView imgviewPopup;
+    @FXML
+    private TextArea txtPopup;
+    @FXML
+    private Button btnPopupOk;
 
     /**
      * Initializes the controller class.
@@ -123,17 +133,19 @@ public class GameController implements Initializable {
                         txtOutput.setText("YOU LOSE!!");
                         endGame();
                     } else {
+                        AudioFile popupSound = null;
+                        popupSound = new AudioFile("sfx/popup.wav");
                         if(phase == 2) {
-                            startTimeMin = 1;
-                            startTimeSec = 0;
-                            timeline.playFromStart();
+                            imgviewPopup.setImage(new Image("file:img/phase2transition.gif"));
+                            txtPopup.setText("The Wet Bandits have arrived and are roaming the outside area! \nIf you exit the house, you will most certainly get caught.");
+                            panePopup.setVisible(true);
+                            popupSound.playFile();
                         }
                         if(phase == 3) {
-                            startTimeMin = 0;
-                            startTimeSec = 0;
-                            txtTimeLeft.setVisible(false);
-                            lblTimeLeft.setVisible(false);
-                            txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
+                            imgviewPopup.setImage(new Image("file:img/phase3transition.gif"));
+                            txtPopup.setText("The Wet Bandits have entered the house! \nIf you run into them, you will get caught.");
+                            panePopup.setVisible(true);
+                            popupSound.playFile();
                         }
                         txtObjective.setText(Game.getInstance().getObjective());
                     }
@@ -143,7 +155,7 @@ public class GameController implements Initializable {
 
             }
         });
-        startTimeSec = 60; // Change to 60!
+        startTimeSec = 5; // Change to 60!
         startTimeMin = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
@@ -407,5 +419,25 @@ public class GameController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+
+    @FXML
+    private void handleBtnPopupOk(ActionEvent event) {
+        panePopup.setVisible(false);
+        
+        // start timer back up after clicking OK
+        if(phase == 2) {
+            startTimeMin = 1;
+            startTimeSec = 0;
+            timeline.playFromStart();          
+        }
+        else if(phase == 3) {
+            startTimeMin = 0;
+            startTimeSec = 0;
+            txtTimeLeft.setVisible(false);
+            lblTimeLeft.setVisible(false);
+        }
+            
     }
 } 
