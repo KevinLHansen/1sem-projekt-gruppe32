@@ -44,7 +44,7 @@ public class EndScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        txtResult.setText(Game.getInstance().getResult());
     }    
 
     @FXML
