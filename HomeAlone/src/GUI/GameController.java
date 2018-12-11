@@ -121,6 +121,7 @@ public class GameController implements Initializable {
                     if(!Game.getInstance().checkStatus()) {
                         // YOU LOSE
                         txtOutput.setText("YOU LOSE!!");
+                        endGame();
                     } else {
                         if(phase == 2) {
                             startTimeMin = 1;
@@ -160,6 +161,7 @@ public class GameController implements Initializable {
             if(!Game.getInstance().checkStatus()){
                 // LOSE
                 txtOutput.setText("YOU LOSE!!");
+                endGame();
                 return;
             }
         }
@@ -178,6 +180,7 @@ public class GameController implements Initializable {
         if(phase > 1) {
             if(!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
+                endGame();
                 return;
             }
         }
@@ -211,6 +214,7 @@ public class GameController implements Initializable {
         if(phase > 1) {
             if(!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
+                endGame();
                 return;
             }
         }
@@ -239,6 +243,7 @@ public class GameController implements Initializable {
         if(phase > 1) {
             if(!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
+                endGame();
                 return;
             }
         }
@@ -253,6 +258,7 @@ public class GameController implements Initializable {
         if(phase > 1) {
             if(!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
+                endGame();
                 return;
             }
         }
@@ -364,6 +370,7 @@ public class GameController implements Initializable {
                 if(!Game.getInstance().checkStatus()){
                     // LOSE
                     txtOutput.setText("YOU LOSE!!");
+                    endGame();
                     return;
                 }
             }
