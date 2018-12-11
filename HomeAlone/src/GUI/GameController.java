@@ -100,49 +100,52 @@ public class GameController implements Initializable {
         KeyFrame keyframe = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                startTimeSec--;
-                boolean isSecondsZero = startTimeSec == 0;
-                boolean isSecondsLessThanZero = startTimeSec < 0;
-                boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
-
-                if (isSecondsZero) {
-                    startTimeMin--;
-                    startTimeSec = 60;
-                }
-                if (isSecondsLessThanZero) {
-                    startTimeMin--;
-                    startTimeSec = 59;
-                }
-                if (timeToChangePhase) {
-                    timeline.stop();
-                    // Start next phase here
-                    phase = Game.getInstance().changePhase();
-                    if(!Game.getInstance().checkStatus()) {
-                        // YOU LOSE
-                        txtOutput.setText("YOU LOSE!!");
-                        timeline.stop();
-                    } else {
-                        if(phase == 2) {
-                            startTimeMin = 1;
-                            startTimeSec = 0;
-                            timeline.playFromStart();
+                
+                    startTimeSec--;
+                    boolean isSecondsZero = startTimeSec == 0;
+                    boolean isSecondsLessThanZero = startTimeSec < 0;
+                    boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
+                    if(!timeToChangePhase){
+                        if (isSecondsZero) {
+                            startTimeMin--;
+                            startTimeSec = 60;
                         }
-                        if(phase == 3) {
-                            startTimeMin = 0;
-                            startTimeSec = 0;
-                            txtTimeLeft.setVisible(false);
-                            lblTimeLeft.setVisible(false);
-                            txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
+                        if (isSecondsLessThanZero) {
+                            startTimeMin--;
+                            startTimeSec = 59;
                         }
-                        txtObjective.setText(Game.getInstance().getObjective());
                     }
-                }
+                    if (timeToChangePhase) {
+                        timeline.stop();
+                        // Start next phase here
+                        phase = Game.getInstance().changePhase();
+                        if(!Game.getInstance().checkStatus()) {
+                            // YOU LOSE
+                            txtOutput.appendText("YOU LOSE!!");
+                            timeline.stop();
+                        } else {
+                            if(phase == 2) {
+                                startTimeMin = 1;
+                                startTimeSec = 0;
+                                timeline.playFromStart();
+                            }
+                            if(phase == 3) {
+                                startTimeMin = 0;
+                                startTimeSec = 0;
+                                txtTimeLeft.setVisible(false);
+                                lblTimeLeft.setVisible(false);
+                                txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
+                            }
+                            txtObjective.setText(Game.getInstance().getObjective());
+                        }
+                    }
+                
 
                 txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
 
             }
         });
+        
         startTimeSec = 60; // Change to 60!
         startTimeMin = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -204,6 +207,7 @@ public class GameController implements Initializable {
         if(phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
+            
         }
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList()); // update nearby items list with nearby items
 

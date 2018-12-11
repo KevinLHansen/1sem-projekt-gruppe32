@@ -353,6 +353,7 @@ public class Game {
                     if(item == "bbGun" && !bbGunFound) {
                         this.status = WIN;
                         bbGunFound = true;
+                        break;
                     } else {
                         this.status = LOSE;
                     }
@@ -410,6 +411,7 @@ public class Game {
             }
             if(phase == 3) {
                 if(kevin.getCurrentRoom().getRoomID() == 7) {
+                    this.status = WIN;
                     finished = true;
                 }
                 checkForKevin(marv);
