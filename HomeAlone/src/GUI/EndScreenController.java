@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import HomeAlone.business.AudioFile;
+import HomeAlone.business.Game;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,9 +17,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -29,21 +31,32 @@ import javafx.stage.WindowEvent;
  *
  * @author skoti
  */
-public class WelcomeScreenController implements Initializable {
+public class EndScreenController implements Initializable {
     @FXML
-    private Button btnStartGame;
+    private Label txtResult;
+    @FXML
+    private Button btnYes;
+    @FXML
+    private Button btnNo;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        txtResult.setText(Game.getInstance().getResult());
     }    
 
     @FXML
-    private void handleBtnStartGame(ActionEvent event) {
+    private void handleBtnYes(ActionEvent event) {
         try {
+            Game.getInstance().restart();
+            
+            Stage primaryStage = (Stage)btnYes.getScene().getWindow();
+            primaryStage.close();
+            
+            //GameController gameController = new GameController();
+            
             Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 
             Scene scene = new Scene(root);
@@ -63,18 +76,17 @@ public class WelcomeScreenController implements Initializable {
                     System.exit(0);
                 }
             });
-            
-            // define current window as welcomeStage to be able to close
-            Stage welcomeStage = (Stage)btnStartGame.getScene().getWindow();
-            welcomeStage.close();
-            
-            AudioFile startQuote = null;
-            startQuote = new AudioFile("sfx/startQuote.wav");
-            startQuote.playFile();
+
         } catch (IOException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+
+    @FXML
+    private void handleBtnNo(ActionEvent event) {
+        // close the window
+        Stage primaryStage = (Stage)btnYes.getScene().getWindow();
+        primaryStage.close();
     }
     
 }

@@ -21,7 +21,21 @@ public class Game {
     private int phase;
     private int turn;
 
-    public Game() {
+    // Singleton pattern for GUI purposes
+    private static Game instance = null;
+    public static Game getInstance() {
+        if(instance == null) {
+            instance = new Game();
+        }
+        return instance;
+    }
+    
+    // necesarry method to reset Game instance when restarting game
+    public static void restart() {
+        instance = null;
+    }
+    
+    private Game() {
         this.rooms = new ArrayList<>();
         this.status = 0;
         this.phase = 1;
@@ -538,6 +552,15 @@ public class Game {
 
     public String getObjective() {
         return objective;
+    }
+    
+    public String getResult() {
+        if(checkStatus()) {
+            return "WIN";
+        }
+        else {
+            return "LOSE";
+        }
     }
     
     /* Need a list of traps that need to be set, temporary win condition for 1st game stage */
