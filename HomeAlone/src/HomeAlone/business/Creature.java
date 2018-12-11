@@ -46,14 +46,8 @@ public class Creature {
     
     public String getError(String e) {
         String error = "";
-        if(errorList.isEmpty()) {
-            return "";
-        }
-        if(e.equalsIgnoreCase("pickup")) {
-            error = errorList.get(e);
-        } else if(e.equalsIgnoreCase("setup")) {
-            error = errorList.get(e);
-        } else if(e.equalsIgnoreCase("drop")) {
+
+        if(errorList.containsKey(e)) {
             error = errorList.get(e);
         }
         return error;

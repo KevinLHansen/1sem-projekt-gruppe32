@@ -336,6 +336,9 @@ public class Game {
                 kevin.getInventory();
                 // loop inventory, check for BB gun
             }
+            marv.setCurrentRoom(rooms.get(14));
+            harry.setCurrentRoom(rooms.get(16));
+
         }
         
         return this.phase;
