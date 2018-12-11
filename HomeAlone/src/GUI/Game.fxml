@@ -274,7 +274,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <Pane fx:id="panePopup" layoutX="52.0" layoutY="63.0" prefHeight="415.0" prefWidth="423.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2;">
+      <Pane fx:id="panePopup" layoutX="52.0" layoutY="63.0" prefHeight="415.0" prefWidth="423.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2;" visible="false">
          <children>
             <VBox prefHeight="415.0" prefWidth="423.0">
                <children>
