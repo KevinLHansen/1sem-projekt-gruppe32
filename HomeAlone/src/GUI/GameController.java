@@ -130,9 +130,9 @@ public class GameController implements Initializable {
                     timeline.stop();
                     // Start next phase here
                     phase = Game.getInstance().changePhase();
+                    //Check if in kitchen already !
                     if(!Game.getInstance().checkStatus()) {
                         // YOU LOSE
-                        txtOutput.setText("YOU LOSE!!");
                         endGame();
                     } else {
                         AudioFile popupSound = null;
@@ -150,34 +150,8 @@ public class GameController implements Initializable {
                             popupSound.playFile();
                         }
                     }
-                    if (timeToChangePhase) {
-                        timeline.stop();
-                        // Start next phase here
-                        phase = Game.getInstance().changePhase();
-                        if(!Game.getInstance().checkStatus()) {
-                            // YOU LOSE
-                            txtOutput.appendText("YOU LOSE!!");
-                            timeline.stop();
-                        } else {
-                            if(phase == 2) {
-                                startTimeMin = 1;
-                                startTimeSec = 0;
-                                timeline.playFromStart();
-                            }
-                            if(phase == 3) {
-                                startTimeMin = 0;
-                                startTimeSec = 0;
-                                txtTimeLeft.setVisible(false);
-                                lblTimeLeft.setVisible(false);
-                                txtOutput.appendText("Phase 3: Escape the house. The game is now turn based instead of timed, enjoy the variety.");
-                            }
-                            txtObjective.setText(Game.getInstance().getObjective());
-                        }
-                    }
-
-
+                }
                 txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
-
             }
         });
 
@@ -206,6 +180,7 @@ public class GameController implements Initializable {
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
         lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
         txtOutput.setText(""); // clear output box
+        // Clear listview items nearby
         if(phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);

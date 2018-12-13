@@ -347,12 +347,12 @@ public class Game {
             if(kevin.getCurrentRoom().getRoomID() != 4) {
                 this.status = LOSE;
             } else {
-                boolean bbGunFound = false;
                 String[] inventory = kevin.getInventory().split(", ");
+                System.out.println(kevin.getInventory());
                 for (String item : inventory) {
-                    if(item == "bbGun" && !bbGunFound) {
+                    System.out.println(item);
+                    if(item.equalsIgnoreCase("bbGun")) {
                         this.status = WIN;
-                        bbGunFound = true;
                         break;
                     } else {
                         this.status = LOSE;
