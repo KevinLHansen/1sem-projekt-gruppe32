@@ -152,7 +152,14 @@ public class Player extends Creature {
             this.errorList.put("pickup","Traps can't be picked up once they have been placed.\n");
             return false;
         } else if (item instanceof Usable) {
-            this.errorList.put("pickup","Why would you call someone now? Setup the traps first!\n");
+            if(Game.getInstance().getPhase() == 3) {
+                this.errorList.put("pickup","You pick up the phone and call the police. Get to the attic and zipline to safety!\n");
+                Usable usable = (Usable)item; // typecast item to Usable
+                usable.setItemUsed(true);
+            }
+            else {
+                this.errorList.put("pickup","Why would you call someone now? Setup the traps first!\n");
+            }
             return false;
         } else {
             if(this.addToInventory(item)) {

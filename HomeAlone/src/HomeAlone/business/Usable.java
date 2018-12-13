@@ -11,6 +11,7 @@ public class Usable extends Item {
     // Limit where Usable Item can be used?
 
     private boolean itemCollectible = false;
+    private boolean itemUsed = false;
     
     public Usable(String itemName, int size) {
         super(itemName, size);
@@ -23,4 +24,9 @@ public class Usable extends Item {
     public void setItemCollectible(boolean itemCollectible) {
         this.itemCollectible = itemCollectible;
     }
+
+    public void setItemUsed(boolean itemUsed) {
+        this.itemUsed = itemUsed;
+    }
+    
 }

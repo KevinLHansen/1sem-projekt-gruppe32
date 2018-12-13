@@ -333,6 +333,10 @@ public class Game {
         marv.setCurrentRoom(neGarden);
     }
 
+    public int getPhase() {
+        return phase;
+    }
+    
     public int changePhase() {
         this.phase++;
         if(this.phase == 2) {
