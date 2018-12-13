@@ -2,7 +2,7 @@ package HomeAlone.business;
 
 /**
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class Usable extends Item {
 // BB gun, for now - could be trap-components as well later on
