@@ -273,6 +273,7 @@ public class Game {
         harry.addExitToPath(buzzRoom);
         harry.addExitToPath(secondFloor);
         harry.addExitToPath(attic);
+        
         harry.createPath();
 
         //Marv path 1
@@ -296,7 +297,7 @@ public class Game {
         marv.setCurrentPath(1);
 
         //Marv path 2
-        marv.addExitToPath(basement);
+        //marv.addExitToPath(basement);
         marv.addExitToPath(neGarden);
         marv.addExitToPath(nGarden);
         marv.addExitToPath(nwGarden);

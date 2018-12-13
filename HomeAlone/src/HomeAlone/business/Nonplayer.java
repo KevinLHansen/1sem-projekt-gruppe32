@@ -62,24 +62,23 @@ public class Nonplayer extends Creature {
      * Walk the path created
      * String returned not needed?
      */
-    public String walkPath() {
+    public boolean walkPath() {
         if(this.delay <= 0) {
             if (this.currentPath.length > this.step) {
                 Room r = this.currentPath[this.step];
-
+                System.out.println(r.getRoomID());
+                
                 boolean trapSprung = checkExitTrap(this.getCurrentRoom().getRoomID(), r.getRoomID());
                 
                 if(!trapSprung) {
                     super.setCurrentRoom(r);
                     this.step++;
                 }
-                return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
-            } else {
-                return "Reached end of path";
             }
+            return true;
         } else {
-            this.delay -= 2;
-            return this.getName() + " is delayed in: " + super.getCurrentRoom().getShortDescription();
+            this.delay -= 1;
+            return false;
         }
     }
 
@@ -115,7 +114,9 @@ public class Nonplayer extends Creature {
                 Trap trap = super.getCurrentRoom().checkTraps();
                 if (!(null == trap)) {
                     this.delay = trap.getDelay();
-                    // TO-DO: Change path
+                    System.out.println(this.delay + " " + this.currentPath.toString());
+                    this.currentPath = paths.get(2);
+                    System.out.println(this.currentPath.toString());
                     return true;
                 }
             }
@@ -142,7 +143,7 @@ public class Nonplayer extends Creature {
             if (!(null == trap)) {
                 if (trap.getName().equals("Toy cars")) {
                     this.delay = trap.getDelay();
-                    // TO-DO: Remove trap
+                    this.getCurrentRoom().removeItem(trap);
                     return true;
                 }
             }
@@ -153,7 +154,7 @@ public class Nonplayer extends Creature {
                 if (!(null == trap)) {
                     if (trap.getName().equals("Paint bucket")) {
                         this.delay = trap.getDelay();
-                        // TO-DO: Remove trap
+                        this.getCurrentRoom().removeItem(trap);
                         return true;
                     }
                 }
@@ -168,7 +169,7 @@ public class Nonplayer extends Creature {
             if (!(null == trap)) {
                 if (trap.getName().equals("Yarn")) {
                     this.delay = trap.getDelay();
-                    // TO-DO: Remove trap
+                    this.getCurrentRoom().removeItem(trap);
                     return true;
                 }
             }
@@ -185,13 +186,13 @@ public class Nonplayer extends Creature {
                 }
             }
 
-            //Checks if the heater trap has been put on the front door, and changes Harry's path.
+            //Checks if the charcoal BBQ starter trap has been put on the front door, and changes Harry's path.
             if (nextRoomID == 1) {
                 trap = super.getCurrentRoom().checkTraps();
                 if (!(null == trap)) {
-                    if (trap.getName().equals("Heater")) {
+                    if (trap.getName().equalsIgnoreCase("Charcoal BBQ Starter")) {
                         this.delay = trap.getDelay();
-                        // TO-DO: Change path
+                        this.currentPath = paths.get(2);
                         return true;
                     }
                 }

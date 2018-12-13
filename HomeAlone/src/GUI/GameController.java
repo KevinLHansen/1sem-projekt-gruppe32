@@ -64,7 +64,7 @@ public class GameController implements Initializable {
     @FXML
     private Label txtCurrentLocation;
 
-    private int startTimeMin = 1;
+    private int startTimeMin = 2;
     private int startTimeSec = 0;
     private Timeline timeline = new Timeline();
     //private boolean isRunning;
