@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +28,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -115,14 +115,19 @@ public class GameController implements Initializable {
                 boolean isSecondsZero = startTimeSec == 0;
                 boolean isSecondsLessThanZero = startTimeSec < 0;
                 boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
-
-                if (isSecondsZero) {
-                    startTimeMin--;
-                    startTimeSec = 60;
+                if(Game.getInstance().inKitchen() && phase == 2) {
+                    timeToChangePhase = true;
                 }
-                if (isSecondsLessThanZero) {
-                    startTimeMin--;
-                    startTimeSec = 59;
+
+                if(!timeToChangePhase){
+                  if (isSecondsZero) {
+                      startTimeMin--;
+                      startTimeSec = 60;
+                  }
+                  if (isSecondsLessThanZero) {
+                      startTimeMin--;
+                      startTimeSec = 59;
+                  }
                 }
                 if (timeToChangePhase) {
                     timeline.stop();
@@ -130,7 +135,6 @@ public class GameController implements Initializable {
                     phase = Game.getInstance().changePhase();
                     if (!Game.getInstance().checkStatus()) {
                         // YOU LOSE
-                        txtOutput.setText("YOU LOSE!!");
                         endGame();
                     } else {
                         AudioFile popupSound = null;
@@ -147,15 +151,13 @@ public class GameController implements Initializable {
                             panePopup.setVisible(true);
                             popupSound.playFile();
                         }
-                        txtObjective.setText(Game.getInstance().getObjective());
                     }
                 }
-
                 txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
-
             }
         });
-        startTimeSec = 300; // Change to 60!
+
+        startTimeSec = 60; // Change to 60!
         startTimeMin = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
@@ -166,7 +168,10 @@ public class GameController implements Initializable {
     @FXML
     private void handleBtnMove(ActionEvent event) {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
+        moveRoom(nextRoom);
+    }
 
+    private void moveRoom(String nextRoom) {
         Game.getInstance().goRoom(nextRoom);
 
         if (phase > 1) {
@@ -180,11 +185,14 @@ public class GameController implements Initializable {
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
         lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
         txtOutput.setText(""); // clear output box
-        if (phase == 3) {
+        lvItemsNearby.getItems().clear();// Clear listview items nearby
+        if(phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
+            if(Game.getInstance().getFinished()) {
+                endGame();
+            }
         }
-
     }
 
     @FXML
@@ -216,7 +224,7 @@ public class GameController implements Initializable {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
             if (Game.getInstance().isPhoneHere()) {
-                txtOutput.appendText("Pick up the phone, to call the police.");
+                txtOutput.appendText("\nPick up the phone, to call the police.");
             }
         }
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList()); // update nearby items list with nearby items
@@ -383,25 +391,7 @@ public class GameController implements Initializable {
 
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
         if (event.getClickCount() == 2) {
-            Game.getInstance().goRoom(nextRoom);
-            if (phase > 1) {
-                if (!Game.getInstance().checkStatus()) {
-                    // LOSE
-                    txtOutput.setText("YOU LOSE!!");
-                    endGame();
-                    return;
-                }
-            }
-            txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
-            Tooltip loc = new Tooltip();
-            loc.setText(Game.getInstance().getCurrentRoomShortDescription());
-            txtCurrentLocation.setTooltip(loc);
-            lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
-            txtOutput.setText(""); // clear output box
-            if (phase == 3) {
-                String s = Game.getInstance().checkNeighbourRoom();
-                txtOutput.appendText(s);
-            }
+            moveRoom(nextRoom);
         }
     }
 
@@ -437,7 +427,8 @@ public class GameController implements Initializable {
             startTimeMin = 1;
             startTimeSec = 0;
             timeline.playFromStart();
-        } else if (phase == 3) {
+        }
+        else if(phase == 3) {
             startTimeMin = 0;
             startTimeSec = 0;
             txtTimeLeft.setVisible(false);

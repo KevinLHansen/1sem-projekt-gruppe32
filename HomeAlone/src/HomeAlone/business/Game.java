@@ -17,7 +17,7 @@ public class Game {
     public final int WIN = 1;
     public int status;
     public final int LOSE = -1;
-    private boolean started = false;
+    private boolean finished = false;
     private int phase;
     private int turn;
 
@@ -103,7 +103,7 @@ public class Game {
         bbGun = new Item("bbGun", 1);
         bucket = new Item("Bucket", 1);
         hose = new Item("Hose", 1);
-        heater = new Item("Heater", 1);
+        heater = new Item("Charcoal BBQ starter", 1);
         tarAndNail = new Item("Tar and nail", 1);
         iron = new Item("Clothes iron", 1);
         blowtorch = new Item("Blowtorch", 1);
@@ -127,7 +127,7 @@ public class Game {
         foyer.setExit("outside", porch);
         foyer.setExit("upstairs", staircase);
         foyer.setExit("dining room", diningRoom);
-        foyer.setInfo("I could put my toy cars here...");
+        foyer.setInfo("I could put my toy cars here...\n Maybe dad's charcoal BBQ starter could fit on the door handle");
         foyer.defineTrap(toyCars);
         foyer.defineTrap(heater);
         foyer.setRoomID(1);
@@ -153,8 +153,8 @@ public class Game {
         kitchen.setRoomID(4);
         // kitchen.addItem(plasticWrap);
 
-        staircase.setExit("up", secondFloor);
-        staircase.setExit("down", foyer);
+        staircase.setExit("up to hallway", secondFloor);
+        staircase.setExit("down to foyer", foyer);
         staircase.setInfo("I should set up at least one trap here, so that they won't get upstairs without a fight...\nMaybe the buckets of paint could work out...");
         staircase.defineTrap(paintBucket);
         staircase.setRoomID(5);
@@ -369,22 +369,50 @@ public class Game {
             if(kevin.getCurrentRoom().getRoomID() != 4) {
                 this.status = LOSE;
             } else {
-                kevin.getInventory();
-                // loop inventory, check for BB gun
+                String[] inventory = kevin.getInventory().split(", ");
+                for (String item : inventory) {
+                    if(item.equalsIgnoreCase("bbGun")) {
+                        this.status = WIN;
+                        break;
+                    } else {
+                        this.status = LOSE;
+                    }
+                }
             }
+            marv.setCurrentRoom(rooms.get(14));
+            harry.setCurrentRoom(rooms.get(16));
+            harry.setDelay(10);
         }
         
         return this.phase;
     }
     
+    public boolean inKitchen() {
+        boolean inKitchen = false;
+        if(kevin.getCurrentRoom().getRoomID() == 4) {
+            inKitchen = true;
+        }
+        return inKitchen;
+    }
+    
     public String checkNeighbourRoom() {
         String s = "", exitString = "";
+        List<String> neighbourRooms = new ArrayList<>();
         String[] exits = kevin.getCurrentRoom().getExitString().split(", ");
         int exitsLen = exits.length;
         for (int i = 0; i < exitsLen; i++) {
             if(kevin.getCurrentRoom().getExit(exits[i]).equals(marv.getCurrentRoom()) || kevin.getCurrentRoom().getExit(exits[i]).equals(harry.getCurrentRoom())) {
-                  exitString += exits[i] +((i < exitsLen) ? " and " : "");
+                  neighbourRooms.add(exits[i]);
             }
+        }
+        if(neighbourRooms.size() > 1) {
+            int j = 0;
+            for (String neighbourRoom : neighbourRooms) {
+                exitString += neighbourRoom +((j < neighbourRooms.size()) ? " and " : "");
+                j++;
+            }
+        } else if(neighbourRooms.size() == 1) {
+            exitString += neighbourRooms.get(0);
         }
         if(!exitString.equals("")) {
             s = "You hear footsteps coming from " + exitString;
@@ -420,6 +448,10 @@ public class Game {
                 }
             }
             if(phase == 3) {
+                if(kevin.getCurrentRoom().getRoomID() == 7) {
+                    this.status = WIN;
+                    this.finished = true;
+                }
                 checkForKevin(marv);
                 checkForKevin(harry);
 
@@ -430,6 +462,10 @@ public class Game {
             }
         }
         return returnVal;
+    }
+    
+    public boolean getFinished() {
+        return this.finished;
     }
     
     private void walkPath(Nonplayer npc) {

@@ -10,15 +10,15 @@ public class Trap extends Item {
     
     //Constructor
     public Trap() {
-        this("", 0, false, 10);
+        this("", 0, false, 4);
     }
     
     public Trap(Item item) {
-        this(item.getName(), item.getSize(), false, 10);
+        this(item.getName(), item.getSize(), false, 4);
     }
     
     public Trap(String name, int size) {
-        this(name, size, false, 10);
+        this(name, size, false, 4);
     }
     
     public Trap(String name, int size, boolean isSet, int delay) {
