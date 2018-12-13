@@ -151,6 +151,9 @@ public class Player extends Creature {
         } else if(item instanceof Trap) {
             this.errorList.put("pickup","Traps can't be picked up once they have been placed.\n");
             return false;
+        } else if (item instanceof Usable) {
+            this.errorList.put("pickup","Why would you call someone now? Setup the traps first!\n");
+            return false;
         } else {
             if(this.addToInventory(item)) {
                 this.getCurrentRoom().removeItem(item);

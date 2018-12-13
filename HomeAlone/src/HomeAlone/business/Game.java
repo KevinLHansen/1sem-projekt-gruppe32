@@ -115,10 +115,11 @@ public class Game {
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
         yarn = new Item("Yarn", 1);
-        phone = new Item("Phone", 1);
+        phone = new Usable("Phone", 1);
 
         int index = new Random().nextInt(phoneRooms.length);
         phoneRooms[index].addItem(phone);
+        
         
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
@@ -171,6 +172,7 @@ public class Game {
         attic.setInfo("The attic is the perfect way for a zipline escape route to my treehouse! My dad has some rope laying around somewhere...");
         attic.addItem(rope);
         attic.addItem(ornaments);
+        attic.defineTrap(rope);
         attic.setRoomID(7);
 
         kevinRoom.setExit("hallway", secondFloor);
@@ -327,11 +329,26 @@ public class Game {
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
+        harry.setCurrentRoom(swGarden);
+        marv.setCurrentRoom(neGarden);
     }
 
     public int changePhase() {
         this.phase++;
         if(this.phase == 2) {
+            for (Item item : rooms.get(6).getItemList()) {
+                if (item instanceof Trap) {
+                    Trap t = (Trap)item;
+                    if (t.getName().equals("Rope") && !t.checkTrapSet()) {
+                        this.status = LOSE;
+                    } else {
+                        this.status = WIN;
+                        break;
+                    }
+                } else {
+                    this.status = LOSE;
+                }
+            }
             this.objective = "Find the BB gun and bring it to the kitchen.";
             this.objectiveDescription = "You need to get to the kitchen with the BB gun to defend the door.";
             // LOSE - outside when the wet bandits arrives
@@ -343,6 +360,7 @@ public class Game {
             this.turn = 0;
             this.objective = "Call the police and escape the house.";
             this.objectiveDescription = "You need to find the phone and call the police. Then you should get out of the house.";
+            
             // LOSE - not in kitchen with BB gun
             if(kevin.getCurrentRoom().getRoomID() != 4) {
                 this.status = LOSE;
@@ -558,6 +576,15 @@ public class Game {
         else {
             return "LOSE";
         }
+    }
+    
+    public boolean isPhoneHere() {
+        for (Item item : kevin.getCurrentRoom().getItemList()) {
+            if (item.getName().equals("Phone")){
+                return true;
+            }
+        }
+        return false;
     }
     
     /* Need a list of traps that need to be set, temporary win condition for 1st game stage */

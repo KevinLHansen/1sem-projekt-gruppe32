@@ -128,20 +128,20 @@ public class GameController implements Initializable {
                     timeline.stop();
                     // Start next phase here
                     phase = Game.getInstance().changePhase();
-                    if(!Game.getInstance().checkStatus()) {
+                    if (!Game.getInstance().checkStatus()) {
                         // YOU LOSE
                         txtOutput.setText("YOU LOSE!!");
                         endGame();
                     } else {
                         AudioFile popupSound = null;
                         popupSound = new AudioFile("sfx/popup.wav");
-                        if(phase == 2) {
+                        if (phase == 2) {
                             imgviewPopup.setImage(new Image("file:img/phase2transition.gif"));
                             txtPopup.setText("The Wet Bandits have arrived and are roaming the outside area! \nIf you exit the house, you will most certainly get caught.");
                             panePopup.setVisible(true);
                             popupSound.playFile();
                         }
-                        if(phase == 3) {
+                        if (phase == 3) {
                             imgviewPopup.setImage(new Image("file:img/phase3transition.gif"));
                             txtPopup.setText("The Wet Bandits have entered the house! \nIf you run into them, you will get caught.");
                             panePopup.setVisible(true);
@@ -155,7 +155,7 @@ public class GameController implements Initializable {
 
             }
         });
-        startTimeSec = 5; // Change to 60!
+        startTimeSec = 300; // Change to 60!
         startTimeMin = min - 1;
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
@@ -169,8 +169,8 @@ public class GameController implements Initializable {
 
         Game.getInstance().goRoom(nextRoom);
 
-        if(phase > 1) {
-            if(!Game.getInstance().checkStatus()){
+        if (phase > 1) {
+            if (!Game.getInstance().checkStatus()) {
                 // LOSE
                 txtOutput.setText("YOU LOSE!!");
                 endGame();
@@ -180,7 +180,7 @@ public class GameController implements Initializable {
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
         lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
         txtOutput.setText(""); // clear output box
-        if(phase == 3) {
+        if (phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
         }
@@ -189,8 +189,8 @@ public class GameController implements Initializable {
 
     @FXML
     private void handleBtnExamine(ActionEvent event) {
-        if(phase > 1) {
-            if(!Game.getInstance().checkStatus()) {
+        if (phase > 1) {
+            if (!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
                 endGame();
                 return;
@@ -212,19 +212,21 @@ public class GameController implements Initializable {
             }
             txtOutput.setText(outputText); // paste outputText to output box
         }
-        if(phase == 3) {
+        if (phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
+            if (Game.getInstance().isPhoneHere()) {
+                txtOutput.appendText("Pick up the phone, to call the police.");
+            }
         }
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList()); // update nearby items list with nearby items
-
 
     }
 
     @FXML
     private void handleBtnPickup(ActionEvent event) {
-        if(phase > 1) {
-            if(!Game.getInstance().checkStatus()) {
+        if (phase > 1) {
+            if (!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
                 endGame();
                 return;
@@ -232,28 +234,32 @@ public class GameController implements Initializable {
         }
         String itemName = lvItemsNearby.getSelectionModel().getSelectedItem();
         if (itemName != null) {
-            Game.getInstance().pickupItem(itemName);
-            //if (inventoryList.size() < 3) {
-            if (Game.getInstance().getError("pickup").equals("")) {
-                lvInventory.setItems(Game.getInstance().getInventoryObservableList());
-                /*inventoryList.add(itemName);
-                lvInventory.setItems(inventoryList);*/
-                lvItemsNearby.setItems(Game.getInstance().getItemsObservableList());
-                //lvItemsNearby.
-
-                AudioFile pickupSound = null;
-                pickupSound = new AudioFile("sfx/pickup.wav");
-                pickupSound.playFile();
+            if (phase == 3 && itemName == "Phone") {
+                txtOutput.setText("You called the police. Escape through the attic window!");
             } else {
-                txtOutput.setText(Game.getInstance().getError("pickup"));
+                Game.getInstance().pickupItem(itemName);
+                //if (inventoryList.size() < 3) {
+                if (Game.getInstance().getError("pickup").equals("")) {
+                    lvInventory.setItems(Game.getInstance().getInventoryObservableList());
+                    /*inventoryList.add(itemName);
+                     lvInventory.setItems(inventoryList);*/
+                    lvItemsNearby.setItems(Game.getInstance().getItemsObservableList());
+                    //lvItemsNearby.
+
+                    AudioFile pickupSound = null;
+                    pickupSound = new AudioFile("sfx/pickup.wav");
+                    pickupSound.playFile();
+                } else {
+                    txtOutput.setText(Game.getInstance().getError("pickup"));
+                }
             }
         }
     }
 
     @FXML
     private void handleBtnSetup(ActionEvent event) {
-        if(phase > 1) {
-            if(!Game.getInstance().checkStatus()) {
+        if (phase > 1) {
+            if (!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
                 endGame();
                 return;
@@ -267,8 +273,8 @@ public class GameController implements Initializable {
 
     @FXML
     private void handleBtnDrop(ActionEvent event) {
-        if(phase > 1) {
-            if(!Game.getInstance().checkStatus()) {
+        if (phase > 1) {
+            if (!Game.getInstance().checkStatus()) {
                 txtOutput.setText("YOU LOSE!!");
                 endGame();
                 return;
@@ -289,7 +295,7 @@ public class GameController implements Initializable {
     private void handleMenuItemRestart(ActionEvent event) {
         try {
             Game.getInstance().restart();
-            
+
             Stage primaryStage = (Stage) ((Node) menuBar).getScene().getWindow();
             primaryStage.close();
 
@@ -378,8 +384,8 @@ public class GameController implements Initializable {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
         if (event.getClickCount() == 2) {
             Game.getInstance().goRoom(nextRoom);
-            if(phase > 1) {
-                if(!Game.getInstance().checkStatus()){
+            if (phase > 1) {
+                if (!Game.getInstance().checkStatus()) {
                     // LOSE
                     txtOutput.setText("YOU LOSE!!");
                     endGame();
@@ -392,27 +398,28 @@ public class GameController implements Initializable {
             txtCurrentLocation.setTooltip(loc);
             lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
             txtOutput.setText(""); // clear output box
-            if(phase == 3) {
+            if (phase == 3) {
                 String s = Game.getInstance().checkNeighbourRoom();
                 txtOutput.appendText(s);
             }
         }
     }
+
     private void endGame() {
         try {
             // close current window
-            Stage primaryStage = (Stage)btnMove.getScene().getWindow();
+            Stage primaryStage = (Stage) btnMove.getScene().getWindow();
             primaryStage.close();
-            
+
             // open EndScreen window
             Parent root = FXMLLoader.load(getClass().getResource("EndScreen.fxml"));
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            
+
             stage.setTitle("HOME ALONE™");
             stage.getIcons().add(new Image("file:img/icon.png"));
-            
+
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
@@ -420,24 +427,22 @@ public class GameController implements Initializable {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     @FXML
     private void handleBtnPopupOk(ActionEvent event) {
         panePopup.setVisible(false);
-        
+
         // start timer back up after clicking OK
-        if(phase == 2) {
+        if (phase == 2) {
             startTimeMin = 1;
             startTimeSec = 0;
-            timeline.playFromStart();          
-        }
-        else if(phase == 3) {
+            timeline.playFromStart();
+        } else if (phase == 3) {
             startTimeMin = 0;
             startTimeSec = 0;
             txtTimeLeft.setVisible(false);
             lblTimeLeft.setVisible(false);
         }
-            
+
     }
-} 
+}
