@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="480.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ShowMapController">
    <children>
-      <TextArea editable="false" layoutX="15.0" layoutY="109.0" prefHeight="319.0" prefWidth="451.0" text="© Gruppe 32 - Semesterprojekt Efterår 2018&#10;&#10;Home Alone &#10;&#10;Dette spil er lavet i forbindelse med gruppe 32's semesterprojekt i Software Engineering / Softwareteknologi på Syddansk Universitet.&#10;&#10;&#10;© Group 32 - Semester Project Fall 2018&#10;&#10;Home Alone &#10;&#10;This game is made in connection with group 32's semester project in Software Engineering / Software Technology on the University of Southern Denmark" wrapText="true">
+      <TextArea editable="false" layoutX="15.0" layoutY="109.0" prefHeight="319.0" prefWidth="451.0" text="© Gruppe 32 - Semesterprojekt Efterår 2018&#10;&#10;Home Alone &#10;&#10;Dette spil er lavet i forbindelse med gruppe 32's semesterprojekt i Software Engineering / Softwareteknologi på Syddansk Universitet.&#10;&#10;&#10;© Group 32 - Semester Project Fall 2018&#10;&#10;Home Alone &#10;&#10;This game is made in conjunction with group 32's semester project in Software Engineering / Software Technology on the University of Southern Denmark" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
