@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Needs methods specific to the wet bandits, Harry and Marv 
- * multiple paths depending on traps set or not? 
- * set new path at each trap?
- *
  * @author Gruppe 32
  */
 public class Nonplayer extends Creature {
@@ -19,9 +15,6 @@ public class Nonplayer extends Creature {
     private Map<Integer, Room[]> paths;
     private int step;
     private int delay; // Trap sprung
-
-    // If we decide on random paths
-    private Room previousRoom;
 
     public Nonplayer(String name) {
         this(name, 3);
@@ -103,7 +96,7 @@ public class Nonplayer extends Creature {
                 if (!(null == trap)) {
                     this.delay = trap.getDelay();
                     this.setCurrentPath(2);
-                    step = 0;
+                    step = 0; // Reset the step as the new path starts at 0
                     return true;
                 }
             }
@@ -190,8 +183,8 @@ public class Nonplayer extends Creature {
                         this.delay = trap.getDelay();
                         System.out.println("new path");
                         this.setCurrentPath(2);
-                        step = 0;
-                        this.delay += 2; // Extra delay since the new patch starts in NE Garden
+                        step = 0; // Reset the step as the new path starts at 0
+                        this.delay += 2; // Extra delay since the new path starts in NE Garden
                         return true;
                     }
                 }
