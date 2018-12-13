@@ -64,7 +64,7 @@ public class GameController implements Initializable {
     @FXML
     private Label txtCurrentLocation;
 
-    private int startTimeMin = 5;
+    private int startTimeMin = 2;
     private int startTimeSec = 0;
     private Timeline timeline = new Timeline();
     //private boolean isRunning;
@@ -109,7 +109,7 @@ public class GameController implements Initializable {
         txtObjective.setText(Game.getInstance().getObjective());
         startTimer();
         
-        gameTheme = new AudioFile("src/sfx/gameTheme.wav");
+        gameTheme = new AudioFile("sfx/gameTheme.wav");
         gameTheme.playFile();
     }
 
@@ -145,7 +145,7 @@ public class GameController implements Initializable {
                         endGame();
                     } else {
                         AudioFile popupSound = null;
-                        popupSound = new AudioFile("src/sfx/popup.wav");
+                        popupSound = new AudioFile("sfx/popup.wav");
                         if (phase == 2) {
                             imgviewPopup.setImage(new Image("file:img/phase2transition.gif"));
                             txtPopup.setText("The Wet Bandits have arrived and are roaming the outside area! \nIf you exit the house, you will most certainly get caught.");
@@ -268,7 +268,7 @@ public class GameController implements Initializable {
                     //lvItemsNearby.
 
                     AudioFile pickupSound = null;
-                    pickupSound = new AudioFile("src/sfx/pickup.wav");
+                    pickupSound = new AudioFile("sfx/pickup.wav");
                     pickupSound.playFile();
                 } else {
                     txtOutput.setText(Game.getInstance().getError("pickup"));
@@ -319,7 +319,7 @@ public class GameController implements Initializable {
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList());
         
         AudioFile dropSound = null;
-        dropSound = new AudioFile("src/sfx/drop.wav");
+        dropSound = new AudioFile("sfx/drop.wav");
         dropSound.playFile();
     }
 
