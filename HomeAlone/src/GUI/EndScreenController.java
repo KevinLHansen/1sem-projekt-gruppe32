@@ -29,7 +29,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author skoti
+ * @author Gruppe 32 
  */
 public class EndScreenController implements Initializable {
     @FXML

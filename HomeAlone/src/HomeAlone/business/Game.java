@@ -7,6 +7,11 @@ import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ *
+ * @author Gruppe 32
+ */
+
 public class Game {
 
     //private Parser parser;

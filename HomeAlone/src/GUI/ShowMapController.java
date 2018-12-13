@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author mc-mc
+ * @author Gruppe 32 
  */
 public class ShowMapController implements Initializable {
 

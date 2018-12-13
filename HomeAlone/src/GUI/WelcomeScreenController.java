@@ -27,7 +27,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author skoti
+ * @author Gruppe 32 
  */
 public class WelcomeScreenController implements Initializable {
     @FXML

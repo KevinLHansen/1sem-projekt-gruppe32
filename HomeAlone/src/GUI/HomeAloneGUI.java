@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Kevin
+ * @author Gruppe 32 
  */
 public class HomeAloneGUI extends Application {
     
