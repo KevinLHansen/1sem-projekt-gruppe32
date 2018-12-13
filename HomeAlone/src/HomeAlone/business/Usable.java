@@ -28,5 +28,9 @@ public class Usable extends Item {
     public void setItemUsed(boolean itemUsed) {
         this.itemUsed = itemUsed;
     }
+
+    public boolean isItemUsed() {
+        return itemUsed;
+    }
     
 }

@@ -38,6 +38,8 @@ public class EndScreenController implements Initializable {
     private Button btnYes;
     @FXML
     private Button btnNo;
+    @FXML
+    private Label txtResultReason;
 
     /**
      * Initializes the controller class.
@@ -45,6 +47,7 @@ public class EndScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         txtResult.setText(Game.getInstance().getResult());
+        txtResultReason.setText(Game.getInstance().getResultReason());
     }    
 
     @FXML

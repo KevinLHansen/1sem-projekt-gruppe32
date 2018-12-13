@@ -20,31 +20,33 @@ public class Game {
     private boolean finished = false;
     private int phase;
     private int turn;
+    private Usable phone;
+    private String resultReason = "";
 
     // Singleton pattern for GUI purposes
     private static Game instance = null;
+
     public static Game getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Game();
         }
         return instance;
     }
-    
+
     // necesarry method to reset Game instance when restarting game
     public static void restart() {
         instance = null;
     }
-    
+
     private Game() {
         this.rooms = new ArrayList<>();
         this.status = 0;
         this.phase = 1;
-        
+
         kevin = new Player("Kevin");
         marv = new Nonplayer("Marv");
         harry = new Nonplayer("Harry");
-        objective = "1: Prepare yourself. Set up an escape route.\n";
-        objectiveDescription = ("Find some rope in the attic.");
+        objective = "Prepare an escape route and set up traps before the burglars arrive.";
 
         initializeGame();
 
@@ -53,7 +55,7 @@ public class Game {
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn, phone;
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, ornaments, toyCars, paintBucket, yarn;
 
         foyer = new Room("Foyer - Front entrance");
         livingRoom = new Room("Living room");
@@ -78,7 +80,7 @@ public class Game {
         Room[] phoneRooms = {
             masterBedroom, livingRoom
         };
-        
+
         rooms.add(foyer);
         rooms.add(livingRoom);
         rooms.add(diningRoom);
@@ -105,12 +107,7 @@ public class Game {
         hose = new Item("Hose", 1);
         heater = new Item("Charcoal BBQ starter", 1);
         tarAndNail = new Item("Tar and nail", 1);
-        iron = new Item("Clothes iron", 1);
         blowtorch = new Item("Blowtorch", 1);
-//        glue = new Item("Glue", 1);
-//        plasticWrap = new Item("Plastic wrap", 1);
-//        fan = new Item("Fan", 1);
-//        pillow = new Item("Pillow", 1);
         ornaments = new Item("Ornaments", 1);
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
@@ -119,8 +116,7 @@ public class Game {
 
         int index = new Random().nextInt(phoneRooms.length);
         phoneRooms[index].addItem(phone);
-        
-        
+
         //Setting exits and infos to rooms.
         //Infos are called through the "examine" command for the current room that the player currently is located.
         foyer.setExit("living room", livingRoom);
@@ -136,14 +132,10 @@ public class Game {
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
         livingRoom.defineTrap(ornaments);
         livingRoom.setRoomID(2);
-        // livingRoom.addItem(fan);
-        // livingRoom.addItem(pillow);
 
         diningRoom.setExit("foyer", foyer);
         diningRoom.setExit("kitchen", kitchen);
         diningRoom.setRoomID(3);
-//        diningRoom.setInfo("I could setup a chicken-trap here with glue, a fan and some feathers...");
-//        diningRoom.defineTrap();
 
         kitchen.setExit("basement", basement);
         kitchen.setExit("dining room", diningRoom);
@@ -151,7 +143,6 @@ public class Game {
         kitchen.setInfo("I should get ready for when the crooks arrive. Buzz' BB gun could be useful if they decide to enter the backdoor... \nI could set up a blowtorch trap here...");
         kitchen.defineTrap(blowtorch);
         kitchen.setRoomID(4);
-        // kitchen.addItem(plasticWrap);
 
         staircase.setExit("up to hallway", secondFloor);
         staircase.setExit("down to foyer", foyer);
@@ -170,7 +161,6 @@ public class Game {
 
         attic.setExit("hallway", secondFloor);
         attic.setInfo("The attic is the perfect way for a zipline escape route to my treehouse! My dad has some rope laying around somewhere...");
-        attic.addItem(rope);
         attic.addItem(ornaments);
         attic.defineTrap(rope);
         attic.setRoomID(7);
@@ -187,17 +177,17 @@ public class Game {
 
         basement.setExit("kitchen", kitchen);
         basement.setExit("outside", neGarden);
-        basement.setInfo("There's tonnes of stuff down here I can use to set up traps.\nMaybe I could set up a trap with a nail and some tar on the steps. Or even switch out the lightbulb switch with a trapdoor...\nI could also use my dad's heater on the front doorknob.");
+        basement.setInfo("There's tonnes of stuff down here I can use to set up traps.\nMaybe I could set up a trap with a nail and some tar on the steps. Or even switch out the lightbulb switch with a trapdoor...\nI could also use my dad's BBQ starter on the front doorknob.");
         basement.defineTrap(tarAndNail);
         basement.addItem(heater);
         basement.addItem(tarAndNail);
         basement.addItem(blowtorch);
-        // basement.addItem(glue);
         basement.addItem(paintBucket);
+        basement.addItem(rope);
         basement.setRoomID(10);
 
         masterBedroom.setExit("hallway", secondFloor);
-        masterBedroom.setInfo("Mom's and Dad's bedroom. Is there anything in here I can use to make a tripwire?\nI can use the phone to call the cops when the crooks are inside the house...");
+        masterBedroom.setInfo("Mom's and Dad's bedroom. Is there anything in here I can use to make a tripwire?");
         masterBedroom.addItem(yarn);
         masterBedroom.setRoomID(11);
 
@@ -211,8 +201,6 @@ public class Game {
         nwGarden.setExit("east", nGarden);
         nwGarden.setExit("south", wGarden);
         nwGarden.setRoomID(13);
-        //nwGarden.setExit("window", livingRoom);
-        // Marv-only movement "idea" for GUI iteration of the game
 
         nGarden.setExit("treehouse", treehouse);
         nGarden.setExit("west", nwGarden);
@@ -223,7 +211,7 @@ public class Game {
         neGarden.setExit("west", nGarden);
         neGarden.setExit("basement", basement);
         neGarden.setExit("kitchen", kitchen);
-        neGarden.setInfo("I know the crooks are trying to come through the kitchen door first.\nThe garden hose could help me set up an ice-slippery trap to the basement.");
+        neGarden.setInfo("I know the crooks will try to come through the kitchen door first.\nThe garden hose could help me set up an ice-slippery trap to the basement.");
         neGarden.defineTrap(hose);
         neGarden.addItem(hose);
         neGarden.setRoomID(15);
@@ -242,7 +230,7 @@ public class Game {
         seGarden.setRoomID(18);
 
         treehouse.setExit("down", nGarden);
-        treehouse.setInfo("I need to set up an escape route here from the attic. My dad has some rope lying around...");
+        treehouse.setInfo("I need to set up an escape route from the attic to this treehouse. My dad has some rope lying around...");
         treehouse.setRoomID(19);
 
         //Harry path 1
@@ -264,10 +252,10 @@ public class Game {
         harry.addExitToPath(buzzRoom);
         harry.addExitToPath(secondFloor);
         harry.addExitToPath(attic);
-        
+
         harry.createPath();
         harry.setCurrentPath(1);
-        
+
         //Harry path 2
         harry.addExitToPath(porch);
         harry.addExitToPath(neGarden); //DELAY
@@ -303,7 +291,7 @@ public class Game {
         marv.addExitToPath(masterBedroom);
         marv.addExitToPath(secondFloor);
         marv.addExitToPath(attic);
-        
+
         marv.createPath();
         marv.setCurrentPath(1);
 
@@ -323,9 +311,8 @@ public class Game {
         marv.addExitToPath(masterBedroom);
         marv.addExitToPath(secondFloor);
         marv.addExitToPath(attic);
-        
-        marv.createPath();
 
+        marv.createPath();
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
@@ -336,46 +323,58 @@ public class Game {
     public int getPhase() {
         return phase;
     }
-    
+
     public int changePhase() {
         this.phase++;
-        if(this.phase == 2) {
-            for (Item item : rooms.get(6).getItemList()) {
-                if (item instanceof Trap) {
-                    Trap t = (Trap)item;
-                    if (t.getName().equals("Rope") && !t.checkTrapSet()) {
-                        this.status = LOSE;
+        if (this.phase == 2) {
+            if (rooms.get(6).getItemList().isEmpty()) {
+                this.status = LOSE;
+                resultReason = "No escape route when burglars arrived.";
+            }
+            else { // checks if zipline is assembled in attic
+                for (Item item : rooms.get(6).getItemList()) {
+                    if (item instanceof Trap) {
+                        Trap t = (Trap) item;
+                        if (t.getName().equalsIgnoreCase("Rope") && !t.checkTrapSet()) {
+                            this.status = LOSE;
+                            resultReason = "No escape route when burglars arrived.";
+                        } else {
+                            this.status = WIN;
+                            resultReason = "Kevin succesfully defended his house!";
+                            break;
+                        }
                     } else {
-                        this.status = WIN;
-                        break;
+                        this.status = LOSE;
+                        resultReason = "No escape route when burglars arrived.";
                     }
-                } else {
-                    this.status = LOSE;
                 }
             }
-            this.objective = "Find the BB gun and bring it to the kitchen.";
-            this.objectiveDescription = "You need to get to the kitchen with the BB gun to defend the door.";
+            this.objective = "Hurry!\nFind the BB gun and bring it to the kitchen.";
             // LOSE - outside when the wet bandits arrives
-            int[] restrictedRoomIDs = {12,13,14,15,16,17,18,19};
-            if(IntStream.of(restrictedRoomIDs).anyMatch(x->x==kevin.getCurrentRoom().getRoomID())) {
+            int[] restrictedRoomIDs = {12, 13, 14, 15, 16, 17, 18, 19};
+            if (IntStream.of(restrictedRoomIDs).anyMatch(x -> x == kevin.getCurrentRoom().getRoomID())) {
                 this.status = LOSE;
+                resultReason = "You got caught outside by the burglars.";
             }
-        } else if(this.phase == 3) {
+        } else if (this.phase == 3) {
             this.turn = 0;
-            this.objective = "Call the police and escape the house.";
+            this.objective = "The burglars are inside the house!\nCall the police and use the escape route before you get caught.";
             this.objectiveDescription = "You need to find the phone and call the police. Then you should get out of the house.";
-            
+
             // LOSE - not in kitchen with BB gun
-            if(kevin.getCurrentRoom().getRoomID() != 4) {
+            if (kevin.getCurrentRoom().getRoomID() != 4) {
                 this.status = LOSE;
+                resultReason = "You weren't prepared to defend the kitchen.";
             } else {
                 String[] inventory = kevin.getInventory().split(", ");
                 for (String item : inventory) {
-                    if(item.equalsIgnoreCase("bbGun")) {
+                    if (item.equalsIgnoreCase("bbGun")) {
                         this.status = WIN;
+                        resultReason = "Kevin succesfully defended his house!";
                         break;
                     } else {
                         this.status = LOSE;
+                        resultReason = "You weren't prepared to defend the kitchen.";
                     }
                 }
             }
@@ -383,73 +382,87 @@ public class Game {
             harry.setCurrentRoom(rooms.get(16));
             harry.setDelay(10);
         }
-        
+
         return this.phase;
     }
-    
+
     public boolean inKitchen() {
         boolean inKitchen = false;
-        if(kevin.getCurrentRoom().getRoomID() == 4) {
+        if (kevin.getCurrentRoom().getRoomID() == 4) {
             inKitchen = true;
         }
         return inKitchen;
     }
-    
+
     public String checkNeighbourRoom() {
         String s = "", exitString = "";
         List<String> neighbourRooms = new ArrayList<>();
         String[] exits = kevin.getCurrentRoom().getExitString().split(", ");
         int exitsLen = exits.length;
         for (int i = 0; i < exitsLen; i++) {
-            if(kevin.getCurrentRoom().getExit(exits[i]).equals(marv.getCurrentRoom()) || kevin.getCurrentRoom().getExit(exits[i]).equals(harry.getCurrentRoom())) {
-                  neighbourRooms.add(exits[i]);
+            if (kevin.getCurrentRoom().getExit(exits[i]).equals(marv.getCurrentRoom()) || kevin.getCurrentRoom().getExit(exits[i]).equals(harry.getCurrentRoom())) {
+                neighbourRooms.add(exits[i]);
             }
         }
-        if(neighbourRooms.size() > 1) {
+        if (neighbourRooms.size() > 1) {
             int j = 0;
             for (String neighbourRoom : neighbourRooms) {
-                exitString += neighbourRoom +((j < neighbourRooms.size()) ? " and " : "");
+                exitString += neighbourRoom + ((j < neighbourRooms.size()) ? " and " : "");
                 j++;
             }
-        } else if(neighbourRooms.size() == 1) {
+        } else if (neighbourRooms.size() == 1) {
             exitString += neighbourRooms.get(0);
         }
-        if(!exitString.equals("")) {
+        if (!exitString.equals("")) {
             s = "You hear footsteps coming from " + exitString;
         }
         return s;
     }
-    
+
     public void checkForKevin(Nonplayer npc) {
-        if(npc.getCurrentRoom().equals(kevin.getCurrentRoom())) {
+        if (npc.getCurrentRoom().equals(kevin.getCurrentRoom())) {
             this.status = LOSE;
+            resultReason = "You ran into a burglar and got caught.";
         }
     }
-    
+
     public boolean checkStatus() {
-        if(this.status == this.LOSE) {
+        if (this.status == this.LOSE) {
             return false;
         }
         return true;
     }
-    
+
     public String getCurrentRoomItems() {
-        return kevin.getCurrentRoom().getItems()+"\n";
-    }       
-    
+        return kevin.getCurrentRoom().getItems() + "\n";
+    }
+
+    public boolean setZipline(String item) {
+        if (kevin.getCurrentRoom().getRoomID() == 7 && item != null) {
+            if (item.equalsIgnoreCase("rope")) {
+                setTrap(item);
+                kevin.setCurrentRoom(rooms.get(18));
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean goRoom(String command) {
         boolean returnVal = true;
-        if(checkStatus()) {
+        if (checkStatus()) {
             returnVal = kevin.goRoom(command);
-            if(this.phase == 2) {
-                int[] restrictedRoomIDs = {12,13,14,15,16,17,18,19};
-                if(IntStream.of(restrictedRoomIDs).anyMatch(x->x==kevin.getCurrentRoom().getRoomID())) {
-                    this.status = LOSE; 
+            if (this.phase == 2) {
+                int[] restrictedRoomIDs = {12, 13, 14, 15, 16, 17, 18, 19};
+                if (IntStream.of(restrictedRoomIDs).anyMatch(x -> x == kevin.getCurrentRoom().getRoomID())) {
+                    this.status = LOSE;
+                    resultReason = "You got caught outside by the burglars.";
                 }
             }
-            if(phase == 3) {
-                if(kevin.getCurrentRoom().getRoomID() == 7) {
+            if (phase == 3) {
+                if (kevin.getCurrentRoom().getRoomID() == 7 && phone.isItemUsed()) {
                     this.status = WIN;
+                    resultReason = "Kevin succesfully defended his house!";
                     this.finished = true;
                 }
                 checkForKevin(marv);
@@ -463,31 +476,32 @@ public class Game {
         }
         return returnVal;
     }
-    
+
     public boolean getFinished() {
         return this.finished;
     }
-    
+
     private void walkPath(Nonplayer npc) {
-        if(checkStatus()) {
-            if(this.turn % 2 == 0) {
+        if (checkStatus()) {
+            if (this.turn % 2 == 0) {
                 npc.walkPath();
                 // If 1 of the wet bandits reach the attic the player loses the game.
-                if(npc.getCurrentRoom().getRoomID() == 7) {
+                if (npc.getCurrentRoom().getRoomID() == 7) {
                     this.status = LOSE;
+                    resultReason = "A burglar found your escape route.";
                 }
                 checkForKevin(npc);
             }
         }
     }
-    
+
     public String getCurrentRoomLongDescription() {
-        return kevin.getCurrentRoom().getLongDescription()+"\n";
+        return kevin.getCurrentRoom().getLongDescription() + "\n";
     }
-    
+
     public boolean pickupItem(String command) {
-        if(checkStatus()) {
-            if(phase == 3) {
+        if (checkStatus()) {
+            if (phase == 3) {
                 this.turn++;
             }
             return kevin.pickupItem(command);
@@ -495,21 +509,21 @@ public class Game {
             return false;
         }
     }
-    
+
     public String getError(String e) {
         String error = "";
         error = kevin.getError(e);
         return error;
     }
-    
+
     public String getCurrentRoomShortDescription() {
         return kevin.getCurrentRoom().getShortDescription();
     }
 
     //Checks if a room has a setInfo that contains more than "", and prints the info.
     public String getCurrentRoomInfo() {
-        if(checkStatus()) {
-            if(phase == 3) {
+        if (checkStatus()) {
+            if (phase == 3) {
                 this.turn += .5;
             }
             return kevin.getCurrentRoom().getInfo();
@@ -517,45 +531,45 @@ public class Game {
             return "";
         }
     }
-    
+
     public boolean setTrap(String trapName) {
-        if(checkStatus()) {
+        if (checkStatus()) {
             return kevin.placeTrap(trapName);
         } else {
             return false;
         }
     }
-    
+
     public String getItemString(String command) {
         String s = "";
-        if(command.equals("room")) {
+        if (command.equals("room")) {
             s = kevin.getCurrentRoom().getItemString();
-        } else if(command.equals("inventory")) {
+        } else if (command.equals("inventory")) {
             s = kevin.getInventory();
         }
         return s;
     }
-    
+
     public String getTrapString() {
-        if(checkStatus()) {
+        if (checkStatus()) {
             return kevin.getCurrentRoom().getTrapString();
         } else {
             return "";
         }
     }
-    
+
     public String getTrapInfo() {
         return kevin.getCurrentRoom().checkTrapSet();
     }
-    
+
     public boolean dropItem(String itemName) {
-        if(checkStatus()) {
+        if (checkStatus()) {
             return kevin.dropCommand(itemName);
         } else {
             return false;
         }
     }
-    
+
     public ObservableList getExitsObservableList() {
         String[] exits = kevin.getCurrentRoom().getExitString().split(", ");
         ObservableList<String> exitList = FXCollections.observableArrayList();
@@ -564,7 +578,7 @@ public class Game {
         }
         return exitList;
     }
-    
+
     public ObservableList getItemsObservableList() {
         String[] items = kevin.getCurrentRoom().getItems().split(", ");
         ObservableList<String> itemList = FXCollections.observableArrayList();
@@ -573,7 +587,7 @@ public class Game {
         }
         return itemList;
     }
-    
+
     public ObservableList getInventoryObservableList() {
         String[] items = kevin.getInventory().split(", ");
         ObservableList<String> itemList = FXCollections.observableArrayList();
@@ -582,10 +596,10 @@ public class Game {
         }
         return itemList;
     }
-    
+
     //Method used for calling the "help"-command that prints out instructions and commands.
     public String printHelp() {
-        if(checkStatus()) {
+        if (checkStatus()) {
             return kevin.getCurrentRoom().getExitString() + "\n";
         } else {
             return "";
@@ -597,6 +611,7 @@ public class Game {
         return true;
     }
 // TextUI
+
     public String show(String command) {
         if (command.equalsIgnoreCase("inventory")) {
             return kevin.getInventory();
@@ -608,44 +623,25 @@ public class Game {
     public String getObjective() {
         return objective;
     }
-    
+
     public String getResult() {
-        if(checkStatus()) {
+        if (checkStatus()) {
             return "WIN";
-        }
-        else {
+        } else {
             return "LOSE";
         }
     }
-    
+
     public boolean isPhoneHere() {
         for (Item item : kevin.getCurrentRoom().getItemList()) {
-            if (item.getName().equals("Phone")){
+            if (item.getName().equals("Phone")) {
                 return true;
             }
         }
         return false;
     }
-    
-    /* Need a list of traps that need to be set, temporary win condition for 1st game stage */
-    /* OBSOLETE
-    public void checkObjectives() {
-        for (Room room : rooms) {
-            if(room.getRoomID() == 1){
-                List<Trap> trapList = room.getPossibleTraps();
-                if(trapList != null) {
-                    for (Trap trap : trapList) {
-                        
-                        if(trap.checkTrapSet()) {
-                            this.status = WIN;
-                        } else {
-                            this.status = LOSE;
-                        }
-                    }
-                } else {
-                    this.status = LOSE;
-                }
-            }
-        }
-    }*/
+
+    public String getResultReason() {
+        return resultReason;
+    }
 }

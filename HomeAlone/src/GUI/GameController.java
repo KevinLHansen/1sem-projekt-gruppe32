@@ -103,6 +103,7 @@ public class GameController implements Initializable {
         lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // show available exits at currentRoom (foyer)
         txtTimeLeft.setText(String.format("%d:%02d", startTimeMin, startTimeSec));
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription());
+        txtObjective.setText(Game.getInstance().getObjective());
         startTimer();
     }
 
@@ -115,19 +116,19 @@ public class GameController implements Initializable {
                 boolean isSecondsZero = startTimeSec == 0;
                 boolean isSecondsLessThanZero = startTimeSec < 0;
                 boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
-                if(Game.getInstance().inKitchen() && phase == 2) {
+                if (Game.getInstance().inKitchen() && phase == 2) {
                     timeToChangePhase = true;
                 }
 
-                if(!timeToChangePhase){
-                  if (isSecondsZero) {
-                      startTimeMin--;
-                      startTimeSec = 60;
-                  }
-                  if (isSecondsLessThanZero) {
-                      startTimeMin--;
-                      startTimeSec = 59;
-                  }
+                if (!timeToChangePhase) {
+                    if (isSecondsZero) {
+                        startTimeMin--;
+                        startTimeSec = 60;
+                    }
+                    if (isSecondsLessThanZero) {
+                        startTimeMin--;
+                        startTimeSec = 59;
+                    }
                 }
                 if (timeToChangePhase) {
                     timeline.stop();
@@ -143,12 +144,14 @@ public class GameController implements Initializable {
                             imgviewPopup.setImage(new Image("file:img/phase2transition.gif"));
                             txtPopup.setText("The Wet Bandits have arrived and are roaming the outside area! \nIf you exit the house, you will most certainly get caught.");
                             panePopup.setVisible(true);
+                            txtObjective.setText(Game.getInstance().getObjective()); // update objective UI element with new objective
                             popupSound.playFile();
                         }
                         if (phase == 3) {
                             imgviewPopup.setImage(new Image("file:img/phase3transition.gif"));
                             txtPopup.setText("The Wet Bandits have entered the house! \nIf you run into them, you will get caught.");
                             panePopup.setVisible(true);
+                            txtObjective.setText(Game.getInstance().getObjective());
                             popupSound.playFile();
                         }
                     }
@@ -185,11 +188,11 @@ public class GameController implements Initializable {
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
         lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
         txtOutput.setText(""); // clear output box
-        lvItemsNearby.getItems().clear();// Clear listview items nearby
-        if(phase == 3) {
+        lvItemsNearby.setItems(Game.getInstance().getItemsObservableList()); // update nearby item list upon moving
+        if (phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
-            if(Game.getInstance().getFinished()) {
+            if (Game.getInstance().getFinished()) {
                 endGame();
             }
         }
@@ -274,9 +277,20 @@ public class GameController implements Initializable {
             }
         }
         String itemName = lvInventory.getSelectionModel().getSelectedItem();
-        Game.getInstance().setTrap(itemName);
-        //inventoryList.remove(itemName);
-        lvInventory.setItems(Game.getInstance().getInventoryObservableList());
+        if (Game.getInstance().setZipline(itemName)) {
+            txtOutput.setText("Swoosh!\nYou assembled a zipline to the treehouse and used it. You should probably get inside before the burglars arrive.");
+            txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
+            lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
+            lvItemsNearby.getItems().clear();// Clear listview items nearby
+            
+        }
+        else {
+            Game.getInstance().setTrap(itemName);
+            //inventoryList.remove(itemName);
+            lvItemsNearby.setItems(Game.getInstance().getItemsObservableList()); // update nearby items list with nearby items
+        }
+        lvInventory.setItems(Game.getInstance().getInventoryObservableList()); // update inventory UI element with items
+        
     }
 
     @FXML
@@ -427,8 +441,7 @@ public class GameController implements Initializable {
             startTimeMin = 1;
             startTimeSec = 0;
             timeline.playFromStart();
-        }
-        else if(phase == 3) {
+        } else if (phase == 3) {
             startTimeMin = 0;
             startTimeSec = 0;
             txtTimeLeft.setVisible(false);
