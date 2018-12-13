@@ -69,7 +69,7 @@ public class WelcomeScreenController implements Initializable {
             welcomeStage.close();
             
             AudioFile startQuote = null;
-            startQuote = new AudioFile("sfx/startQuote.wav");
+            startQuote = new AudioFile("src/sfx/startQuote.wav");
             startQuote.playFile();
             //AudioFile gameTheme = null;
             //gameTheme = new AudioFile("sfx/gameTheme.wav");
