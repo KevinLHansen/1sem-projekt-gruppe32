@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 /**
@@ -69,6 +70,8 @@ public class GameController implements Initializable {
     //private boolean isRunning;
     private int min = startTimeMin;
     private int phase = 1;
+    
+    AudioFile gameTheme = null;
 
     @FXML
     private MenuItem menuItemRestart;
@@ -105,6 +108,9 @@ public class GameController implements Initializable {
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription());
         txtObjective.setText(Game.getInstance().getObjective());
         startTimer();
+        
+        gameTheme = new AudioFile("sfx/gameTheme.wav");
+        gameTheme.playFile();
     }
 
     private void startTimer() {
@@ -116,7 +122,7 @@ public class GameController implements Initializable {
                 boolean isSecondsZero = startTimeSec == 0;
                 boolean isSecondsLessThanZero = startTimeSec < 0;
                 boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
-                if (Game.getInstance().inKitchen() && phase == 2) {
+                if (Game.getInstance().inKitchenWithGun() && phase == 2) {
                     timeToChangePhase = true;
                 }
 
@@ -144,13 +150,17 @@ public class GameController implements Initializable {
                             imgviewPopup.setImage(new Image("file:img/phase2transition.gif"));
                             txtPopup.setText("The Wet Bandits have arrived and are roaming the outside area! \nIf you exit the house, you will most certainly get caught.");
                             panePopup.setVisible(true);
+                            lvAvailableExits.setDisable(true); // disable room list UI element to avoid dirty cheating
                             txtObjective.setText(Game.getInstance().getObjective()); // update objective UI element with new objective
                             popupSound.playFile();
+                            gameTheme.stopFile();
+                            gameTheme.playFile();
                         }
                         if (phase == 3) {
                             imgviewPopup.setImage(new Image("file:img/phase3transition.gif"));
                             txtPopup.setText("The Wet Bandits have entered the house! \nIf you run into them, you will get caught.");
                             panePopup.setVisible(true);
+                            lvAvailableExits.setDisable(true);
                             txtObjective.setText(Game.getInstance().getObjective());
                             popupSound.playFile();
                         }
@@ -307,7 +317,7 @@ public class GameController implements Initializable {
         //inventoryList.remove(itemName);
         lvInventory.setItems(Game.getInstance().getInventoryObservableList());
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList());
-
+        
         AudioFile dropSound = null;
         dropSound = new AudioFile("sfx/drop.wav");
         dropSound.playFile();
@@ -316,8 +326,12 @@ public class GameController implements Initializable {
     @FXML
     private void handleMenuItemRestart(ActionEvent event) {
         try {
+            gameTheme.stopFile();
+            
             Game.getInstance().restart();
 
+            timeline.stop();
+            
             Stage primaryStage = (Stage) ((Node) menuBar).getScene().getWindow();
             primaryStage.close();
 
@@ -325,6 +339,14 @@ public class GameController implements Initializable {
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    Platform.exit();
+                    System.exit(0);
+                }
+            });
 
             stage.setTitle("HOME ALONE™");
             stage.getIcons().add(new Image("file:img/icon.png"));
@@ -411,6 +433,8 @@ public class GameController implements Initializable {
 
     private void endGame() {
         try {
+            gameTheme.stopFile();
+            
             // close current window
             Stage primaryStage = (Stage) btnMove.getScene().getWindow();
             primaryStage.close();
@@ -435,6 +459,7 @@ public class GameController implements Initializable {
     @FXML
     private void handleBtnPopupOk(ActionEvent event) {
         panePopup.setVisible(false);
+        lvAvailableExits.setDisable(false);
 
         // start timer back up after clicking OK
         if (phase == 2) {

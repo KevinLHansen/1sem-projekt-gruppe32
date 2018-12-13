@@ -27,7 +27,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author skoti
+ * @author Gruppe 32
  */
 public class WelcomeScreenController implements Initializable {
     @FXML
@@ -71,6 +71,9 @@ public class WelcomeScreenController implements Initializable {
             AudioFile startQuote = null;
             startQuote = new AudioFile("sfx/startQuote.wav");
             startQuote.playFile();
+            //AudioFile gameTheme = null;
+            //gameTheme = new AudioFile("sfx/gameTheme.wav");
+            //gameTheme.playFile();
         } catch (IOException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }

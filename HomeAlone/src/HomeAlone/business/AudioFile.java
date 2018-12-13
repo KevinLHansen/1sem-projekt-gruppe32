@@ -11,6 +11,8 @@ import sun.audio.AudioStream;
     {
         // attributes
         private String filePath; // string for use in constructor
+        private AudioStream audioStream;
+        private InputStream inputStream;
         
         // constructors
         public AudioFile(String filePath) {
@@ -21,9 +23,8 @@ import sun.audio.AudioStream;
         public void playFile() {
             
             try {
-                InputStream inputStream; // instantiate InputStream
                 inputStream = new FileInputStream(filePath); // declare file path
-                AudioStream audioStream = new AudioStream(inputStream); // instantiate AudioStream
+                audioStream = new AudioStream(inputStream); // instantiate AudioStream
                 AudioPlayer.player.start(audioStream); // play the sound file
             }
             catch (FileNotFoundException e) {
@@ -32,5 +33,9 @@ import sun.audio.AudioStream;
             catch (IOException e) {
                 System.out.println("!IOException!");
             }
+        }
+        
+        public void stopFile() {
+            AudioPlayer.player.stop(audioStream);
         }
     }

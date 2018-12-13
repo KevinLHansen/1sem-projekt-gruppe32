@@ -330,8 +330,7 @@ public class Game {
             if (rooms.get(6).getItemList().isEmpty()) {
                 this.status = LOSE;
                 resultReason = "No escape route when burglars arrived.";
-            }
-            else { // checks if zipline is assembled in attic
+            } else { // checks if zipline is assembled in attic
                 for (Item item : rooms.get(6).getItemList()) {
                     if (item instanceof Trap) {
                         Trap t = (Trap) item;
@@ -380,16 +379,21 @@ public class Game {
             }
             marv.setCurrentRoom(rooms.get(14));
             harry.setCurrentRoom(rooms.get(16));
-            harry.setDelay(10);
+            harry.setDelay(4);
         }
 
         return this.phase;
     }
 
-    public boolean inKitchen() {
+    public boolean inKitchenWithGun() { // checks if player is in kitchen with BB gun to kickstart next phase
         boolean inKitchen = false;
         if (kevin.getCurrentRoom().getRoomID() == 4) {
-            inKitchen = true;
+            String[] inventory = kevin.getInventory().split(", ");
+            for (String item : inventory) {
+                if (item.equalsIgnoreCase("bbGun")) {
+                    inKitchen = true;
+                }
+            }   
         }
         return inKitchen;
     }
@@ -414,7 +418,7 @@ public class Game {
             exitString += neighbourRooms.get(0);
         }
         if (!exitString.equals("")) {
-            s = "You hear footsteps coming from " + exitString;
+            s = "\n\nYou hear footsteps coming from " + exitString + ".";
         }
         return s;
     }
@@ -468,8 +472,6 @@ public class Game {
                 checkForKevin(marv);
                 checkForKevin(harry);
 
-                this.turn++;
-
                 walkPath(marv);
                 walkPath(harry);
             }
@@ -483,15 +485,14 @@ public class Game {
 
     private void walkPath(Nonplayer npc) {
         if (checkStatus()) {
-            if (this.turn % 2 == 0) {
-                npc.walkPath();
-                // If 1 of the wet bandits reach the attic the player loses the game.
-                if (npc.getCurrentRoom().getRoomID() == 7) {
-                    this.status = LOSE;
-                    resultReason = "A burglar found your escape route.";
-                }
-                checkForKevin(npc);
+            npc.walkPath();
+            // If 1 of the wet bandits reach the attic the player loses the game.
+            if (npc.getCurrentRoom().getRoomID() == 7) {
+                this.status = LOSE;
+                resultReason = "A burglar found your escape route.";
             }
+            checkForKevin(npc);
+            System.out.println(npc.getName() + "|" + npc.getCurrentRoom().getShortDescription());
         }
     }
 
@@ -502,7 +503,8 @@ public class Game {
     public boolean pickupItem(String command) {
         if (checkStatus()) {
             if (phase == 3) {
-                this.turn++;
+                walkPath(marv);
+                walkPath(harry);
             }
             return kevin.pickupItem(command);
         } else {
@@ -523,9 +525,6 @@ public class Game {
     //Checks if a room has a setInfo that contains more than "", and prints the info.
     public String getCurrentRoomInfo() {
         if (checkStatus()) {
-            if (phase == 3) {
-                this.turn += .5;
-            }
             return kevin.getCurrentRoom().getInfo();
         } else {
             return "";
@@ -534,6 +533,10 @@ public class Game {
 
     public boolean setTrap(String trapName) {
         if (checkStatus()) {
+            if (phase == 3) {
+                walkPath(marv);
+                walkPath(harry);
+            }
             return kevin.placeTrap(trapName);
         } else {
             return false;
