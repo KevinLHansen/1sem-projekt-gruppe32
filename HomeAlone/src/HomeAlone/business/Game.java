@@ -234,17 +234,17 @@ public class Game {
         treehouse.setRoomID(19);
 
         //Harry path 1
-        harry.addExitToPath(swGarden); //DELAY
-        harry.addExitToPath(porch); //DELAY
-        harry.addExitToPath(foyer); //DELAY
+        harry.addExitToPath(swGarden); //DELAY - Run from kitchen door
+        harry.addExitToPath(porch); //DELAY - Ice
+        harry.addExitToPath(foyer); //DELAY - Toy cars
         harry.addExitToPath(diningRoom);
         harry.addExitToPath(kitchen);
         harry.addExitToPath(diningRoom);
         harry.addExitToPath(foyer);
         harry.addExitToPath(livingRoom);
         harry.addExitToPath(foyer);
-        harry.addExitToPath(staircase); //DELAY
-        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(staircase); //DELAY - Paint bucket
+        harry.addExitToPath(secondFloor); //DELAY - tripwire
         harry.addExitToPath(masterBedroom);
         harry.addExitToPath(secondFloor);
         harry.addExitToPath(kevinRoom);
@@ -257,15 +257,14 @@ public class Game {
         harry.setCurrentPath(1);
 
         //Harry path 2
-        harry.addExitToPath(porch);
-        harry.addExitToPath(neGarden); //DELAY
-        harry.addExitToPath(kitchen); //DELAY
+        harry.addExitToPath(neGarden); //DELAY - Run from frontdoor and Charcoal BBQ starter trap
+        harry.addExitToPath(kitchen); //DELAY - Blowtorch
         harry.addExitToPath(diningRoom);
-        harry.addExitToPath(foyer); //DELAY
+        harry.addExitToPath(foyer); //DELAY - Toy cars
         harry.addExitToPath(livingRoom);
         harry.addExitToPath(foyer);
-        harry.addExitToPath(staircase); //DELAY
-        harry.addExitToPath(secondFloor); //DELAY
+        harry.addExitToPath(staircase); //DELAY - Paint bucket
+        harry.addExitToPath(secondFloor); //DELAY - Tripwire
         harry.addExitToPath(masterBedroom);
         harry.addExitToPath(secondFloor);
         harry.addExitToPath(kevinRoom);
@@ -297,7 +296,6 @@ public class Game {
         marv.setCurrentPath(1);
 
         //Marv path 2
-        //marv.addExitToPath(basement);
         marv.addExitToPath(neGarden);
         marv.addExitToPath(nGarden);
         marv.addExitToPath(nwGarden);
@@ -317,8 +315,12 @@ public class Game {
 
         //Setting starting-point to be inside at the front door, after Kevin returns from church and prepares his traps.
         kevin.setCurrentRoom(foyer);
-        harry.setCurrentRoom(swGarden);
+        
+        // Setting the first room for the 2 bandits
         marv.setCurrentRoom(neGarden);
+        harry.setCurrentRoom(swGarden);
+        // Delay from running from kitchen door
+        harry.setDelay(4);
     }
 
     public int getPhase() {
@@ -378,9 +380,6 @@ public class Game {
                     }
                 }
             }
-            marv.setCurrentRoom(rooms.get(14));
-            harry.setCurrentRoom(rooms.get(16));
-            harry.setDelay(4);
         }
 
         return this.phase;
@@ -493,7 +492,7 @@ public class Game {
                 resultReason = "A burglar found your escape route.";
             }
             checkForKevin(npc);
-            System.out.println(npc.getName() + "|" + npc.getCurrentRoom().getShortDescription());
+            System.out.println(npc.getName() + " | " + npc.getDelay() + " | " + npc.getCurrentRoom().getShortDescription());
         }
     }
 
@@ -647,5 +646,9 @@ public class Game {
 
     public String getResultReason() {
         return resultReason;
+    }
+    
+    public Room getRoomObject(int index) {
+        return rooms.get(index);
     }
 }
