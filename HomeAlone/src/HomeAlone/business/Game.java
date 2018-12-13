@@ -58,7 +58,7 @@ public class Game {
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, iron, blowtorch, glue, plasticWrap, fan, pillow, ornaments, toyCars, paintBucket, yarn, phone;
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, ornaments, toyCars, paintBucket, yarn, phone;
 
         foyer = new Room("Foyer - Front entrance");
         livingRoom = new Room("Living room");
@@ -112,10 +112,6 @@ public class Game {
         tarAndNail = new Item("Tar and nail", 1);
         iron = new Item("Clothes iron", 1);
         blowtorch = new Item("Blowtorch", 1);
-//        glue = new Item("Glue", 1);
-//        plasticWrap = new Item("Plastic wrap", 1);
-//        fan = new Item("Fan", 1);
-//        pillow = new Item("Pillow", 1);
         ornaments = new Item("Ornaments", 1);
         toyCars = new Item("Toy cars", 1);
         paintBucket = new Item("Paint bucket", 1);
@@ -140,14 +136,10 @@ public class Game {
         livingRoom.setInfo("I can put some christmas ornaments by the window...");
         livingRoom.defineTrap(ornaments);
         livingRoom.setRoomID(2);
-        // livingRoom.addItem(fan);
-        // livingRoom.addItem(pillow);
 
         diningRoom.setExit("foyer", foyer);
         diningRoom.setExit("kitchen", kitchen);
         diningRoom.setRoomID(3);
-//        diningRoom.setInfo("I could setup a chicken-trap here with glue, a fan and some feathers...");
-//        diningRoom.defineTrap();
 
         kitchen.setExit("basement", basement);
         kitchen.setExit("dining room", diningRoom);
@@ -155,7 +147,6 @@ public class Game {
         kitchen.setInfo("I should get ready for when the crooks arrive. Buzz' BB gun could be useful if they decide to enter the backdoor... \nI could set up a blowtorch trap here...");
         kitchen.defineTrap(blowtorch);
         kitchen.setRoomID(4);
-        // kitchen.addItem(plasticWrap);
 
         staircase.setExit("up to hallway", secondFloor);
         staircase.setExit("down to foyer", foyer);
@@ -195,7 +186,6 @@ public class Game {
         basement.addItem(heater);
         basement.addItem(tarAndNail);
         basement.addItem(blowtorch);
-        // basement.addItem(glue);
         basement.addItem(paintBucket);
         basement.setRoomID(10);
 
@@ -214,8 +204,6 @@ public class Game {
         nwGarden.setExit("east", nGarden);
         nwGarden.setExit("south", wGarden);
         nwGarden.setRoomID(13);
-        //nwGarden.setExit("window", livingRoom);
-        // Marv-only movement "idea" for GUI iteration of the game
 
         nGarden.setExit("treehouse", treehouse);
         nGarden.setExit("west", nwGarden);
