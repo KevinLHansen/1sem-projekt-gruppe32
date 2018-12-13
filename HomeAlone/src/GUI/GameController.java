@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +28,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -115,6 +115,9 @@ public class GameController implements Initializable {
                 boolean isSecondsZero = startTimeSec == 0;
                 boolean isSecondsLessThanZero = startTimeSec < 0;
                 boolean timeToChangePhase = startTimeSec == 0 && startTimeMin == 0;
+                if(Game.getInstance().inKitchen() && phase == 2) {
+                    timeToChangePhase = true;
+                }
 
                 if(!timeToChangePhase){
                   if (isSecondsZero) {
@@ -130,7 +133,6 @@ public class GameController implements Initializable {
                     timeline.stop();
                     // Start next phase here
                     phase = Game.getInstance().changePhase();
-                    //Check if in kitchen already !
                     if(!Game.getInstance().checkStatus()) {
                         // YOU LOSE
                         endGame();
@@ -166,7 +168,10 @@ public class GameController implements Initializable {
     @FXML
     private void handleBtnMove(ActionEvent event) {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
-
+        moveRoom(nextRoom);
+    }
+    
+    private void moveRoom(String nextRoom) {
         Game.getInstance().goRoom(nextRoom);
 
         if(phase > 1) {
@@ -180,7 +185,7 @@ public class GameController implements Initializable {
         txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
         lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
         txtOutput.setText(""); // clear output box
-        // Clear listview items nearby
+        lvItemsNearby.getItems().clear();// Clear listview items nearby
         if(phase == 3) {
             String s = Game.getInstance().checkNeighbourRoom();
             txtOutput.appendText(s);
@@ -188,7 +193,6 @@ public class GameController implements Initializable {
                 endGame();
             }
         }
-
     }
 
     @FXML
@@ -382,25 +386,7 @@ public class GameController implements Initializable {
 
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
         if (event.getClickCount() == 2) {
-            Game.getInstance().goRoom(nextRoom);
-            if(phase > 1) {
-                if(!Game.getInstance().checkStatus()){
-                    // LOSE
-                    txtOutput.setText("YOU LOSE!!");
-                    endGame();
-                    return;
-                }
-            }
-            txtCurrentLocation.setText("Current location: " + Game.getInstance().getCurrentRoomShortDescription()); // update Current location label with using the nextRoom String
-            Tooltip loc = new Tooltip();
-            loc.setText(Game.getInstance().getCurrentRoomShortDescription());
-            txtCurrentLocation.setTooltip(loc);
-            lvAvailableExits.setItems(Game.getInstance().getExitsObservableList()); // update available exits at new currentRoom
-            txtOutput.setText(""); // clear output box
-            if(phase == 3) {
-                String s = Game.getInstance().checkNeighbourRoom();
-                txtOutput.appendText(s);
-            }
+            moveRoom(nextRoom);
         }
     }
     private void endGame() {

@@ -28,7 +28,6 @@ public class Player extends Creature {
         for (int i = 0; i < this.inventory.size(); i++) {
             items += this.inventory.get(i).getName() + ((i<this.inventory.size()-1) ? ", " : "");
         }
-        System.out.println(items);
         /* USING ARRAY
         int j = 0;
         for (Item i : inventory) {
