@@ -59,7 +59,7 @@ public class Game {
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
-        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, ornaments, toyCars, paintBucket, yarn, phone;
+        Item rope, bbGun, bucket, hose, heater, tarAndNail, blowtorch, ornaments, toyCars, paintBucket, yarn;
 
         foyer = new Room("Foyer - Front entrance");
         livingRoom = new Room("Living room");
