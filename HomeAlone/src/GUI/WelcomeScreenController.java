@@ -68,9 +68,7 @@ public class WelcomeScreenController implements Initializable {
             Stage welcomeStage = (Stage)btnStartGame.getScene().getWindow();
             welcomeStage.close();
             
-            AudioFile startQuote = null;
-            startQuote = new AudioFile("/resources/sfx/startQuote.wav");
-            startQuote.playFile();
+            
         } catch (IOException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }

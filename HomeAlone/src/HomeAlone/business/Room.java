@@ -140,7 +140,6 @@ public class Room {
             }
             i++;
         }
-        /* Possible exception point */
         return "Exit not found";
     }
     /**
@@ -149,7 +148,6 @@ public class Room {
      */
     public String checkTrapSet() {
         Trap trap;
-        //boolean returnVal = false;
         for (Item item : this.items) {
             if(item instanceof Trap) {
                 trap = (Trap)item;

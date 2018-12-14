@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Needs commands for some of the commands like go
- *
  * @author Gruppe 32
  */
 public class Creature {
@@ -24,7 +22,6 @@ public class Creature {
     public Creature(String name) {
         this.name = name;
         errorList = new HashMap<>();
-        //this.currentRoom = new Room();
     }
 
     // Getter and Setter functions for the class attributes

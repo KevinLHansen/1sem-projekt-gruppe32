@@ -14,7 +14,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
- * @author Mathias
+ * @author Gruppe 32
  */
 public class AudioFile {
     private Clip clip;
@@ -31,7 +31,6 @@ public class AudioFile {
     public void playFile() {
         
         try {
-            //inputStream = new FileInputStream(filePath);
             URL url = getClass().getResource(filePath);
             audioStream = AudioSystem.getAudioInputStream(url);
             clip = AudioSystem.getClip();

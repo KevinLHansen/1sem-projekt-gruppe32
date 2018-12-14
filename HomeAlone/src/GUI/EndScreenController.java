@@ -29,7 +29,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author skoti
+ * @author Gruppe 32
  */
 public class EndScreenController implements Initializable {
     @FXML
@@ -57,8 +57,6 @@ public class EndScreenController implements Initializable {
             
             Stage primaryStage = (Stage)btnYes.getScene().getWindow();
             primaryStage.close();
-            
-            //GameController gameController = new GameController();
             
             Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 

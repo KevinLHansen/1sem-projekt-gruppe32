@@ -9,17 +9,16 @@ import javafx.collections.ObservableList;
 
 public class Game {
 
-    //private Parser parser;
     private Player kevin;
     private Nonplayer marv, harry;
-    private String objective, objectiveDescription;
+    private String objective;
     private List<Room> rooms;
     public final int WIN = 1;
     public int status;
     public final int LOSE = -1;
     private boolean finished = false;
     private int phase;
-    private int turn;
+
     private Usable phone;
     private String resultReason = "";
 
@@ -359,9 +358,7 @@ public class Game {
                 resultReason = "You got caught outside by the burglars.";
             }
         } else if (this.phase == 3) {
-            this.turn = 0;
             this.objective = "The burglars are inside the house!\nCall the police and use the escape route before you get caught.";
-            this.objectiveDescription = "You need to find the phone and call the police. Then you should get out of the house.";
 
             // LOSE - not in kitchen with BB gun
             if (kevin.getCurrentRoom().getRoomID() != 4) {
