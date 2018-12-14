@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Needs methods specific to the wet bandits, Harry and Marv 
- * multiple paths depending on traps set or not? 
- * set new path at each trap?
- *
  * @author Gruppe 32
  */
 public class Nonplayer extends Creature {
@@ -19,9 +15,6 @@ public class Nonplayer extends Creature {
     private Map<Integer, Room[]> paths;
     private int step;
     private int delay; // Trap sprung
-
-    // If we decide on random paths
-    private Room previousRoom;
 
     public Nonplayer(String name) {
         this(name, 3);
@@ -40,18 +33,10 @@ public class Nonplayer extends Creature {
         this.pathList.add(room);
     }
 
-    /**
-     * Create the array that represents the path.
-     * - Depends on the answers to the 2 questions in the top
-     */
     public void createPath() {
-        /*int i = 0;
-        for (Room room : pathList) {
-            this.path[i] = room;
-            i += 10;
-        }*/
         Room[] path = this.pathList.toArray(new Room[0]);
         this.paths.put(this.paths.size() + 1, path);
+        this.pathList.clear();
     }
 
     public void setCurrentPath(int path) {
@@ -60,50 +45,45 @@ public class Nonplayer extends Creature {
 
     /**
      * Walk the path created
-     * String returned not needed?
      */
-    public String walkPath() {
+    public boolean walkPath() {
         if(this.delay <= 0) {
             if (this.currentPath.length > this.step) {
                 Room r = this.currentPath[this.step];
-
-                boolean trapSprung = checkExitTrap(this.getCurrentRoom().getRoomID(), r.getRoomID());
                 
-                if(!trapSprung) {
+                if(!checkExitTrap(this.getCurrentRoom().getRoomID(), r)) {
                     super.setCurrentRoom(r);
                     this.step++;
                 }
-                return this.getName() + " is in: " + super.getCurrentRoom().getShortDescription();
-            } else {
-                return "Reached end of path";
             }
+            return true;
         } else {
-            this.delay -= 2;
-            return this.getName() + " is delayed in: " + super.getCurrentRoom().getShortDescription();
+            this.delay--;
+            return false;
         }
     }
-
-    public boolean checkExitTrap(int roomID, int nextRoomID) {
+    
+    public boolean checkExitTrap(int roomID, Room nextRoom) {
         // North-East Gardens
         if (roomID == 15) {
 
             // Checks if Harry walks into the kitchen and meets the blowtorch trap.
-            if (nextRoomID == 4) {
-                Trap trap = super.getCurrentRoom().checkTraps();
+            if (nextRoom.getRoomID() == 4) {
+                Trap trap = nextRoom.checkTraps();
                 if (!(null == trap)) {
                     if (trap.getName().equals("Blowtorch")) {
                         this.delay = trap.getDelay();
-                        return true;
+                        return false; // Trap is sprung, but he is actually inside the kitchen when it happens
                     }
                 }
             }
 
             // Checks if there's slippery steps when Marv walks downstairs to the basement.
-            if (nextRoomID == 10) {
+            if (nextRoom.getRoomID() == 10) {
                 Trap trap = super.getCurrentRoom().checkTraps();
                 if (!(null == trap)) {
                     this.delay = trap.getDelay();
-                    return true;
+                    return false; // It is slippery, but he falls down the stairs to the basement door
                 }
             }
 
@@ -111,12 +91,22 @@ public class Nonplayer extends Creature {
         } else if (roomID == 10) {
 
             // Checks if Marv walks into the tar and nail trap, and changes Marv's path if the trap has been sprung
-            if (nextRoomID == 4) {
+            if (nextRoom.getRoomID() == 4) {
                 Trap trap = super.getCurrentRoom().checkTraps();
                 if (!(null == trap)) {
                     this.delay = trap.getDelay();
-                    // TO-DO: Change path
+                    this.setCurrentPath(2);
+                    step = 0; // Reset the step as the new path starts at 0
                     return true;
+                }
+            }
+            
+            // Checks if there's slippery steps when Marv walks up the stairs from the basement.
+            if (nextRoom.getRoomID() == 15) {
+                Trap trap = nextRoom.checkTraps();
+                if (!(null == trap)) {
+                    this.delay = trap.getDelay();
+                    return false; // It is slippery, but he struggles up using a banister
                 }
             }
 
@@ -124,12 +114,12 @@ public class Nonplayer extends Creature {
         } else if (roomID == 13) {
 
             // Checks if the ornaments trap has been set when Marv climbs through the window.
-            if (nextRoomID == 2) {
-                Trap trap = super.getCurrentRoom().checkTraps();
+            if (nextRoom.getRoomID() == 2) {
+                Trap trap = nextRoom.checkTraps();
                 if (!(null == trap)) {
                     if (trap.getName().equals("Ornaments")) {
                         this.delay = trap.getDelay();
-                        return true;
+                        return false;// Trap is sprung, but he is actually in the living room when it happens
                     }
                 }
             }
@@ -142,18 +132,18 @@ public class Nonplayer extends Creature {
             if (!(null == trap)) {
                 if (trap.getName().equals("Toy cars")) {
                     this.delay = trap.getDelay();
-                    // TO-DO: Remove trap
+                    this.getCurrentRoom().removeItem(trap);
                     return true;
                 }
             }
 
             // Checks if one enemy collides with the swinging paint bucket trap on their way to the second floor, and removes its functionality.
-            if (nextRoomID == 5) {
-                trap = super.getCurrentRoom().checkTraps();
+            if (nextRoom.getRoomID() == 5) {
+                trap = nextRoom.checkTraps();
                 if (!(null == trap)) {
                     if (trap.getName().equals("Paint bucket")) {
                         this.delay = trap.getDelay();
-                        // TO-DO: Remove trap
+                        nextRoom.removeItem(trap);
                         return true;
                     }
                 }
@@ -168,7 +158,7 @@ public class Nonplayer extends Creature {
             if (!(null == trap)) {
                 if (trap.getName().equals("Yarn")) {
                     this.delay = trap.getDelay();
-                    // TO-DO: Remove trap
+                    this.getCurrentRoom().removeItem(trap);
                     return true;
                 }
             }
@@ -185,13 +175,16 @@ public class Nonplayer extends Creature {
                 }
             }
 
-            //Checks if the heater trap has been put on the front door, and changes Harry's path.
-            if (nextRoomID == 1) {
-                trap = super.getCurrentRoom().checkTraps();
+            //Checks if the charcoal BBQ starter trap has been put on the front door, and changes Harry's path.
+            if (nextRoom.getRoomID() == 1) {
+                trap = nextRoom.checkTraps();
                 if (!(null == trap)) {
-                    if (trap.getName().equals("Heater")) {
+                    if (trap.getName().equalsIgnoreCase("Charcoal BBQ Starter")) {
                         this.delay = trap.getDelay();
-                        // TO-DO: Change path
+                        System.out.println("new path");
+                        this.setCurrentPath(2);
+                        step = 0; // Reset the step as the new path starts at 0
+                        this.delay += 2; // Extra delay since the new path starts in NE Garden
                         return true;
                     }
                 }
@@ -199,22 +192,12 @@ public class Nonplayer extends Creature {
         }
         return false;
     }
-    
-    private void decreaseDelay() {
-        this.delay--;
-    }
 
     public int getDelay() {
-        int tmpDelay = this.delay;
-        this.decreaseDelay();
-        return tmpDelay;
+        return this.delay;
     }
 
     public void setDelay(int delay) {
         this.delay = delay;
-    }
-
-    private void setPreviousRoom() {
-        this.previousRoom = super.getCurrentRoom();
     }
 }

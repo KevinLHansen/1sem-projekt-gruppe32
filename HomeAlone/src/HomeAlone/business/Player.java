@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Has specific methods for player, Kevin Needs methods for some of the commands
- * like examine, collect
- *
  * @author Gruppe 32
  */
 public class Player extends Creature {
 
-    //private Item[] inventory;
     private List<Item> inventory;
     private int maxItems = 3;
     private int itemCount = 0;
@@ -28,15 +24,6 @@ public class Player extends Creature {
         for (int i = 0; i < this.inventory.size(); i++) {
             items += this.inventory.get(i).getName() + ((i<this.inventory.size()-1) ? ", " : "");
         }
-        /* USING ARRAY
-        int j = 0;
-        for (Item i : inventory) {
-            // Check if there is an item
-            if (i != null) {
-                items += i + ((this.inventory.length > j) ? ", " : "");
-            }
-            j++;
-        }*/
         return items;
     }
 
@@ -49,23 +36,6 @@ public class Player extends Creature {
         } else {
             saved = false;
         }
-        /* USING ARRAY
-        // Traverse inventory array to find first available spot
-        int tail = -1;
-        for (int i = 0; i < this.inventory.length; i++) {
-            if (this.inventory[i] == null) {
-                tail = i;
-                break;
-            }
-        }
-        if (tail >= 0) {
-            this.inventory[tail] = item;
-        } else {
-            // No room in inventory
-            saved = false;
-        }
-        //super.getCurrentRoom().removeItemFromInventory(item);
-        */
         return saved;
     }
 
@@ -78,21 +48,6 @@ public class Player extends Creature {
         } else {
             this.errorList.put("remove", "You can't remove an item from an empty inventory");
         }
-        /* USING ARRAY
-        for (int i = inventory.length - 1; i >= 0; i--) {
-            if (item.equals(inventory[i])) {
-                inventory[i] = null;
-            }
-        }
-        for(int i = 0; i < inventory.length;i++) {
-            
-            if(i < (inventory.length-1)) {
-                if(inventory[i] == null) {
-                    inventory[i] = inventory[i+1];
-                    inventory[i+1] = null;
-                }
-            }
-        }*/
     }
 
     private Item searchInventory(String itemName) {
@@ -102,14 +57,6 @@ public class Player extends Creature {
                 return item;
             }
         }
-        /* USING ARRAY
-        for(int i=0;i<this.inventory.length;i++)  {
-            if (inventory[i] != null) {
-                if (itemName.equalsIgnoreCase(inventory[i].getName())) {
-                    return inventory[i];
-                }
-            }
-        }*/
         return null;
     }
 
@@ -132,7 +79,7 @@ public class Player extends Creature {
             if(traps.contains(item)) {
                 this.setTrap(item);
                 this.errorList.remove("setup");
-                return true; //"You set up a trap using " + item + "\n";
+                return true;
             } else {
                 this.errorList.put("setup", "Can't put " + itemName + " here.\n");
                 return false;
@@ -149,6 +96,16 @@ public class Player extends Creature {
             return false;
         } else if(item instanceof Trap) {
             this.errorList.put("pickup","Traps can't be picked up once they have been placed.\n");
+            return false;
+        } else if (item instanceof Usable) {
+            if(Game.getInstance().getPhase() == 3) {
+                this.errorList.put("pickup","You pick up the phone and call the police. Get to the attic and zipline to safety!\n");
+                Usable usable = (Usable)item; // typecast item to Usable
+                usable.setItemUsed(true);
+            }
+            else {
+                this.errorList.put("pickup","Why would you call someone now? Setup the traps first!\n");
+            }
             return false;
         } else {
             if(this.addToInventory(item)) {

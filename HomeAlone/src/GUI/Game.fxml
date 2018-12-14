@@ -106,7 +106,7 @@
                               </ListView>
                            </children>
                         </VBox>
-                        <TextArea fx:id="txtOutput" editable="false" prefHeight="268.0" prefWidth="298.0" text="After having a conversation with the old man, Marley, in the church at Christmas Eve, Kevin McCallister rushes home to his house.&#10;&#10;He overheard earlier that day, that the two burglars, Marv and Harry, also known as &quot;The Wet Bandits&quot;, are planning a burglary at his house.&#10;&#10;Kevin rushes through the front door, switching the lights on and locking the door behind him.&#10;&#10;You are in the foyer." wrapText="true">
+                        <TextArea fx:id="txtOutput" editable="false" prefHeight="268.0" prefWidth="298.0" text="You are in the foyer." wrapText="true">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>

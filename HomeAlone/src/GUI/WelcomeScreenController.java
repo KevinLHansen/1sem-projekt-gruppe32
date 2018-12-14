@@ -22,7 +22,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author Gruppe 32 
+ * @author Gruppe 32
  */
 public class WelcomeScreenController implements Initializable {
     @FXML
@@ -34,7 +34,7 @@ public class WelcomeScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void handleBtnStartGame(ActionEvent event) {
@@ -45,7 +45,7 @@ public class WelcomeScreenController implements Initializable {
             Stage stage = new Stage();
 
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -58,18 +58,16 @@ public class WelcomeScreenController implements Initializable {
                     System.exit(0);
                 }
             });
-            
+
             // define current window as welcomeStage to be able to close
             Stage welcomeStage = (Stage)btnStartGame.getScene().getWindow();
             welcomeStage.close();
-            
-            AudioFile startQuote = null;
-            startQuote = new AudioFile("sfx/startQuote.wav");
-            startQuote.playFile();
+
+
         } catch (IOException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
 }

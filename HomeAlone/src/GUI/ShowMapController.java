@@ -7,7 +7,7 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author Gruppe 32 
+ * @author Gruppe 32
  */
 public class ShowMapController implements Initializable {
 
@@ -17,6 +17,6 @@ public class ShowMapController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-    }    
-    
+    }
+
 }

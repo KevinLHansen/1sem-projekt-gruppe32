@@ -23,7 +23,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author Gruppe 32 
+ * @author Gruppe 32
  */
 public class EndScreenController implements Initializable {
     @FXML
@@ -32,6 +32,8 @@ public class EndScreenController implements Initializable {
     private Button btnYes;
     @FXML
     private Button btnNo;
+    @FXML
+    private Label txtResultReason;
 
     /**
      * Initializes the controller class.
@@ -39,25 +41,24 @@ public class EndScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         txtResult.setText(Game.getInstance().getResult());
-    }    
+        txtResultReason.setText(Game.getInstance().getResultReason());
+    }
 
     @FXML
     private void handleBtnYes(ActionEvent event) {
         try {
             Game.getInstance().restart();
-            
+
             Stage primaryStage = (Stage)btnYes.getScene().getWindow();
             primaryStage.close();
-            
-            //GameController gameController = new GameController();
-            
+
             Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
 
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -82,5 +83,5 @@ public class EndScreenController implements Initializable {
         Stage primaryStage = (Stage)btnYes.getScene().getWindow();
         primaryStage.close();
     }
-    
+
 }

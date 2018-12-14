@@ -12,36 +12,20 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Gruppe 32 
+ * @author Gruppe 32
  */
 public class HomeAloneGUI extends Application {
-    
-    /* GAME WINDOW
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setTitle("HOME ALONE™");
-        stage.getIcons().add(new Image("file:img/icon.png"));
-        
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
-    */
-    // WELCOME WINDOW
+
     @Override
     public void start(Stage stage) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("WelcomeScreen.fxml"));
-            
+
             Scene scene = new Scene(root);
-            
+
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
-            
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
+
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
@@ -50,11 +34,8 @@ public class HomeAloneGUI extends Application {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
