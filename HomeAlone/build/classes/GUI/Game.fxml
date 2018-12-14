@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="529.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.GameController">
+   <children>
+      <MenuBar fx:id="menuBar" layoutY="1.0" prefHeight="26.0" prefWidth="544.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Game">
+               <items>
+                  <MenuItem fx:id="menuItemShowMap" mnemonicParsing="false" onAction="#handleMenuItemShowMap" text="Show map" />
+                  <MenuItem fx:id="menuItemRestart" mnemonicParsing="false" onAction="#handleMenuItemRestart" text="Restart" />
+                  <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                <MenuItem fx:id="menuItemHTP" mnemonicParsing="false" onAction="#handleMenuItemHTP" text="How to play" />
+                  <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <GridPane layoutY="25.0" prefHeight="509.0" prefWidth="532.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="262.0" minHeight="10.0" prefHeight="74.39998168945313" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="449.0" minHeight="10.0" prefHeight="414.4000183105469" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane prefHeight="439.0" prefWidth="622.0" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="308.79998779296875" minWidth="10.0" prefWidth="308.79998779296875" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.20001220703125" minWidth="10.0" prefWidth="203.20001220703125" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <GridPane prefHeight="438.0" prefWidth="292.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="257.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="141.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: e5e5e5;">
+                                 <children>
+                                    <Label prefHeight="20.0" prefWidth="101.0" style="-fx-background-color: e5e5e5;" text="Available exits">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="txtCurrentLocation" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="198.0" style="-fx-background-color: e5e5e5;" text="Current location: foyer">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </HBox>
+                              <ListView fx:id="lvAvailableExits" onMouseClicked="#handleListItemClicked" prefHeight="274.0" prefWidth="298.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </ListView>
+                           </children>
+                        </VBox>
+                        <TextArea fx:id="txtOutput" editable="false" prefHeight="268.0" prefWidth="298.0" text="After having a conversation with the old man, Marley, in the church at Christmas Eve, Kevin McCallister rushes home to his house.&#10;&#10;He overheard earlier that day, that the two burglars, Marv and Harry, also known as &quot;The Wet Bandits&quot;, are planning a burglary at his house.&#10;&#10;Kevin rushes through the front door, switching the lights on and locking the door behind him.&#10;&#10;You are in the foyer." wrapText="true">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </TextArea>
+                        <HBox alignment="CENTER" prefHeight="37.0" prefWidth="304.0" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="btnMove" alignment="CENTER" contentDisplay="TOP" minWidth="70.0" mnemonicParsing="false" onAction="#handleBtnMove" text="MOVE">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnExamine" accessibleHelp="test" accessibleText="test" minWidth="70.0" mnemonicParsing="false" onAction="#handleBtnExamine" text="EXAMINE">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+                  <GridPane prefHeight="339.0" prefWidth="203.0" GridPane.columnIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="176.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="314.4000244140625" minHeight="10.0" prefHeight="123.80001220703126" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="314.4000244140625" minHeight="0.0" prefHeight="28.80000000000001" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="314.4000244140625" minHeight="10.0" prefHeight="148.8" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <VBox prefHeight="335.0" prefWidth="203.0" GridPane.rowIndex="1">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="20.0" prefWidth="259.0" style="-fx-background-color: e5e5e5;" text="INVENTORY" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <ListView fx:id="lvInventory" prefHeight="200.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </ListView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="196.0" prefWidth="203.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="20.0" prefWidth="311.0" style="-fx-background-color: e5e5e5;" text="OBJECTIVE">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="txtObjective" editable="false" prefHeight="112.0" prefWidth="142.0" text="Prepare yourself. Setup traps to stop the burglars!" wrapText="true">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </TextArea>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="203.0" GridPane.rowIndex="2">
+                           <children>
+                              <Button fx:id="btnPickup" mnemonicParsing="false" onAction="#handleBtnPickup" prefHeight="26.0" prefWidth="60.0" text="PICKUP">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnSetup" mnemonicParsing="false" onAction="#handleBtnSetup" prefHeight="26.0" prefWidth="65.0" text="SETUP">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnDrop" mnemonicParsing="false" onAction="#handleBtnDrop" prefHeight="26.0" prefWidth="58.0" text="DROP">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="148.0" prefWidth="203.0" GridPane.rowIndex="3">
+                           <children>
+                              <Label prefHeight="20.0" prefWidth="321.0" style="-fx-background-color: e5e5e5;" text="Items nearby">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </Label>
+                              <ListView fx:id="lvItemsNearby" prefHeight="226.0" prefWidth="194.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </ListView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="409.60003662109375" minWidth="10.0" prefWidth="409.60003662109375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.4000244140625" minWidth="10.0" prefWidth="101.59996337890624" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                     <children>
+                        <Label fx:id="lblTimeLeft" alignment="CENTER" minHeight="-Infinity" prefHeight="20.0" prefWidth="207.0" style="-fx-background-color: e5e5e5;" text="TIME LEFT">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtTimeLeft" alignment="CENTER" disable="true" editable="false" prefHeight="65.0" prefWidth="194.0" style="-fx-opacity: 1;" text="999">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="-5.0" left="-5.0" right="-5.0" top="-5.0" />
+                           </padding>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="77.0" fitWidth="412.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/banner.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </GridPane>
+      <Pane fx:id="panePopup" layoutX="52.0" layoutY="63.0" prefHeight="415.0" prefWidth="423.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2;" visible="false">
+         <children>
+            <VBox prefHeight="415.0" prefWidth="423.0">
+               <children>
+                  <Pane prefHeight="225.0" prefWidth="423.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="225.0" prefWidth="423.0">
+                           <children>
+                              <ImageView fx:id="imgviewPopup" fitHeight="225.0" fitWidth="423.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Pane>
+                  <TextArea fx:id="txtPopup" editable="false" prefHeight="123.0" prefWidth="393.0" wrapText="true">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextArea>
+                  <Button fx:id="btnPopupOk" mnemonicParsing="false" onAction="#handleBtnPopupOk" text="OK">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
