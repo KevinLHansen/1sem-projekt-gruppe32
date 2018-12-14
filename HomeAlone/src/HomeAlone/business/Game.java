@@ -425,8 +425,10 @@ public class Game {
 
     public void checkForKevin(Nonplayer npc) {
         if (npc.getCurrentRoom().equals(kevin.getCurrentRoom())) {
+            if (npc.getDelay() < 1) {
             this.status = LOSE;
-            resultReason = "You ran into a burglar and got caught.";
+            resultReason = "You ran into a burglar and got caught.";   
+            }
         }
     }
 
@@ -503,6 +505,9 @@ public class Game {
     public boolean pickupItem(String command) {
         if (checkStatus()) {
             if (phase == 3) {
+                checkForKevin(marv);
+                checkForKevin(harry);
+                
                 walkPath(marv);
                 walkPath(harry);
             }
@@ -534,6 +539,9 @@ public class Game {
     public boolean setTrap(String trapName) {
         if (checkStatus()) {
             if (phase == 3) {
+                checkForKevin(marv);
+                checkForKevin(harry);
+                
                 walkPath(marv);
                 walkPath(harry);
             }
