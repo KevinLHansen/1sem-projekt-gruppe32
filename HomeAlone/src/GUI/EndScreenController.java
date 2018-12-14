@@ -66,7 +66,7 @@ public class EndScreenController implements Initializable {
             Stage stage = new Stage();
 
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);

@@ -29,7 +29,7 @@ public class HomeAloneGUI extends Application {
             Scene scene = new Scene(root);
             
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
             
             stage.setResizable(false);
             stage.setScene(scene);

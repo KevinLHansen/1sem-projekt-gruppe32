@@ -50,7 +50,7 @@ public class WelcomeScreenController implements Initializable {
             Stage stage = new Stage();
 
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -69,11 +69,8 @@ public class WelcomeScreenController implements Initializable {
             welcomeStage.close();
             
             AudioFile startQuote = null;
-            startQuote = new AudioFile("sfx/startQuote.wav");
+            startQuote = new AudioFile("/resources/sfx/startQuote.wav");
             startQuote.playFile();
-            //AudioFile gameTheme = null;
-            //gameTheme = new AudioFile("sfx/gameTheme.wav");
-            //gameTheme.playFile();
         } catch (IOException ex) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }

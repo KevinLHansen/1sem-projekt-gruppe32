@@ -67,11 +67,11 @@ public class GameController implements Initializable {
     private int startTimeMin = 2;
     private int startTimeSec = 0;
     private Timeline timeline = new Timeline();
-    //private boolean isRunning;
+    private boolean isRunning;
     private int min = startTimeMin;
     private int phase = 1;
     
-    AudioFile gameTheme = null;
+    private AudioFile gameTheme = null;
 
     @FXML
     private MenuItem menuItemRestart;
@@ -109,7 +109,7 @@ public class GameController implements Initializable {
         txtObjective.setText(Game.getInstance().getObjective());
         startTimer();
         
-        gameTheme = new AudioFile("sfx/gameTheme.wav");
+        gameTheme = new AudioFile("/resources/sfx/gameTheme.wav");
         gameTheme.playFile();
     }
 
@@ -138,6 +138,7 @@ public class GameController implements Initializable {
                 }
                 if (timeToChangePhase) {
                     timeline.stop();
+                    isRunning = false;
                     // Start next phase here
                     phase = Game.getInstance().changePhase();
                     if (!Game.getInstance().checkStatus()) {
@@ -145,19 +146,19 @@ public class GameController implements Initializable {
                         endGame();
                     } else {
                         AudioFile popupSound = null;
-                        popupSound = new AudioFile("sfx/popup.wav");
+                        popupSound = new AudioFile("/resources/sfx/popup.wav");
                         if (phase == 2) {
-                            imgviewPopup.setImage(new Image("file:img/phase2transition.gif"));
+                            imgviewPopup.setImage(new Image("/resources/img/phase2transition.gif"));
                             txtPopup.setText("The Wet Bandits have arrived and are roaming the outside area! \nIf you exit the house, you will most certainly get caught.");
                             panePopup.setVisible(true);
                             lvAvailableExits.setDisable(true); // disable room list UI element to avoid dirty cheating
                             txtObjective.setText(Game.getInstance().getObjective()); // update objective UI element with new objective
                             popupSound.playFile();
-                            gameTheme.stopFile();
+                            gameTheme.pauseFile();
                             gameTheme.playFile();
                         }
                         if (phase == 3) {
-                            imgviewPopup.setImage(new Image("file:img/phase3transition.gif"));
+                            imgviewPopup.setImage(new Image("/resources/img/phase3transition.gif"));
                             txtPopup.setText("The Wet Bandits have entered the house! \nIf you run into them, you will get caught.");
                             panePopup.setVisible(true);
                             lvAvailableExits.setDisable(true);
@@ -175,7 +176,7 @@ public class GameController implements Initializable {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyframe);
         timeline.playFromStart();
-        //isRunning = true;
+        isRunning = true;
     }
 
     @FXML
@@ -268,7 +269,7 @@ public class GameController implements Initializable {
                     //lvItemsNearby.
 
                     AudioFile pickupSound = null;
-                    pickupSound = new AudioFile("sfx/pickup.wav");
+                    pickupSound = new AudioFile("/resources/sfx/pickup.wav");
                     pickupSound.playFile();
                 } else {
                     txtOutput.setText(Game.getInstance().getError("pickup"));
@@ -319,7 +320,7 @@ public class GameController implements Initializable {
         lvItemsNearby.setItems(Game.getInstance().getItemsObservableList());
         
         AudioFile dropSound = null;
-        dropSound = new AudioFile("sfx/drop.wav");
+        dropSound = new AudioFile("/resources/sfx/drop.wav");
         dropSound.playFile();
     }
 
@@ -349,7 +350,7 @@ public class GameController implements Initializable {
             });
 
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -369,7 +370,7 @@ public class GameController implements Initializable {
             Stage stage = new Stage();
 
             stage.setTitle("HOME ALONE™ - Map");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -387,13 +388,27 @@ public class GameController implements Initializable {
     @FXML
     private void handleMenuItemHTP(ActionEvent event) {
         try {
+            if(phase < 3) {
+                timeline.stop();
+                isRunning = false;
+            }
             Parent root = FXMLLoader.load(getClass().getResource("HowToPlay.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
 
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    if(!isRunning && phase < 3) {
+                        isRunning = true;
+                        timeline.play();
+                    }
+                }
+            });
+            
             stage.setTitle("HOME ALONE™ - How to play");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -406,13 +421,27 @@ public class GameController implements Initializable {
     @FXML
     private void handleMenuItemAbout(ActionEvent event) {
         try {
+            if(phase < 3) {
+                timeline.stop();
+                isRunning = false;
+            }
             Parent root = root = FXMLLoader.load(getClass().getResource("About.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-
+            
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    if(!isRunning && phase < 3) {
+                        isRunning = true;
+                        timeline.play();
+                    }
+                }
+            });
+            
             stage.setTitle("HOME ALONE™ - About");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -446,7 +475,7 @@ public class GameController implements Initializable {
             Stage stage = new Stage();
 
             stage.setTitle("HOME ALONE™");
-            stage.getIcons().add(new Image("file:img/icon.png"));
+            stage.getIcons().add(new Image("/resources/img/icon.png"));
 
             stage.setResizable(false);
             stage.setScene(scene);
@@ -465,6 +494,7 @@ public class GameController implements Initializable {
         if (phase == 2) {
             startTimeMin = 1;
             startTimeSec = 0;
+            isRunning = true;
             timeline.playFromStart();
         } else if (phase == 3) {
             startTimeMin = 0;
