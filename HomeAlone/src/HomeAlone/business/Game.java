@@ -55,7 +55,7 @@ public class Game {
 
     /**
      * Class constructor
-     * Initialises {@link HomeAlone.business.Player} and {@link HomeAlone.business.Nonplayer} object as well as a few attributes 
+     * Initialises {@link HomeAlone.business.Player} and {@link HomeAlone.business.Nonplayer} objects as well as a few attributes 
      * that are used when playing the game.
      */
     private Game() {
@@ -76,7 +76,7 @@ public class Game {
      * Initialises the game, creating the Room and Item object needed to play.
      * This method creates all the various {@link HomeAlone.business.Room} objects and sets the information
      * that is used during gameplay.
-     * It also creates all the {@link Item} objects and links them to the appropriate 
+     * It also creates all the {@link HomeAlone.business.Item} objects and links them to the appropriate 
      * {@link HomeAlone.business.Room} objects, then is creates the paths for the two {@link HomeAlone.business.Nonplayer}
      * objects("the wet bandits") are going to be using.
      * It sets the current path and current room for the "the wet bandits" as 
@@ -452,10 +452,10 @@ public class Game {
     /**
      * Checks the rooms around the players room for "the wet bandits".
      * This method is used in phase 3 to check if the 2 {@link HomeAlone.business.Nonplayer} objects
-     * are located in one of the rooms next to the {@link HomeAlone.business.Room} the {@link HomeAlone.business.Player}
-     * is currently in.
-     * If it finds a {@link HomeAlone.business.Nonplayer} in any of the neighbouring rooms, it returns
-     * a string indicating that the {@link HomeAlone.business.Room} is occupied.
+     * are located in one of the rooms next to the room the player is 
+     * currently in.
+     * If it finds a nonplayer entity in any of the neighbouring rooms, it returns
+     * a string indicating that the room is occupied.
      * If it finds more than one, both rooms are added to the string.
      * Part of the "interface" to the presentation layer.
      * @return empty string if neighbouring rooms are empty, warning if not
@@ -486,11 +486,11 @@ public class Game {
     }
 
     /**
-     * Checks to see if {@link HomeAlone.business.Player} is in the same room as any of "the wet bandits".
-     * This method is used during phase 3 to check if {@link HomeAlone.business.Player} is in the 
-     * same {@link HomeAlone.business.Room} as any of "the wet bandits" and if the {@link HomeAlone.business.Nonplayer}
-     * in question does not have a delay the game is lost.
-     * If the {@link HomeAlone.business.Nonplayer} does have a delay, {@link HomeAlone.business.Player} is free to move 
+     * Checks to see if player is in the same room as any of "the wet bandits".
+     * This method is used during phase 3 to check if the player is in the 
+     * same {@link HomeAlone.business.Room} as any of "the wet bandits" and if the nonplayer
+     * entity in question does not have a delay the game is lost.
+     * If the nonplayer entity does have a delay, the player is free to move 
      * through the room.
      * @param npc Nonplayer object
      */
@@ -533,7 +533,7 @@ public class Game {
      * This method is used in phase 1 to set up the zipline from Attic to
      * Treehouse.
      * It takes a string with the item name, then checks its the right {@link HomeAlone.business.Item}
-     * calls {@link #setTrap(String trapName)} and moves the {@link HomeAlone.business.Player} to the Treehouse
+     * calls {@link #setTrap(String trapName)} and moves the player to the Treehouse
      * using the method {@link HomeAlone.business.Creature#setCurrentRoom(HomeAlone.business.Room)}.
      * Part of the "interface" to the presentation layer.
      * @param item String
@@ -669,7 +669,7 @@ public class Game {
     }
 
     /**
-     * Returns the short description to the presentation layer.
+     * Returns the short description from {@link HomeAlone.business.Room} to the presentation layer.
      * This method is used to return the short description of the current room
      * to the presentation layer.
      * Part of the "interface" to the presentation layer.
@@ -694,10 +694,11 @@ public class Game {
     }
 
     /**
-     * Intermediary between presentation layer and {@link HomeAlone.business.Player}
-     * This method checks {@link #status} using {@link #checkStatus()},
-     * calls the methods {@link #checkForKevin(Nonplayer npc)} and {@link #walkPath(Nonplayer npc)} for both {@link HomeAlone.business.Nonplayer} oblects
-     * and then calls the method {@link HomeAlone.business.Player#placeTrap(java.lang.String)}.
+     * Intermediary between presentation layer and {@link HomeAlone.business.Player}.
+     * This method checks {@link #status} using {@link #checkStatus()}.
+     * In phase 3 it calls the methods {@link #checkForKevin(Nonplayer npc)} and
+     * {@link #walkPath(Nonplayer npc)} for both {@link HomeAlone.business.Nonplayer} objects.
+     * It calls the method {@link HomeAlone.business.Player#placeTrap(java.lang.String)}.
      * Part of the "interface" to the presentation layer.
      * @param trapName String
      * @return true if successful, false if not
