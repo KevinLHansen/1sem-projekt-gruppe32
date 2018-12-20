@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Class that contains the methods and attributes specific for nonplayer entities.
+ * 
  * @author Gruppe 32
  */
 public class Nonplayer extends Creature {
@@ -16,11 +18,21 @@ public class Nonplayer extends Creature {
     private int step;
     private int delay; // Trap sprung
 
+    /**
+     * Class constructor specifying the entitys name
+     * @param name String
+     */
     public Nonplayer(String name) {
         this(name, 3);
 
     }
 
+    /**
+     * Class constructor specifying the entitys name and the number of paths.
+     * This constructor is not used.
+     * @param name String
+     * @param paths int
+     */
     public Nonplayer(String name, int paths) {
         super(name);
         this.pathList = new ArrayList<>();
@@ -29,22 +41,46 @@ public class Nonplayer extends Creature {
         this.paths = new HashMap<>();
     }
 
+    /**
+     * Add an exit the the current path being constructed.
+     * This method adds another exit to the path that is currently being
+     * constructed.
+     * @param room Room object
+     */
     public void addExitToPath(Room room) {
         this.pathList.add(room);
     }
 
+    /**
+     * Transforms the List and saves it in a Map.
+     * This method takes the current ArrayList of Room object and makes an
+     * array, that is then saved in a HashMap with an integer as the key.
+     * Then it clears the current ArrayList so it is ready to start constructing
+     * a new path
+     */
     public void createPath() {
         Room[] path = this.pathList.toArray(new Room[0]);
         this.paths.put(this.paths.size() + 1, path);
         this.pathList.clear();
     }
 
+    /**
+     * Sets the path that the Nonplayer entity should use.
+     * This method sets the current path for the nonplayer entity.
+     * @param path int
+     */
     public void setCurrentPath(int path) {
         this.currentPath = this.paths.get(path);
     }
 
     /**
-     * Walk the path created
+     * Traverse the current path the nonplayer entity is on.
+     * This method is used to moved the nonplayer entities to a new room, using
+     * the current path.
+     * It calls {@link #checkExitTrap(int roomID, Room nextRoom)} to see if it
+     * there is a trap that will halt the entity in the current room or the next
+     * room and sets a {@link #delay} if there is.
+     * @return true if entity moved, false if it did not
      */
     public boolean walkPath() {
         if(this.delay <= 0) {
@@ -63,6 +99,20 @@ public class Nonplayer extends Creature {
         }
     }
     
+    /**
+     * Check if there is a trap in the next room.
+     * This method checks the next room to see if theplayer set a trap in there.
+     * If there is a trap on the exit/entrance that the entity is trying to 
+     * use, then the method returns true.
+     * If there is a trap in the room but it is not on the exit/entrance, then
+     * the method returns false. The method also returns false if there is no
+     * traps in the next room. This is because the only time the entity is not
+     * allowed to move is if the trap is set up at the exit/entrance the entity
+     * is trying to use.
+     * @param roomID int
+     * @param nextRoom Room object
+     * @return true or false
+     */
     public boolean checkExitTrap(int roomID, Room nextRoom) {
         // North-East Gardens
         if (roomID == 15) {
@@ -193,10 +243,18 @@ public class Nonplayer extends Creature {
         return false;
     }
 
+    /**
+     * Getter method for the attribute {@link #delay}.
+     * @return integer value containing possible delay
+     */
     public int getDelay() {
         return this.delay;
     }
 
+    /**
+     * Setter method for the attribute {@link #delay}.
+     * @param delay int
+     */
     public void setDelay(int delay) {
         this.delay = delay;
     }

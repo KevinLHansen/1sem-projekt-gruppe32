@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * FXML Controller class for the End Screen window
  *
  * @author Gruppe 32
  */
@@ -44,6 +44,12 @@ public class EndScreenController implements Initializable {
         txtResultReason.setText(Game.getInstance().getResultReason());
     }
 
+    /**
+     * Event handler for button with caption "Yes".
+     * This method closes the End Screen window and restarts the game after it
+     * has ended.
+     * @param event 
+     */
     @FXML
     private void handleBtnYes(ActionEvent event) {
         try {
@@ -77,6 +83,12 @@ public class EndScreenController implements Initializable {
         }
     }
 
+    /**
+     * Event handler for button with caption "No".
+     * This method closes the End Screen window as well as the game after it
+     * has ended.
+     * @param event 
+     */
     @FXML
     private void handleBtnNo(ActionEvent event) {
         // close the window

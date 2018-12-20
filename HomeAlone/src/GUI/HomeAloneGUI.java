@@ -11,7 +11,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- *
+ * The main class for starting the game.
+ * 
  * @author Gruppe 32
  */
 public class HomeAloneGUI extends Application {

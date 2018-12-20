@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * FXML Controller class for the Welcome window
  *
  * @author Gruppe 32
  */
@@ -36,6 +36,11 @@ public class WelcomeScreenController implements Initializable {
         // TODO
     }
 
+    /**
+     * Event handler for button with caption "Start Game".
+     * This method opens the main game window.
+     * @param event 
+     */
     @FXML
     private void handleBtnStartGame(ActionEvent event) {
         try {

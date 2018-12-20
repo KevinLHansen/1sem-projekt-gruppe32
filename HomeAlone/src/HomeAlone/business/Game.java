@@ -8,7 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- *
+ * Main class for the game.
+ * This class contains all the methods for initialising the game as well as the
+ * methods called by the presentation layer.
+ * It is using the singleton pattern.
+ * 
  * @author Gruppe 32
  */
 
@@ -30,6 +34,10 @@ public class Game {
     // Singleton pattern for GUI purposes
     private static Game instance = null;
 
+    /**
+     * Method used to get access to the {@link Game} object.
+     * @return Game object
+     */
     public static Game getInstance() {
         if (instance == null) {
             instance = new Game();
@@ -37,11 +45,19 @@ public class Game {
         return instance;
     }
 
-    // necesarry method to reset Game instance when restarting game
+    /**
+     * Method called in case the player wishes to restart the game.
+     * It deletes the connection to the {@link Game} object so a new have to be created.
+     */
     public static void restart() {
         instance = null;
     }
 
+    /**
+     * Class constructor
+     * Initialises {@link HomeAlone.business.Player} and {@link HomeAlone.business.Nonplayer} object as well as a few attributes 
+     * that are used when playing the game.
+     */
     private Game() {
         this.rooms = new ArrayList<>();
         this.status = 0;
@@ -56,6 +72,16 @@ public class Game {
 
     }
 
+    /**
+     * Initialises the game, creating the Room and Item object needed to play.
+     * This method creates all the various {@link HomeAlone.business.Room} objects and sets the information
+     * that is used during gameplay.
+     * It also creates all the {@link Item} objects and links them to the appropriate 
+     * {@link HomeAlone.business.Room} objects, then is creates the paths for the two {@link HomeAlone.business.Nonplayer}
+     * objects("the wet bandits") are going to be using.
+     * It sets the current path and current room for the "the wet bandits" as 
+     * well as the current room for the {@link HomeAlone.business.Player}
+     */
     private void initializeGame() {
         //Adding instances of rooms with descriptions.
         Room foyer, livingRoom, diningRoom, kitchen, staircase, secondFloor, attic, kevinRoom, buzzRoom, basement, masterBedroom, porch, nwGarden, nGarden, neGarden, wGarden, swGarden, seGarden, treehouse;
@@ -327,10 +353,24 @@ public class Game {
         harry.setDelay(4);
     }
 
+    /**
+     * Getter method for the attribute phase
+     * @return phase
+     */
     public int getPhase() {
         return phase;
     }
 
+    /**
+     * Changes the phase and checks certain conditions for losing the game.
+     * This method is used to change the phases during gameplay, including 
+     * writing new objectives.
+     * When it changes the phases, it checks the conditions are met for the next
+     * phase, and changes the attribute {@link #status} if needed as well as 
+     * writing a reason for losing or winning.
+     * Part of the "interface" to the presentaion layer.
+     * @return phase
+     */
     public int changePhase() {
         this.phase++;
         if (this.phase == 2) {
@@ -387,6 +427,15 @@ public class Game {
         return this.phase;
     }
 
+    /**
+     * Called during second phase to force a phase shift if player is fast.
+     * This method is used in phase 2 to check if the player gets to the kitchen
+     * before the 1 minute timer runs out. If that happens the method returns
+     * true and the game changes to phase 3 instead of having to wait out
+     * the timer.
+     * Part of the "interface" to the presentation layer.
+     * @return true if Player is in the kitchen with the BB-gun, false if not
+     */
     public boolean inKitchenWithGun() { // checks if player is in kitchen with BB gun to kickstart next phase
         boolean inKitchen = false;
         if (kevin.getCurrentRoom().getRoomID() == 4) {
@@ -400,6 +449,17 @@ public class Game {
         return inKitchen;
     }
 
+    /**
+     * Checks the rooms around the players room for "the wet bandits".
+     * This method is used in phase 3 to check if the 2 {@link HomeAlone.business.Nonplayer} objects
+     * are located in one of the rooms next to the {@link HomeAlone.business.Room} the {@link HomeAlone.business.Player}
+     * is currently in.
+     * If it finds a {@link HomeAlone.business.Nonplayer} in any of the neighbouring rooms, it returns
+     * a string indicating that the {@link HomeAlone.business.Room} is occupied.
+     * If it finds more than one, both rooms are added to the string.
+     * Part of the "interface" to the presentation layer.
+     * @return empty string if neighbouring rooms are empty, warning if not
+     */
     public String checkNeighbourRoom() {
         String s = "", exitString = "";
         List<String> neighbourRooms = new ArrayList<>();
@@ -425,6 +485,15 @@ public class Game {
         return s;
     }
 
+    /**
+     * Checks to see if {@link HomeAlone.business.Player} is in the same room as any of "the wet bandits".
+     * This method is used during phase 3 to check if {@link HomeAlone.business.Player} is in the 
+     * same {@link HomeAlone.business.Room} as any of "the wet bandits" and if the {@link HomeAlone.business.Nonplayer}
+     * in question does not have a delay the game is lost.
+     * If the {@link HomeAlone.business.Nonplayer} does have a delay, {@link HomeAlone.business.Player} is free to move 
+     * through the room.
+     * @param npc Nonplayer object
+     */
     public void checkForKevin(Nonplayer npc) {
         if (npc.getCurrentRoom().equals(kevin.getCurrentRoom())) {
             if (npc.getDelay() < 1) {
@@ -434,6 +503,15 @@ public class Game {
         }
     }
 
+    /**
+     * Checks the status of the game.
+     * This method checks the attribute {@link #status} to see if the game is lost.
+     * The default setting is that the game is won, so this method just checks to
+     * see if the status is changed to lose in which case it returns false else
+     * it will return true.
+     * Part of the "interface" to the presentation layer.
+     * @return false is game is lost, true if it is not
+     */
     public boolean checkStatus() {
         if (this.status == this.LOSE) {
             return false;
@@ -441,10 +519,26 @@ public class Game {
         return true;
     }
 
+    /**
+     * Left over from the CLI version of the game, before we split the code up
+     * in layers
+     * @return string of item names in a room
+     */
     public String getCurrentRoomItems() {
         return kevin.getCurrentRoom().getItems() + "\n";
     }
 
+    /**
+     * Sets up the zipline escape route and moves the player to Treehouse.
+     * This method is used in phase 1 to set up the zipline from Attic to
+     * Treehouse.
+     * It takes a string with the item name, then checks its the right {@link HomeAlone.business.Item}
+     * calls {@link #setTrap(String trapName)} and moves the {@link HomeAlone.business.Player} to the Treehouse
+     * using the method {@link HomeAlone.business.Creature#setCurrentRoom(HomeAlone.business.Room)}.
+     * Part of the "interface" to the presentation layer.
+     * @param item String
+     * @return true if the zipline is set up, false if en error occurred
+     */
     public boolean setZipline(String item) {
         if (kevin.getCurrentRoom().getRoomID() == 7 && item != null) {
             if (item.equalsIgnoreCase("rope")) {
@@ -456,6 +550,16 @@ public class Game {
         return false;
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Player}.
+     * This method is called from the presentation layer to move the player to
+     * a different room. 
+     * After checking the various conditions on the phases, it calls the method
+     * in {@link HomeAlone.business.Player} that moves the player to a new room.
+     * Part of the "interface" to the presentation layer.
+     * @param command String
+     * @return true if successful, false if not
+     */
     public boolean goRoom(String command) {
         boolean returnVal = true;
         if (checkStatus()) {
@@ -483,10 +587,24 @@ public class Game {
         return returnVal;
     }
 
+    /**
+     * Getter method for attribute {@link #finished}
+     * Part of the "interface" to the presentation layer.
+     * @return finished, boolean value
+     */
     public boolean getFinished() {
         return this.finished;
     }
 
+    /**
+     * Calls the method in {@link HomeAlone.business.Nonplayer} that moves "the wet bandits".
+     * This method is called everytime the player uses the commands for moving,
+     * picking an item up, setting a trap or dropping an item.
+     * It calls the method in {@link HomeAlone.business.Nonplayer} which actually moves the entity.
+     * After the entity has moved to a new room, this method checks if the new
+     * room is Attic, in which case the game is over and the player lost.
+     * @param npc 
+     */
     private void walkPath(Nonplayer npc) {
         if (checkStatus()) {
             npc.walkPath();
@@ -500,10 +618,25 @@ public class Game {
         }
     }
 
+    /**
+     * Left over from CLI
+     * @return String containing the long description of a room.
+     */
     public String getCurrentRoomLongDescription() {
         return kevin.getCurrentRoom().getLongDescription() + "\n";
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Player}.
+     * This method is called by the presentation layer, to pickup an item from
+     * the room the player is currently in.
+     * Calls the methods {@link #checkForKevin(Nonplayer npc)}
+     * and {@link #walkPath(Nonplayer npc)} during phase 3.
+     * Returns true if the item is picked up and false if it is not.
+     * Part of the "interface" to the presentation layer.
+     * @param command String
+     * @return true if successful, false if not
+     */
     public boolean pickupItem(String command) {
         if (checkStatus()) {
             if (phase == 3) {
@@ -519,17 +652,39 @@ public class Game {
         }
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Creature}.
+     * This method returns a string if an error occured when using these methods:
+     * {@link HomeAlone.business.Player#pickupItem(java.lang.String)}
+     * {@link HomeAlone.business.Player#placeTrap(java.lang.String)}
+     * {@link HomeAlone.business.Player#dropCommand(java.lang.String)}
+     * Part of the "interface" to the presentation layer.
+     * @param e String
+     * @return empty string if no errors found, or a string containing the error
+     */
     public String getError(String e) {
         String error = "";
         error = kevin.getError(e);
         return error;
     }
 
+    /**
+     * Returns the short description to the presentation layer.
+     * This method is used to return the short description of the current room
+     * to the presentation layer.
+     * Part of the "interface" to the presentation layer.
+     * @return string containing room description
+     */
     public String getCurrentRoomShortDescription() {
         return kevin.getCurrentRoom().getShortDescription();
     }
 
-    //Checks if a room has a setInfo that contains more than "", and prints the info.
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Room}.
+     * This method returns the information for the current room.
+     * Part of the "interface" to the presentation layer.
+     * @return string containing information about a room, if game is lost
+     */
     public String getCurrentRoomInfo() {
         if (checkStatus()) {
             return kevin.getCurrentRoom().getInfo();
@@ -538,6 +693,15 @@ public class Game {
         }
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Player}
+     * This method checks {@link #status} using {@link #checkStatus()},
+     * calls the methods {@link #checkForKevin(Nonplayer npc)} and {@link #walkPath(Nonplayer npc)} for both {@link HomeAlone.business.Nonplayer} oblects
+     * and then calls the method {@link HomeAlone.business.Player#placeTrap(java.lang.String)}.
+     * Part of the "interface" to the presentation layer.
+     * @param trapName String
+     * @return true if successful, false if not
+     */
     public boolean setTrap(String trapName) {
         if (checkStatus()) {
             if (phase == 3) {
@@ -553,6 +717,11 @@ public class Game {
         }
     }
 
+    /**
+     * Left over from CLI
+     * @param command String
+     * @return epmty string if no items found, else a string with list of items
+     */
     public String getItemString(String command) {
         String s = "";
         if (command.equals("room")) {
@@ -563,6 +732,13 @@ public class Game {
         return s;
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Room}.
+     * This method is used to get a list of the possible traps for the room the
+     * player is currently in. This is done by calling {@link HomeAlone.business.Room#getTrapString()}.
+     * Part of the "interface" to the presentation layer.
+     * @return empty string or list of traps as string
+     */
     public String getTrapString() {
         if (checkStatus()) {
             return kevin.getCurrentRoom().getTrapString();
@@ -571,10 +747,23 @@ public class Game {
         }
     }
 
+    /**
+     * Intermediay between presentation layer and {@link HomeAlone.business.Room}.
+     * This method returns the traps that have been set in a room.
+     * Part of the "interface" to the presentation layer.
+     * @return string containing traps set or empty string if no traps are set
+     */
     public String getTrapInfo() {
         return kevin.getCurrentRoom().checkTrapSet();
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Player}.
+     * This method calls the method {@link HomeAlone.business.Player#dropCommand(java.lang.String)}.
+     * Part of the "interface" to the presentation layer.
+     * @param itemName String
+     * @return true if successful, false if not
+     */
     public boolean dropItem(String itemName) {
         if (checkStatus()) {
             return kevin.dropCommand(itemName);
@@ -583,6 +772,15 @@ public class Game {
         }
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Room}.
+     * This method return an ObservableList with the available exits from the 
+     * players current room. This is done by calling {@link HomeAlone.business.Room#getExitString()}
+     * and splitting the returned string in to a String array, iterate through
+     * the array and adding each exit to the ObservableList.
+     * Part of the "interface" to the presentation layer.
+     * @return an ObservableList with available exits as strings
+     */
     public ObservableList getExitsObservableList() {
         String[] exits = kevin.getCurrentRoom().getExitString().split(", ");
         ObservableList<String> exitList = FXCollections.observableArrayList();
@@ -592,6 +790,15 @@ public class Game {
         return exitList;
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Room}.
+     * This method returns an ObservableList with the available items in the
+     * players current room. This is done by calling {@link HomeAlone.business.Room#getItems()}
+     * and splitting the returned string in to a String array, iterate through
+     * the array and adding each item name to the ObservableList.
+     * Part of the "interface" to the presentation layer.
+     * @return an ObservableList with available item names
+     */
     public ObservableList getItemsObservableList() {
         String[] items = kevin.getCurrentRoom().getItems().split(", ");
         ObservableList<String> itemList = FXCollections.observableArrayList();
@@ -601,6 +808,15 @@ public class Game {
         return itemList;
     }
 
+    /**
+     * Intermediary between presentation layer and {@link HomeAlone.business.Player}.
+     * This method returns an ObservableList with the items the player has
+     * picked up. This is done by calling {@link HomeAlone.business.Player#getInventory()}
+     * and splitting the returned string in to a String array, iterate through
+     * the array and adding each item name to the ObservableList.
+     * Part of the "interface" to the presentation layer.
+     * @return an ObservableList with item names the player has picked up
+     */
     public ObservableList getInventoryObservableList() {
         String[] items = kevin.getInventory().split(", ");
         ObservableList<String> itemList = FXCollections.observableArrayList();
@@ -610,7 +826,10 @@ public class Game {
         return itemList;
     }
 
-    //Method used for calling the "help"-command that prints out instructions and commands.
+    /**
+     * Left over from CLI
+     * @return string with the available exits or empty string
+     */
     public String printHelp() {
         if (checkStatus()) {
             return kevin.getCurrentRoom().getExitString() + "\n";
@@ -619,12 +838,19 @@ public class Game {
         }
     }
 
-    //Quit program method - TextUI
+    /**
+     * Left over from CLI
+     * @return true
+     */
     public boolean quit() {
         return true;
     }
-// TextUI
 
+    /**
+     * left over from CLI
+     * @param command String
+     * @return String containing either the inventory or objective
+     */
     public String show(String command) {
         if (command.equalsIgnoreCase("inventory")) {
             return kevin.getInventory();
@@ -633,10 +859,22 @@ public class Game {
         }
     }
 
+    /**
+     * Returns the objective to be displayed in presentation layer.
+     * This method returns {@link #objective} for the players current phase.
+     * Part of the "interface" to the presentation layer.
+     * @return string containing the objective for a phase
+     */
     public String getObjective() {
         return objective;
     }
 
+    /**
+     * Returns the result of the players effort.
+     * This method is called when the game is over and the end screen is shown.
+     * Part of the "interface" to the presentation layer.
+     * @return string indication win or lose
+     */
     public String getResult() {
         if (checkStatus()) {
             return "WIN";
@@ -645,6 +883,12 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if the item Phone is in the room.
+     * This method is used in phase 3 to check if the phone is in the same room
+     * as the player.
+     * @return true if the phone is present, false if it is not
+     */
     public boolean isPhoneHere() {
         for (Item item : kevin.getCurrentRoom().getItemList()) {
             if (item.getName().equals("Phone")) {
@@ -654,10 +898,22 @@ public class Game {
         return false;
     }
 
+    /**
+     * Getter method for the attribute {@link #resultReason}.
+     * This method is using in the end screen to give a reason for the player 
+     * winning or losing the game.
+     * Part of the "interface" to the presentation layer.
+     * @return String
+     */
     public String getResultReason() {
         return resultReason;
     }
 
+    /**
+     * Unused code, should be deleted
+     * @param index int
+     * @return Room object
+     */
     public Room getRoomObject(int index) {
         return rooms.get(index);
     }

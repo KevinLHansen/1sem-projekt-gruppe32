@@ -35,7 +35,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 /**
- * FXML Controller class
+ * FXML Controller class for the main game window.
  *
  * @author Gruppe 32
  */
@@ -121,6 +121,12 @@ public class GameController implements Initializable {
         gameTheme.playFile();
     }
 
+    /**
+     * Starts the timer functionality for phase 1 and 2.
+     * This method is used to both animate the clock and to count down the timer
+     * displayed on the clock.
+     * It also runs the checks that is needed at the phase changes.
+     */
     private void startTimer() {
         KeyFrame keyframe = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
@@ -187,12 +193,25 @@ public class GameController implements Initializable {
         isRunning = true;
     }
 
+    /**
+     * Event handler for button with the caption "MOVE".
+     * This method handles the event that is triggered when the button is
+     * clicked. It calls {@link #moveRoom(String nextRoom)} to move the player
+     * to the selected room.
+     * @param event 
+     */
     @FXML
     private void handleBtnMove(ActionEvent event) {
         String nextRoom = lvAvailableExits.getSelectionModel().getSelectedItem(); // save selected item in String
         moveRoom(nextRoom);
     }
 
+    /**
+     * Calls the Game instance to move the player.
+     * This method calls {@link HomeAlone.business.Game.goRoom(String command)} to move the player
+     * to another room and updates the UI with relevant information.
+     * @param nextRoom 
+     */
     private void moveRoom(String nextRoom) {
         Game.getInstance().goRoom(nextRoom);
 
@@ -217,6 +236,20 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Event handler for button with caption "EXAMINE".
+     * This method updates the textarea with appropriate text, some of which is
+     * from the Game object.
+     * <p>
+     * Uses the following methods in Game:
+     * {@link HomeAlone.business.Game.getCurrentRoomInfo()}
+     * {@link HomeAlone.business.Game.getTrapInfo()}
+     * {@link HomeAlone.business.Game.getTrapString()}
+     * {@link HomeAlone.business.Game.checkNeighbourRoom()}
+     * {@link HomeAlone.business.Game.isPhoneHere()}
+     * {@link HomeAlone.business.Game.getItemsObservableList()}
+     * @param event 
+     */
     @FXML
     private void handleBtnExamine(ActionEvent event) {
         if (phase > 1) {
@@ -253,6 +286,17 @@ public class GameController implements Initializable {
 
     }
 
+    /**
+     * Event handler for button with caption "PICKUP".
+     * This method the event that is triggered when the button is clicked. It
+     * updates the listviews {@link #lvItemsNearby} and {@link #lvInventory}.
+     * Uses the following methods in Game:
+     * {@link HomeAlone.business.Game.pickupItem(String command)}
+     * {@link HomeAlone.business.Game.getInventoryObservableList()}
+     * {@link HomeAlone.business.Game.getItemsObservableList()}
+     * {@link HomeAlone.business.Game.getError(String e)}
+     * @param event 
+     */
     @FXML
     private void handleBtnPickup(ActionEvent event) {
         if (phase > 1) {
@@ -283,6 +327,19 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Event handler for button with caption "SETUP".
+     * This method is used when setting up a trap. When a trap have been set
+     * this method updates the appropriate UI elements.
+     * Uses the following methods in Game:
+     * {@link HomeAlone.business.Game.setZipLine(String item)}
+     * {@link HomeAlone.business.Game.getCurrenRoomShortDescription()}
+     * {@link HomeAlone.business.Game.getExitsObservableList()}
+     * {@link HomeAlone.business.Game.getItemsObservableList()}
+     * {@link HomeAlone.business.Game.setTrap(String trapName)}
+     * {@link HomeAlone.business.Game.getInventoryObservableList()}
+     * @param event 
+     */
     @FXML
     private void handleBtnSetup(ActionEvent event) {
         if (phase > 1) {
@@ -307,6 +364,16 @@ public class GameController implements Initializable {
 
     }
 
+    /**
+     * Event handler for button with caption "DROP".
+     * This method is called when the player want to drop an items from their 
+     * inventory.
+     * Uses the following methods in Game:
+     * {@link HomeAlone.business.Game.dropItem(String itemName)}
+     * {@link HomeAlone.business.Game.getInventoryObservableList()}
+     * {@link HomeAlone.business.Game.getItemsObservableList()}
+     * @param event 
+     */
     @FXML
     private void handleBtnDrop(ActionEvent event) {
         if (phase > 1) {
@@ -326,6 +393,14 @@ public class GameController implements Initializable {
         dropSound.playFile();
     }
 
+    /**
+     * Event handler for menu item with caption "Restart".
+     * This method restarts the game by stopping the soundplayer, setting the 
+     * Game instance to null, stopping the timer, closing the game window and
+     * creating a new instance of the game window, running
+     * {@link #initialize(URL url, ResourceBundle rb)} again.
+     * @param event 
+     */
     @FXML
     private void handleMenuItemRestart(ActionEvent event) {
         try {
@@ -363,6 +438,12 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Event handler for menu item with caption "Show map".
+     * This method creates a new window that shows a primitive layout of the 
+     * house the player is navigating.
+     * @param event 
+     */
     @FXML
     private void handleMenuItemShowMap(ActionEvent event) {
         try {
@@ -382,11 +463,22 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Event handler for menu item with caption "Exit".
+     * This method closes the game.
+     * @param event 
+     */
     @FXML
     private void handleMenuItemExit(ActionEvent event) {
         System.exit(0);
     }
 
+    /**
+     * Event handler for menu item with caption "How to play".
+     * This method opens a new window with a description of how the player can
+     * use the graphical interface to play the game.
+     * @param event 
+     */
     @FXML
     private void handleMenuItemHTP(ActionEvent event) {
         try {
@@ -419,7 +511,13 @@ public class GameController implements Initializable {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Event handler for menu item with caption "About".
+     * This method opens a new window showing information regarding the people
+     * that has developed this game.
+     * @param event 
+     */
     @FXML
     private void handleMenuItemAbout(ActionEvent event) {
         try {
@@ -453,6 +551,14 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Event handler for listview {@link #lvAvailableExits}.
+     * This method is used to make it possible to double click on an exit in the
+     * listview {@link #lvAvailableExits} to move to that room, instead of 
+     * having to click button with caption "MOVE".
+     * It uses {@link #moveRoom(String nextRoom)}.
+     * @param event 
+     */
     @FXML
     private void handleListItemClicked(MouseEvent event) {
 
@@ -462,6 +568,11 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Shows the End Screen.
+     * This method is called when the game is over. Either when the player wins
+     * or when the player loses.
+     */
     private void endGame() {
         try {
             gameTheme.stopFile();
@@ -487,6 +598,12 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * event handler for button with caption "OK".
+     * This method is used to close the messages that is shown everytime a phase
+     * changes. It also handles the starting of the timer in phase 1 and 2.
+     * @param event 
+     */
     @FXML
     private void handleBtnPopupOk(ActionEvent event) {
         panePopup.setVisible(false);
